@@ -1,0 +1,21 @@
+/* 1. Import Bricolage Grotesque Font */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+
+/* 2. (Color Palette) */
+:root {
+  --background-dark: #131612;
+  --accent-gold: #C8A571;
+  --accent-red: #5D231B;
+  --text-light: #E1E2E0;
+  --text-alt: #F5E8CB;
+}
+
+/* 3. Basic Reset and Global Font */
+body {
+  margin: 0;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  background-color: var(--background-dark);
+  color: var(--text-light);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

@@ -1,0 +1,92 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 5%;
+   position: fixed;
+  width: 90%;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background-color: rgba(19, 22, 18, 0.854);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(225, 226, 224, 0.1);
+}
+
+.navbar-logo a {
+  color: var(--text-alt); /* Changed to light beige */
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
+}
+
+.navbar-links li a {
+  color: var(--text-alt); /* Changed to light beige */
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+.navbar-links li a:hover {
+  color: var(--accent-gold);
+}
+
+
+
+
+/* --- Hamburger Menu Styling --- */
+
+/* Hide the hamburger icon on desktop */
+.mobile-menu-icon {
+  display: none;
+}
+
+/* --- Responsive Styles for Navbar --- */
+@media (max-width: 768px) {
+  /* Hide the desktop links */
+  .navbar-links {
+    display: none;
+  }
+
+  /* Show the hamburger icon on mobile */
+  .mobile-menu-icon {
+    display: block;
+    font-size: 1.8rem;
+    color: var(--text-light);
+    cursor: pointer;
+    z-index: 1100; /* Must be on top of the overlay */
+  }
+
+  /* Styling for the full-screen overlay when it's open */
+  .navbar-links.open {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+    position: fixed; /* Cover the entire screen */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--background-dark);
+    z-index: 1050; /* Sits below the close icon but above all page content */
+  }
+
+  /* Make the links larger on the mobile menu */
+  .navbar-links.open li a {
+    font-size: 2rem;
+  }
+}
