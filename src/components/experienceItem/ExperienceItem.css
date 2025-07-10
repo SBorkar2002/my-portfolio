@@ -1,0 +1,50 @@
+.experience-item {
+  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+}
+
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.experience-header:hover {
+  background-color: #f9f9f9;
+}
+
+.experience-item.open .experience-header {
+  background-color: #f0f0f0;
+}
+
+.job-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.company-name {
+  margin: 0;
+  color: #555;
+}
+
+.experience-location p {
+    margin: 0;
+    text-align: right;
+}
+
+.experience-body {
+  padding: 0 15px 15px 15px;
+}
+
+.job-description {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.job-description li {
+  margin-bottom: 8px;
+}

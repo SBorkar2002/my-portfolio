@@ -1,20 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react'; // Import useState
 
 // Correctly import the component and the CSS
 import Navbar from './components/navbar/Navbar.jsx';
 import './App.css'; 
 
-// Correctly import the image from the assets folder
+// --- Import All Images ---
+// Hero
 import heroImage from './assets/face4.png'; 
+import { FaLinkedinIn, FaBehance, FaGithub, FaArtstation, FaInstagram } from 'react-icons/fa'; // Added art icons
 
-// Import icons
-import { FaLinkedinIn, FaBehance, FaGithub } from 'react-icons/fa';
+// UI/UX Projects
+import uiIndeed from './assets/uiindeed.png';
+import uiSourced from './assets/uisourced.png';
+import uiMaggi from './assets/uimaggi.png';
+import uiTea from './assets/uitea.png';
+
+// Web Dev Projects
+import webDev from './assets/webdev.png';
+
+// Digital Art
+import artSakura from './assets/2SAKURA.png';
+import artWanda from './assets/WANDA.PNG';
+import artHoshino from './assets/hoshinoai.png';
+import artDream from './assets/dreamfinal.png';
+import artBubble from './assets/bubble61.png';
+import artHimeno from './assets/himeno.png';
+
+
+// --- Project Data ---
+const uiuxProjects = [
+  { img: uiIndeed, title: 'Indeed Redesign', desc: 'Worked on a redesign job portal Indeed focusing no pain points', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping'], link: '#' },
+  { img: uiSourced, title: 'Sourced - Artist Accountability & Segregation Platform:', desc: 'Designed a UX case study for an art-focused platform that separates AI-generated and traditional artwork.', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping', 'UX Case Study'], link: '#' },
+  { img: uiMaggi, title: 'Maggilicious Cafe Landing Page', desc: 'Designed a landing page for Maggilicious Cafe - an anime-themed cafe in karwar', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: '#' },
+  { img: uiTea, title: 'Lush & Leaf', desc: 'Designed a tea selling e-commerce page where users can purchase various of types of tea powder', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: '#' },
+];
+
+const webDevProjects = [
+  { img: webDev, title: 'Digital Artist Portfolio Website', desc: 'Designed and developed a responsive personal portfolio site to showcase digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript'], link: '#' },
+];
 
 
 function App() {
+  const [activeCategory, setActiveCategory] = useState('UI/UX Design');
+
   return (
     <div className="App">
-      
       <div className="main-content">
         <Navbar />
         
@@ -160,6 +190,74 @@ function App() {
   </div>
   </section>
       {/* ABOUT ME SECTION END */}
+
+
+      {/* PROJECTS SECTION START */}
+        <section id="projects" className="projects-section">
+          <h2 className="section-title">Projects</h2>
+          <p className="section-subtitle">A comprehensive showcase of my projects spanning UI/UX design, web development, and digital art.</p>
+
+          <div className="filter-buttons">
+            <button onClick={() => setActiveCategory('UI/UX Design')} className={activeCategory === 'UI/UX Design' ? 'active' : ''}>UI/UX Design</button>
+            <button onClick={() => setActiveCategory('Web Development')} className={activeCategory === 'Web Development' ? 'active' : ''}>Web Development</button>
+            <button onClick={() => setActiveCategory('Digital Art')} className={activeCategory === 'Digital Art' ? 'active' : ''}>Digital Art</button>
+            <button onClick={() => setActiveCategory('Graphic Design')} className={activeCategory === 'Graphic Design' ? 'active' : ''}>Graphic Design</button>
+          </div>
+
+          <div className="projects-content">
+            {activeCategory === 'UI/UX Design' && (
+              <div className="project-grid">
+                {uiuxProjects.map(p => (
+                  <div className="project-card" key={p.title}>
+                    <img src={p.img} alt={p.title} className="project-image"/>
+                    <h4>{p.title}</h4>
+                    <p>{p.desc}</p>
+                    <div className="project-tags">{p.tags.map(t => <span key={t}>{t}</span>)}</div>
+                    <a href={p.link} className="project-link">View Project</a>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {activeCategory === 'Web Development' && (
+              <div className="project-grid">
+                {webDevProjects.map(p => (
+                  <div className="project-card" key={p.title}>
+                    <img src={p.img} alt={p.title} className="project-image"/>
+                    <h4>{p.title}</h4>
+                    <p>{p.desc}</p>
+                    <div className="project-tags">{p.tags.map(t => <span key={t}>{t}</span>)}</div>
+                    <a href={p.link} className="project-link">View Project</a>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {activeCategory === 'Digital Art' && (
+              <div className="digital-art-container">
+                <p>Worked under the name Jeneko for over 4 years across platforms like Fiverr, Pixiv Fanbox and Discord.</p>
+                <div className="bento-grid">
+                  <div className="bento-item bento-item-1"><img src={artSakura} alt="Sakura digital art"/></div>
+                  <div className="bento-item bento-item-2"><img src={artWanda} alt="Wanda Maximoff digital art"/></div>
+                  <div className="bento-item bento-item-3"><img src={artHoshino} alt="Hoshino Ai digital art"/></div>
+                  <div className="bento-item bento-item-4"><img src={artDream} alt="Dream Angel digital art"/></div>
+                  <div className="bento-item bento-item-5"><img src={artBubble} alt="Bubble girl digital art"/></div>
+                  <div className="bento-item bento-item-6"><img src={artHimeno} alt="Himeno digital art"/></div>
+                </div>
+                <div className="art-links">
+                  <span>Find More of my Artworks on →</span>
+                  <a href="#" target="_blank"><FaArtstation /></a>
+                  <a href="#" target="_blank"><FaInstagram /></a>
+                </div>
+              </div>
+            )}
+
+            {activeCategory === 'Graphic Design' && (
+              <div className="placeholder-text">Graphic design projects coming soon!</div>
+            )}
+          </div>
+        </section>
+        {/* PROJECTS SECTION END */}
       
       </div>
     </div>
