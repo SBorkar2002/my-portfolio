@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // Import useState
+import React, { useState, useRef } from 'react';
 
 // Correctly import the component and the CSS
 import Navbar from './components/navbar/Navbar.jsx';
@@ -44,7 +44,7 @@ import graphicwings from './assets/wings.png';
 // --- Project Data ---
 const uiuxProjects = [
   { img: uiIndeed, title: 'Indeed Redesign', desc: 'Worked on a redesign job portal Indeed focusing no pain points', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping'], link: '#' },
-  { img: uiSourced, title: 'Sourced - Artist Accountability & Segregation Platform:', desc: 'Designed a UX case study for an art-focused platform that separates AI-generated and traditional artwork.', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping', 'UX Case Study'], link: '#' },
+  { img: uiSourced, title: 'Sourced - Artist Accountability & Segregation Platform', desc: 'Designed a UX case study for an art-focused platform that separates AI-generated and traditional artwork.', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping', 'UX Case Study'], link: '#' },
   { img: uiMaggi, title: 'Maggilicious Cafe Landing Page', desc: 'Designed a landing page for Maggilicious Cafe - an anime-themed cafe in karwar', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: '#' },
   { img: uiTea, title: 'Lush & Leaf', desc: 'Designed a tea selling e-commerce page where users can purchase various of types of tea powder', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: '#' },
 ];
@@ -82,6 +82,15 @@ const professionalExperience = [
 
 function App() {
   const [activeCategory, setActiveCategory] = useState('UI/UX Design');
+
+  const projectsRef = useRef(null);
+  const contactRef = useRef(null);
+  const handleScrollTo = (ref) => {
+  ref.current.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start', // Aligns the top of the section to the top of the viewport
+  });
+};
 
   return (
     <div className="App">
@@ -133,9 +142,13 @@ function App() {
 
           {/* FOREGROUND UI - Buttons */}
           <div className="hero-buttons">
-            <button className="btn btn-primary">View My Work →</button>
-            <button className="btn btn-secondary">Get In Touch</button>
-          </div>
+          <button className="btn btn-primary" onClick={() => handleScrollTo(projectsRef)}>
+            View My Work →
+          </button>
+          <button className="btn btn-secondary" onClick={() => handleScrollTo(contactRef)}>
+            Get In Touch
+          </button>
+        </div>
         </section>
 
 
@@ -163,7 +176,14 @@ function App() {
       <p className="about-bio">
         Aspiring Product Designer passionate about crafting intuitive and user-centric digital experiences. Skilled in UI/UX design using Figma and Photoshop, with hands-on experience in building responsive web interfaces using React, HTML, and CSS. Strong communicator with proven experience working directly with clients as a freelance designer, combining creativity with technical skills to deliver impactful solutions.
       </p>
-      <button className="btn btn-secondary">Download Resume</button>
+        <a 
+    href="/Sejal_Borkar_Resume.pdf" 
+    download="Sejal_Borkar_Resume.pdf"
+    className="btn btn-secondary"
+    target="_blank"
+    rel="noopener noreferrer">
+      Download Resume
+    </a>
     </div>
 
     {/* Right Column */}
@@ -231,7 +251,7 @@ function App() {
 
 
       {/* PROJECTS SECTION START */}
-        <section id="projects" className="projects-section">
+        <section id="projects" ref={projectsRef} className="projects-section">
           <h2 className="section-title">Projects</h2>
           <p className="section-subtitle">A comprehensive showcase of my projects spanning UI/UX design, web development, digital art and graphic design.</p>
 
@@ -327,7 +347,7 @@ function App() {
 
 
         {/* CONTACT SECTION START */}
-      <section id="contact" className="contact-section">
+      <section id="contact" ref={contactRef} className="contact-section">
         <h2 className="section-title">Contact</h2>
         <div className="contact-grid">
           {/* Left Column */}
