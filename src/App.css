@@ -216,9 +216,8 @@ body {
 .about-right .subsection-title {
   /* This targets the 'Skills' title */
   font-size: 1.8rem;
-  /* transform: translateY(-180%); */
   color: var(--accent-gold);
-  /* margin-bottom: 2rem; */
+ 
 }
 
 .skills-list {
@@ -284,59 +283,6 @@ body {
 
 
 
-
-/* --- Professional Experience Section --- */
-.experience-container {
-  margin-top: 3rem; /* Space above this section */
-  
-}
-
-/* We can reuse the subsection-title style */
-
-.experience-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-bottom: 1.5rem;
-  
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(225, 226, 224, 0.2);
-}
-
-/* To remove the border from the very last item */
-.experience-item:last-child {
-  border-bottom: none;
-}
-
-.experience-details .job-title {
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: #F5E8CB;
-}
-
-.experience-details .company-name {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin: 0.2rem 0 1rem 0; /* Space below the company name */
-}
-
-.experience-details .job-description {
-  padding-left: 20px; /* Indent the bullet points */
-  margin: 0;
-  /* color: var(--text-alt); */
-}
-
-.experience-details .job-description li {
-  margin-bottom: 0.5rem;
-  line-height: 1.6;
-}
-
-.experience-location {
-  text-align: right;
-  flex-shrink: 0;
-  padding-left: 2rem; /* Ensure space on smaller screens */
-  color: var(--text-alt);
-}
 
 
 
@@ -674,5 +620,5 @@ body {
     flex-wrap: wrap; /* This is the key: allows buttons to wrap to the next line */
     justify-content: center; /* Ensures the buttons are centered */
   }
-  
+
 }

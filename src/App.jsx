@@ -2,6 +2,7 @@ import React, { useState } from 'react'; // Import useState
 
 // Correctly import the component and the CSS
 import Navbar from './components/navbar/Navbar.jsx';
+import ExperienceItem from './components/experienceItem/ExperienceItem.jsx';
 import './App.css'; 
 
 // --- Import All Images ---
@@ -49,6 +50,32 @@ const uiuxProjects = [
 
 const webDevProjects = [
   { img: webDev, title: 'Digital Artist Portfolio Website', desc: 'Designed and developed a responsive personal portfolio site to showcase digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript'], link: '#' },
+];
+
+
+// --- Experience Data ---
+const professionalExperience = [
+  {
+    title: 'UI/UX Design Intern',
+    company: 'CODETECH IT Solutions Pvt. Ltd.',
+    dates: 'May 2025 - Jun 2025',
+    description: [
+      'Redesigned an existing website landing page to enhance usability and visual appeal',
+      'Designed and developed a fully responsive webpage using HTML, CSS, and JavaScript',
+      'Created a mobile app redesign prototype addressing user pain points with improved UI/UX',
+      'Designed intuitive AR/VR interface mockups focused on user interaction and accessibility'
+    ]
+  },
+  {
+    title: 'Digital Artist',
+    company: 'Freelance',
+    dates: 'Feb 2021 - Mar 2025',
+    description: [
+      'Delivered custom digital art for international clients (streamers, YouTubers) via Fiverr, Discord, and Pixiv Fanbox',
+      'Showcased strong communication, creative adaptability, and timely delivery across diverse project requirements',
+      'Built long-term client relationships through consistent quality and professional service'
+    ]
+  }
 ];
 
 
@@ -166,40 +193,14 @@ function App() {
 
 
   {/* Professional Experience Block */}
-  <div className="education-container">
-    <h3 className="subsection-title">Professional Experience</h3>
-    
-    <div className="experience-item">
-      <div className="experience-details">
-        <p className="job-title">UI/UX Design Intern</p>
-        <p className="company-name">CODETECH IT Solutions Pvt. Ltd.</p>
-        <ul className="job-description">
-          <li>Redesigned an existing website landing page to enhance usability and visual appeal</li>
-          <li>Designed and developed a fully responsive webpage using HTML, CSS, and JavaScript</li>
-          <li>Created a mobile app redesign prototype addressing user pain points with improved UI/UX</li>
-          <li>Designed intuitive AR/VR interface mockups focused on user interaction and accessibility</li>
-        </ul>
-      </div>
-      <div className="experience-location">
-        <p>May 2025 - Jun 2025</p>
-      </div>
-    </div>
-
-    <div className="experience-item">
-      <div className="experience-details">
-        <p className="job-title">Digital Artist</p>
-        <p className="company-name">Freelance</p>
-        <ul className="job-description">
-          <li>Delivered custom digital art for international clients (streamers, YouTubers) via Fiverr, Discord, and Pixiv Fanbox</li>
-          <li>Showcased strong communication, creative adaptability, and timely delivery across diverse project requirements</li>
-          <li>Built long-term client relationships through consistent quality and professional service</li>
-        </ul>
-      </div>
-      <div className="experience-location">
-        <p>Feb 2021 - Mar 2025</p>
-      </div>
-    </div>
-  </div>
+<div className="education-container">
+  <h3 className="subsection-title">Professional Experience</h3>
+  
+  {/* Map over the data and render a component for each job */}
+  {professionalExperience.map((exp, index) => (
+    <ExperienceItem key={index} experience={exp} />
+  ))}
+</div>
   </section>
       {/* ABOUT ME SECTION END */}
 
