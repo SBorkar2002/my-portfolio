@@ -16,9 +16,14 @@ import uiIndeed from './assets/uiindeed.png';
 import uiSourced from './assets/uisourced.png';
 import uiMaggi from './assets/uimaggi.png';
 import uiTea from './assets/uitea.png';
+import uijeneko from './assets/uijeneko.png';
+import uibooking from './assets/uibooking.png';
+import uimiki from './assets/uimiki.png';
 
 // Web Dev Projects
 import webDev from './assets/webdev.png';
+import websejal from './assets/websejal.png';
+
 
 // Digital Art
 import artSakura from './assets/2SAKURA.png';
@@ -46,12 +51,30 @@ const uiuxProjects = [
   { img: uiIndeed, title: 'Indeed Redesign', desc: 'Worked on a redesign job portal Indeed focusing no pain points', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping'], link: '#' },
   { img: uiSourced, title: 'Sourced - Artist Accountability & Segregation Platform', desc: 'Designed a UX case study for an art-focused platform that separates AI-generated and traditional artwork.', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping', 'UX Case Study'], link: '#' },
   { img: uiMaggi, title: 'Maggilicious Cafe Landing Page', desc: 'Designed a landing page for Maggilicious Cafe - an anime-themed cafe in karwar', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: '#' },
+  { img: uibooking, title: 'Booking.com Redesign', desc: 'Reworked and redesigned the booking.com website addressing the pain points', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','UX Research'], link: '#' },
   { img: uiTea, title: 'Lush & Leaf', desc: 'Designed a tea selling e-commerce page where users can purchase various of types of tea powder', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: '#' },
+  { img: webDev, title: 'Digital Art Portfolio', desc: 'Designed a digital art based portfolio where an artist displays thier artwork with separate sections for personel projects and commisioned work', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','Responsive'], link: '#' },
+  { img: uimiki, title: 'Make it 10 Game UI design', desc: 'Designed a digital art based portfolio where an artist displays thier artwork with separate sections for personel projects and commisioned work', tags: ['Desktop', 'Figma', 'Home Screen', 'Application','Prototyping'], link: '#' },
 ];
 
 const webDevProjects = [
-  { img: webDev, title: 'Digital Artist Portfolio Website', desc: 'Designed and developed a responsive personal portfolio site to showcase digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript'], link: '#' },
+  { img: websejal, title: 'Personel Portfolio Website', desc: 'Designed and developed a responsive portfolio site to showcase UI/UX designs, graphic designs, responsive webpages and digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript','Responsive'], link: '#' },
+  { img: uijeneko, title: 'Digital Artist Portfolio Website', desc: 'Designed and developed a responsive personal portfolio site to showcase digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript','Responsive'], link: '#' },
 ];
+
+
+// --- NEW Digital Art Data ---
+const digitalArtProjects = [
+  { img: artSakura, desc: 'A serene portrait of Sakura.', gridClass: 'bento-item-1' },
+  { img: artWanda, desc: 'The Scarlet Witch herself.', gridClass: 'bento-item-2' },
+  { img: artDesi, desc: 'An artwork dedicated to Indian attire.', gridClass: 'bento-item-7' },
+  { img: artHoshino, desc: 'A vibrant concert scene featuring the idol Hoshino Ai.', gridClass: 'bento-item-3' },
+  { img: artDream, desc: 'Attack on Titan fanart potraying dream and nightmare at the same time', gridClass: 'bento-item-4' },
+  { img: artBubble, desc: 'This is Sienna, An OC created by me.', gridClass: 'bento-item-5' },
+  { img: artHimeno, desc: 'A Himeno fanart', gridClass: 'bento-item-6' },
+];
+
+
 
 
 // --- Experience Data ---
@@ -287,22 +310,33 @@ function App() {
                     <div className="project-tags">{p.tags.map(t => <span key={t}>{t}</span>)}</div>
                     <a href={p.link} className="project-link">View Project</a>
                   </div>
+                  
+    
                 ))}
               </div>
+              
             )}
+            
+            
 
-            {activeCategory === 'Digital Art' && (
-              <div className="digital-art-container">
-                <p>Worked under the name Jeneko for over 4 years across platforms like Fiverr, Pixiv Fanbox and Discord.</p>
-                <div className="bento-grid">
-                  <div className="bento-item bento-item-1"><img src={artSakura} alt="Sakura digital art"/></div>
-                  <div className="bento-item bento-item-2"><img src={artWanda} alt="Wanda Maximoff digital art"/></div>
-                  <div className="bento-item bento-item-7"><img src={artDesi} alt="Desi Beauty digital art"/></div>
-                  <div className="bento-item bento-item-3"><img src={artHoshino} alt="Hoshino Ai digital art"/></div>
-                  <div className="bento-item bento-item-4"><img src={artDream} alt="Dream Angel digital art"/></div>
-                  <div className="bento-item bento-item-5"><img src={artBubble} alt="Bubble girl digital art"/></div>
-                  <div className="bento-item bento-item-6"><img src={artHimeno} alt="Himeno digital art"/></div>
-                </div>
+          
+          {activeCategory === 'Digital Art' && (
+            <div className="digital-art-container">
+              <p>Worked under the name Jeneko for over 4 years across platforms like Fiverr, Pixiv Fanbox and Discord.</p>
+              
+              {/* --- THIS IS THE NEW, DYNAMIC BENTO GRID --- */}
+              <div className="bento-grid">
+                {digitalArtProjects.map((art, index) => (
+                  <div className={`bento-item ${art.gridClass}`} key={index}>
+                    <img src={art.img} alt={art.desc} />
+                    {/* This is the new overlay element */}
+                    <div className="bento-overlay">
+                      <p>{art.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+    {/* --- END OF NEW GRID --- */}
                 <div className="art-links">
                   <span>Find More of my Artworks on →</span>
                   <a href="#" target="_blank"><FaArtstation /></a>
