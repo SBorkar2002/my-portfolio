@@ -25,6 +25,18 @@ import artHoshino from './assets/hoshinoai.png';
 import artDream from './assets/dreamfinal.png';
 import artBubble from './assets/bubble61.png';
 import artHimeno from './assets/himeno.png';
+import artDesi from './assets/desi.png';
+
+// Graphic Design
+import graphicburger1 from './assets/burger1.png';
+import graphicburger2 from './assets/burger2.png';
+import graphicposter from './assets/poster.png';
+import graphicopen1 from './assets/open1.png';
+import graphicramen from './assets/ramen.png';
+import graphiccerti from './assets/certi.png';
+import graphicmomos from './assets/momos.png';
+import graphicwings from './assets/wings.png';
+
 
 
 // --- Project Data ---
@@ -195,7 +207,7 @@ function App() {
       {/* PROJECTS SECTION START */}
         <section id="projects" className="projects-section">
           <h2 className="section-title">Projects</h2>
-          <p className="section-subtitle">A comprehensive showcase of my projects spanning UI/UX design, web development, and digital art.</p>
+          <p className="section-subtitle">A comprehensive showcase of my projects spanning UI/UX design, web development, digital art and graphic design.</p>
 
           <div className="filter-buttons">
             <button onClick={() => setActiveCategory('UI/UX Design')} className={activeCategory === 'UI/UX Design' ? 'active' : ''}>UI/UX Design</button>
@@ -239,6 +251,7 @@ function App() {
                 <div className="bento-grid">
                   <div className="bento-item bento-item-1"><img src={artSakura} alt="Sakura digital art"/></div>
                   <div className="bento-item bento-item-2"><img src={artWanda} alt="Wanda Maximoff digital art"/></div>
+                  <div className="bento-item bento-item-7"><img src={artDesi} alt="Desi Beauty digital art"/></div>
                   <div className="bento-item bento-item-3"><img src={artHoshino} alt="Hoshino Ai digital art"/></div>
                   <div className="bento-item bento-item-4"><img src={artDream} alt="Dream Angel digital art"/></div>
                   <div className="bento-item bento-item-5"><img src={artBubble} alt="Bubble girl digital art"/></div>
@@ -252,9 +265,28 @@ function App() {
               </div>
             )}
 
-            {activeCategory === 'Graphic Design' && (
-              <div className="placeholder-text">Graphic design projects coming soon!</div>
-            )}
+          {activeCategory === 'Graphic Design' && (
+          <div className="graphic-art-container">
+          {/* --- THIS IS THE CORRECTED GRID --- */}
+          <div className="graphicbento-grid">
+            <div className="graphicbento-item graphicbento-item-1"><img src={graphicburger1} alt="Burger Advertisement"/></div>
+            <div className="graphicbento-item graphicbento-item-2"><img src={graphicburger2} alt="Burger Advertisement 2"/></div>
+            <div className="graphicbento-item graphicbento-item-3"><img src={graphicopen1} alt="Cafe Opening Poster"/></div>
+            <div className="graphicbento-item graphicbento-item-4"><img src={graphiccerti} alt="Certificate Design"/></div>
+            <div className="graphicbento-item graphicbento-item-5"><img src={graphicposter} alt="Art Contest Poster"/></div>
+            <div className="graphicbento-item graphicbento-item-6"><img src={graphicramen} alt="Ramen Shop Poster"/></div>
+            <div className="graphicbento-item graphicbento-item-7"><img src={graphicmomos} alt="Ramen Shop Poster"/></div>
+            <div className="graphicbento-item graphicbento-item-8"><img src={graphicwings} alt="Ramen Shop Poster"/></div>
+          </div>
+          {/* --- END OF CORRECTED GRID --- */}
+      
+          <div className="graphic-links">
+            <span>Find More of my Artworks on →</span>
+            <a href="#" target="_blank"><FaArtstation /></a>
+            <a href="#" target="_blank"><FaInstagram /></a>
+            </div>
+          </div>
+        )}
           </div>
         </section>
         {/* PROJECTS SECTION END */}
