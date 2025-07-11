@@ -9,6 +9,7 @@ import './App.css';
 // Hero
 import heroImage from './assets/face4.png'; 
 import { FaLinkedinIn, FaBehance, FaGithub, FaArtstation, FaInstagram } from 'react-icons/fa'; // Added art icons
+import { MdOutlineEmail, MdOutlinePhone, MdOutlineLocationOn } from 'react-icons/md';
 
 // UI/UX Projects
 import uiIndeed from './assets/uiindeed.png';
@@ -136,6 +137,20 @@ function App() {
             <button className="btn btn-secondary">Get In Touch</button>
           </div>
         </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
          {/* ABOUT ME SECTION START */}
       <section id="about" className="about-section">
   {/* The title is a direct child of the section */}
@@ -205,6 +220,16 @@ function App() {
       {/* ABOUT ME SECTION END */}
 
 
+
+
+
+
+
+
+
+
+
+
       {/* PROJECTS SECTION START */}
         <section id="projects" className="projects-section">
           <h2 className="section-title">Projects</h2>
@@ -268,7 +293,6 @@ function App() {
 
           {activeCategory === 'Graphic Design' && (
           <div className="graphic-art-container">
-          {/* --- THIS IS THE CORRECTED GRID --- */}
           <div className="graphicbento-grid">
             <div className="graphicbento-item graphicbento-item-1"><img src={graphicburger1} alt="Burger Advertisement"/></div>
             <div className="graphicbento-item graphicbento-item-2"><img src={graphicburger2} alt="Burger Advertisement 2"/></div>
@@ -279,11 +303,9 @@ function App() {
             <div className="graphicbento-item graphicbento-item-7"><img src={graphicmomos} alt="Ramen Shop Poster"/></div>
             <div className="graphicbento-item graphicbento-item-8"><img src={graphicwings} alt="Ramen Shop Poster"/></div>
           </div>
-          {/* --- END OF CORRECTED GRID --- */}
       
           <div className="graphic-links">
-            <span>Find More of my Artworks on →</span>
-            <a href="#" target="_blank"><FaArtstation /></a>
+            <span>Find More of my Graphic Designs on →</span>
             <a href="#" target="_blank"><FaInstagram /></a>
             </div>
           </div>
@@ -291,6 +313,81 @@ function App() {
           </div>
         </section>
         {/* PROJECTS SECTION END */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {/* CONTACT SECTION START */}
+      <section id="contact" className="contact-section">
+        <h2 className="section-title">Contact</h2>
+        <div className="contact-grid">
+          {/* Left Column */}
+          <div className="contact-left">
+            <h2 className="contact-headline">Let's Connect &<br/>Collaborate</h2>
+            <p className="contact-intro">
+              I'm always excited to discuss new projects, creative ideas, or opportunities to be part of your visions.
+            </p>
+
+            <div className="info-group">
+              <h4>Get in Touch</h4>
+              <ul className="contact-info-list">
+                <li><MdOutlineEmail className="contact-icon" /> <div><span>Email:</span><p>sejalborkar2002@gmail.com</p></div></li>
+                <li><MdOutlinePhone className="contact-icon" /> <div><span>Phone:</span><p>+91-6362518173</p></div></li>
+                <li><MdOutlineLocationOn className="contact-icon" /> <div><span>Location:</span><p>Bengaluru</p></div></li>
+              </ul>
+            </div>
+
+            <div className="info-group">
+              <h4>Find Me Online</h4>
+              <div className="contact-socials">
+                <a href="#" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
+                <a href="#" target="_blank" rel="noopener noreferrer"><FaBehance /></a>
+                <a href="#" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column */}
+          <div className="contact-right">
+            <form className="contact-form">
+              <div className="form-group">
+                <label htmlFor="name">Name*</label>
+                <input type="text" id="name" name="name" placeholder="Your Name" required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Email*</label>
+                <input type="email" id="email" name="email" placeholder="Email Address" required />
+              </div>
+              <div className="form-group form-group-stretch"> 
+              <label htmlFor="message">Message*</label>
+               <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+              </div>
+              <button type="submit" className="btn btn-primary">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </section>
+      {/* CONTACT SECTION END */}
+      
+      {/* FOOTER START */}
+      <footer className="footer">
+        <div className="footer-credit">
+          Designed and built with ❤️ by Sejal Borkar using React.js and Figma.
+        </div>
+        <div className="footer-copyright">
+          © 2025 Sejal Borkar. All Rights Reserved.
+        </div>
+      </footer>
+      {/* FOOTER END */}
       
       </div>
     </div>

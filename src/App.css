@@ -182,7 +182,7 @@ body {
 .section-title {
   /* position: absolute; */
   top: 40px; /* Position from the top of the section */
-  font-size: 4rem; /* Larger font size */
+  font-size: 3rem; /* Larger font size */
   font-weight: bold;
   color:#C8A571;
 }
@@ -297,7 +297,7 @@ body {
 
 .section-subtitle {
   /* text-align: center; */
-  margin-top: -3rem;
+  margin-top: 3rem;
   margin-bottom: 3rem;
   /* color: var(--text-alt); */
   font-size: 1.1rem;
@@ -334,6 +334,18 @@ body {
   border-color: var(--accent-gold);
   font-weight: 600;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* --- Project Card Grid --- */
 .project-grid {
@@ -514,6 +526,176 @@ body {
   .graphicbento-item-4 { grid-column: span 2; }
 }
  
+
+
+
+
+
+
+
+/* --- Contact Section --- */
+.contact-section {
+  padding: 100px 5%;
+}
+
+/* Find this rule */
+.contact-section .subsection-title {
+  border-bottom: 1px solid rgba(225, 226, 224, 0.2);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem; /* <<< REDUCED from 4rem */
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+}
+
+.contact-headline {
+  font-size: 3rem;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--text-light);
+}
+
+.contact-intro {
+  font-size: 1.1rem;
+  line-height: 1.4;
+  color: var(--text-alt);
+  margin-bottom: 3rem;
+}
+
+.info-group {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(225, 226, 224, 0.2);
+  padding-bottom: 2rem;
+}
+.info-group:last-child { border-bottom: none; }
+
+.info-group h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  margin-bottom: 1.5rem;
+}
+
+.contact-info-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-info-list li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.contact-icon {
+  font-size: 1.8rem;
+  color: var(--accent-gold);
+}
+.contact-info-list span {
+  font-weight: 600;
+  color: var(--text-light);
+}
+.contact-info-list p {
+  margin: 0.2rem 0 0 0;
+  color: var(--text-alt);
+}
+
+.contact-socials {
+  display: flex;
+  gap: 1.5rem;
+}
+.contact-socials a {
+  font-size: 1.8rem;
+  color: var(--text-light);
+  transition: color 0.3s ease;
+}
+.contact-socials a:hover { color: var(--accent-gold); }
+
+
+/* --- Contact Form Styling --- */
+/* --- Contact Form Styling (Final Corrected Version) --- */
+
+.contact-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.contact-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-alt);
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: transparent;
+  border: 1px solid rgba(225, 226, 224, 0.3);
+  border-radius: 4px;
+  color: var(--text-light);
+  font-family: inherit;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+
+.contact-form textarea {
+  min-height: 220px; 
+  resize: vertical; 
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(225, 226, 224, 0.5);
+}
+
+.contact-form .btn-primary {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+}
+
+/* --- Footer --- */
+.footer {
+  padding: 2rem 5%;
+  border-top: 1px solid rgba(225, 226, 224, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-alt);
+  font-size: 0.9rem;
+}
+
+/* --- ADD THIS NEW RULE --- */
+.contact-form textarea {
+  min-height: 350px; /* Adjust this value up or down to get the perfect alignment */
+}
+
+/* --- Responsive for Contact & Footer --- */
+@media (max-width: 768px) {
+
+  .contact-grid {
+    grid-template-columns: 1fr; /* This is the key: changes the grid to a single column */
+  }
+
+  .footer {
+    flex-direction: column; /* Stacks the two footer text lines vertically */
+    gap: 1rem; /* Adds space between the stacked lines */
+    text-align: center; /* Centers the text */
+  }
+}
+
+
+
+
+
+
 
 
 
