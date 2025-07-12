@@ -100,6 +100,11 @@ body {
 .hero-intro-text { font-size: 1.2rem; }
 .hero-contact-info p { margin: 0.2rem 0; color: var(--text-alt); }
 
+/* --- Responsive Contact Info Handling --- */
+.hero-contact-info-mobile {
+  display: none;
+}
+
 /* Right Column */
 .hero-right {
   grid-column: 10 / 13;
@@ -250,6 +255,14 @@ a.btn, a.btn:hover {
 }
 
 
+
+
+
+
+
+
+
+
 /* --- Education Section Styling (Now full-width) --- */
 .education-container {
   margin-top: 6rem; /* Space above the education section */
@@ -276,17 +289,12 @@ a.btn, a.btn:hover {
 .education-details p,
 .education-location p {
   margin: 0.3rem 0;
-  /* color: var(--text-alt); */
+  color: var(--text-alt);
 }
 .education-location {
   text-align: right;
   flex-shrink: 0;
 }
-
-
-
-
-
 
 
 
@@ -414,6 +422,42 @@ a.btn, a.btn:hover {
   font-weight: 600;
 }
 
+/* --- Styling for Special Project Links --- */
+.project-links-special {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-site-text {
+  color: var(--text-alt);
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* --- Links below the grid --- */
+.web-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+}
+.web-links a {
+  font-size: 1.8rem;
+  color: var(--text-light);
+  transition: color 0.3s ease;
+}
+.web-links a:hover { color: var(--accent-gold); }
+
+
+
+
+
+
+
+
+
 /* --- Digital Art Bento Grid --- */
 .digital-art-container {
   text-align: center;
@@ -500,10 +544,17 @@ a.btn, a.btn:hover {
 .art-links {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
   gap: 1rem;
   font-size: 1.2rem;
 }
+
+.art-links-icons {
+  display: flex;
+  gap: 1.5rem; /* This creates horizontal space between the icons */
+}
+
 .art-links a {
   font-size: 1.8rem;
   color: var(--text-light);
@@ -569,9 +620,10 @@ a.btn, a.btn:hover {
 .graphicbento-item-8 { grid-column: span 1; grid-row: span 1; }
 
 
-/* --- Links below the grid --- */
+/* --- graohic grid link --- */
 .graphic-links {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 1rem;
@@ -848,6 +900,21 @@ a.btn, a.btn:hover {
   .hero-social-icons {
   justify-content: center; /* Horizontally centers the icons */
 }
+
+
+.hero-contact-info {
+    display: none;
+  }
+
+  /* SHOW the new mobile contact info */
+  .hero-contact-info-mobile {
+    display: block;
+    color: var(--text-alt);
+    margin-top: 1rem; /* Add some space above it */
+  }
+  .hero-contact-info-mobile p {
+    margin: 0.2rem 0;
+  }
 
   .hero-summary {
     padding-left: 0; /* Remove side padding */

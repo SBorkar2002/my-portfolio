@@ -1,12 +1,11 @@
+/* --- Experience Item Styles (Desktop First) --- */
+
 .experience-item-wrapper {
   padding-bottom: 1.5rem;
   margin-bottom: 1.5rem;
   border-bottom: 1px solid rgba(225, 226, 224, 0.2);
 }
-
-.experience-item-wrapper:last-child {
-  border-bottom: none;
-}
+.experience-item-wrapper:last-child { border-bottom: none; }
 
 .experience-header {
   display: flex;
@@ -16,23 +15,29 @@
 
 .experience-details .job-title {
   font-weight: 700;
-  font-size: 1.2rem;
-  color: var(--text-alt);
-  margin: 0;
-}
-
-.company-container {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin: 0.2rem 0 1rem 0;
-}
-
-.experience-details .company-name {
-  font-size: 1.1rem;
-  font-weight: 500;
+  font-size: 1.3rem;
   color: var(--text-light);
   margin: 0;
+}
+.experience-details .company-name {
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--text-light);
+  margin: 0.2rem 0;
+}
+
+/* By default (on desktop), hide the mobile date */
+.experience-dates-mobile {
+  display: none;
+}
+
+/* This is the right-side column for desktop */
+.experience-location {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Aligns date and arrow to the right */
+  flex-shrink: 0;
+  color: var(--text-alt);
 }
 
 .toggle-button {
@@ -41,96 +46,45 @@
   color: var(--accent-gold);
   cursor: pointer;
   font-size: 1.2rem;
-  padding: 0;
-}
-
-.experience-location {
-  text-align: right;
-  flex-shrink: 0;
-  padding-left: 2rem;
-  color: var(--text-alt);
-}
-
-/* --- The Dropdown Animation --- */
-.job-description-container {
-  max-height: 0; /* Hidden by default */
-  opacity: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, margin-top 0.5s ease-in-out;
-}
-
-.job-description-container.open {
-  max-height: 500px; /* An arbitrary large height */
-  opacity: 1;
-  margin-top: 1rem; /* Add space when open */
-}
-
-.job-description {
-  padding-left: 20px;
-  margin: 0;
-  color: var(--text-light);
-  list-style-type: disc;
-}
-
-.job-description li {
-  margin-bottom: 0.5rem;
-  line-height: 1.6;
+  margin-top: 0.5rem; /* Space between date and arrow */
 }
 
 
-
+/* --- Dropdown Animation Styles --- */
+.job-description-container { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.5s ease-in-out; }
+.job-description-container.open { max-height: 500px; opacity: 1; margin-top: 1rem; }
+.job-description { padding-left: 20px; margin: 0; color: var(--text-alt); list-style-type: disc; }
+.job-description li { margin-bottom: 0.5rem; line-height: 1.6; }
 
 
 /* --- Responsive Styles for Mobile --- */
 @media (max-width: 768px) {
   
-  .experience-item-wrapper {
-    position: relative; 
-    padding-bottom: 3.5rem; 
-  }
-
   .experience-header {
-    flex-wrap: wrap; 
+    flex-direction: column; /* Stack the left and right columns */
+    align-items: flex-start;
+  }
+  
+  /* On mobile, HIDE the desktop date */
+  .experience-dates-desktop {
+    display: none;
+  }
+  
+  /* On mobile, SHOW the mobile date */
+  .experience-dates-mobile {
+    display: block;
+    color: var(--text-alt);
+    margin-top: 0.5rem;
   }
 
-
+  /* On mobile, make the right-side container take full width and center its content (the arrow) */
   .experience-location {
     width: 100%;
-    margin-top: 0.5rem;
-    display: flex; 
-    justify-content: flex-end; 
-     align-items: center; /* Vertically centers the arrow */
-    height: 100%;
+    align-items: center; /* This centers the arrow */
+    margin-top: 1rem;
   }
 
   .toggle-button {
-    position: absolute; 
-    left: 50%; 
-    bottom: 1rem; 
-    transform: translateX(-50%); 
-  }
-
-  
-  .experience-location p {
-    display: none;
-  }
-  
-  
-  .experience-details .company-name::after {
-    content: attr(data-dates); 
-    display: block;
-    font-size: 0.9rem;
-    color: var(--text-alt);
-    margin-top: 0.5rem;
-  }
-  
-  .experience-dates-mobile {
-    display: block; /* Make it visible */
-    color: var(--text-alt);
-    margin-top: 0.5rem; /* Add some space above it */
-  }
-
-   .experience-dates-desktop {
-    display: none;
+    margin-top: 0; /* Remove the top margin on mobile */
   }
 }

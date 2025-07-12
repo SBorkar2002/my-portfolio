@@ -48,19 +48,21 @@ import graphicwings from './assets/wings.png';
 
 // --- Project Data ---
 const uiuxProjects = [
-  { img: uiIndeed, title: 'Indeed Redesign', desc: 'Worked on a redesign job portal Indeed focusing no pain points', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping'], link: '#' },
-  { img: uiSourced, title: 'Sourced - Artist Accountability & Segregation Platform', desc: 'Designed a UX case study for an art-focused platform that separates AI-generated and traditional artwork.', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping', 'UX Case Study'], link: '#' },
-  { img: uiMaggi, title: 'Maggilicious Cafe Landing Page', desc: 'Designed a landing page for Maggilicious Cafe - an anime-themed cafe in karwar', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: '#' },
-  { img: uibooking, title: 'Booking.com Redesign', desc: 'Reworked and redesigned the booking.com website addressing the pain points', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','UX Research'], link: '#' },
-  { img: uiTea, title: 'Lush & Leaf', desc: 'Designed a tea selling e-commerce page where users can purchase various of types of tea powder', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: '#' },
-  { img: webDev, title: 'Digital Art Portfolio', desc: 'Designed a digital art based portfolio where an artist displays thier artwork with separate sections for personel projects and commisioned work', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','Responsive'], link: '#' },
-  { img: uimiki, title: 'Make it 10 Game UI design', desc: 'Designed a digital art based portfolio where an artist displays thier artwork with separate sections for personel projects and commisioned work', tags: ['Desktop', 'Figma', 'Home Screen', 'Application','Prototyping'], link: '#' },
+  { img: uiIndeed, title: 'Indeed Redesign', desc: 'Worked on a redesign job portal Indeed focusing no pain points', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping'], link: 'https://www.behance.net/gallery/228663695/Indeed-Redesign-App-UXUI-Design' },
+  { img: uiSourced, title: 'Sourced - Artist Accountability & Segregation Platform', desc: 'Designed a UX case study for an art-focused platform that separates AI-generated and traditional artwork.', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping', 'UX Case Study'], link: 'https://www.behance.net/gallery/225405095/Sourced-UX-Case-Study' },
+  { img: uiMaggi, title: 'Maggilicious Cafe Landing Page', desc: 'Designed a landing page for Maggilicious Cafe - an anime-themed cafe in karwar', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: 'https://www.behance.net/gallery/223118023/Maggilicious-Cafe-Home-Page' },
+  { img: uibooking, title: 'Booking.com Redesign', desc: 'Reworked and redesigned the booking.com website addressing the pain points', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','UX Research'], link: 'https://www.behance.net/gallery/227659831/Bookingcom-Redesign' },
+  { img: uiTea, title: 'Lush & Leaf', desc: 'Designed a tea selling e-commerce page where users can purchase various of types of tea powder', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: 'https://www.behance.net/gallery/226337603/Lush-and-Leaf-Homepage' },
+  { img: webDev, title: 'Digital Art Portfolio', desc: 'Designed a digital art based portfolio where an artist displays thier artwork with separate sections for personel projects and commisioned work', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','Responsive'], link: 'https://www.behance.net/gallery/229460931/Digital-Artist-Portfolio' },
+  { img: uimiki, title: 'Make it 10 Game UI design', desc: 'Designed a digital art based portfolio where an artist displays thier artwork with separate sections for personel projects and commisioned work', tags: ['Desktop', 'Figma', 'Home Screen', 'Application','Prototyping'], link: 'https://www.behance.net/gallery/227542669/Mikis-Math-Adventure' },
 ];
 
 const webDevProjects = [
-  { img: websejal, title: 'Personel Portfolio Website', desc: 'Designed and developed a responsive portfolio site to showcase UI/UX designs, graphic designs, responsive webpages and digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript','Responsive'], link: '#' },
-  { img: uijeneko, title: 'Digital Artist Portfolio Website', desc: 'Designed and developed a responsive personal portfolio site to showcase digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript','Responsive'], link: '#' },
+  { img: websejal, title: 'Personel Portfolio Website', desc: 'Designed and developed a responsive portfolio site to showcase UI/UX designs, graphic designs, responsive webpages and digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript','Responsive'], isCurrentSite: true, githubLink: 'https://github.com/your-username/SBorkar2002' },
+  { img: uijeneko, title: 'Digital Artist Portfolio Website', desc: 'Designed and developed a responsive personal portfolio site to showcase digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript','Responsive'], link: 'https://jeneko.vercel.app/' },
 ];
+
+
 
 
 // --- NEW Digital Art Data ---
@@ -145,6 +147,11 @@ function App() {
             <img src={heroImage} alt="Portrait of Sejal Borkar" className="hero-image-fg" />
           </div>
           
+          {/* This is the contact info for MOBILE */}
+          <div className="hero-contact-info-mobile">
+          <p>sejalborkar2002@gmail.com</p>
+          <p>+91-6362518173</p>
+          </div>
           
 
           {/* FOREGROUND UI - Right Column */}
@@ -294,28 +301,59 @@ function App() {
                     <h4>{p.title}</h4>
                     <p>{p.desc}</p>
                     <div className="project-tags">{p.tags.map(t => <span key={t}>{t}</span>)}</div>
-                    <a href={p.link} className="project-link">View Project</a>
+                    <a href={p.link} className="project-link" target="_blank" rel="noopener noreferrer">View Project</a>
                   </div>
                 ))}
               </div>
             )}
 
             {activeCategory === 'Web Development' && (
-              <div className="project-grid">
-                {webDevProjects.map(p => (
-                  <div className="project-card" key={p.title}>
-                    <img src={p.img} alt={p.title} className="project-image"/>
-                    <h4>{p.title}</h4>
-                    <p>{p.desc}</p>
-                    <div className="project-tags">{p.tags.map(t => <span key={t}>{t}</span>)}</div>
-                    <a href={p.link} className="project-link">View Project</a>
-                  </div>
-                  
-    
-                ))}
+  // NEW: A parent container for the two-column layout
+  <div className="web-dev-layout">
+
+    {/* This grid now only contains the project cards */}
+    <div className="project-grid">
+      {webDevProjects.map(p => (
+        <div className="project-card" key={p.title}>
+          <img src={p.img} alt={p.title} className="project-image"/>
+          <h4>{p.title}</h4>
+          <p>{p.desc}</p>
+          <div className="project-tags">{p.tags.map(t => <span key={t}>{t}</span>)}</div>
+          
+          {p.isCurrentSite ? (
+            <div className="project-links-special">
+              <span className="current-site-text">✓ Currently Viewing</span>
+              <a 
+                href={p.githubLink} 
+                className="project-link"
+                target="_blank"
+                rel="noopener noreferrer">
+                Check out the code on GitHub
+              </a>
+            </div>
+          ) : (
+            <a 
+              href={p.link} 
+              className="project-link"
+              target="_blank"
+              rel="noopener noreferrer">
+              View Project
+            </a>
+          )}
+        </div>
+      ))}
+    </div>
+
+           
+            <div className="web-links">
+              <span>Find More of my Code on</span>
+              <div className="art-links-icons">
+                <a href="https://github.com/your-username" target="_blank"><FaGithub /></a>
               </div>
-              
-            )}
+            </div>
+            
+          </div>
+        )}
             
             
 
@@ -324,7 +362,7 @@ function App() {
             <div className="digital-art-container">
               <p>Worked under the name Jeneko for over 4 years across platforms like Fiverr, Pixiv Fanbox and Discord.</p>
               
-              {/* --- THIS IS THE NEW, DYNAMIC BENTO GRID --- */}
+{/* --- DYNAMIC BENTO GRID --- */}
               <div className="bento-grid">
                 {digitalArtProjects.map((art, index) => (
                   <div className={`bento-item ${art.gridClass}`} key={index}>
@@ -336,11 +374,14 @@ function App() {
                   </div>
                 ))}
               </div>
-    {/* --- END OF NEW GRID --- */}
+              
+{/* --- END OF NEW GRID --- */}
                 <div className="art-links">
-                  <span>Find More of my Artworks on →</span>
+                  <span>Find More of my Artworks on </span>
+                  <div className="art-links-icons">
                   <a href="#" target="_blank"><FaArtstation /></a>
                   <a href="#" target="_blank"><FaInstagram /></a>
+                </div>
                 </div>
               </div>
             )}
@@ -359,8 +400,10 @@ function App() {
           </div>
       
           <div className="graphic-links">
-            <span>Find More of my Graphic Designs on →</span>
+            <span>Find More of my Graphic Designs on </span>
+            <div className="art-links-icons">
             <a href="#" target="_blank"><FaInstagram /></a>
+            </div>
             </div>
           </div>
         )}
