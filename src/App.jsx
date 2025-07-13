@@ -58,7 +58,7 @@ const uiuxProjects = [
 ];
 
 const webDevProjects = [
-  { img: websejal, title: 'Personel Portfolio Website', desc: 'Designed and developed a responsive portfolio site to showcase UI/UX designs, graphic designs, responsive webpages and digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript','Responsive'], isCurrentSite: true, githubLink: 'https://github.com/SBorkar2002' },
+  { img: websejal, title: 'Personel Portfolio Website', desc: 'Designed and developed a responsive portfolio site to showcase UI/UX designs, graphic designs, responsive webpages and digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript','Responsive'], isCurrentSite: true, githubLink: 'https://github.com/SBorkar2002/my-portfolio' },
   { img: uijeneko, title: 'Digital Artist Portfolio Website', desc: 'Designed and developed a responsive personal portfolio site to showcase digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript','Responsive'], link: 'https://jeneko.vercel.app/' },
 ];
 

@@ -402,7 +402,7 @@ a.btn, a.btn:hover {
   font-size: 0.9rem;
 }
 
-.project-link {
+.project-link, .project-link:visited{
   color: var(--accent-gold);
   text-decoration: underline;
   font-weight: 600;
@@ -414,6 +414,10 @@ a.btn, a.btn:hover {
   flex-direction: column;
 }
 
+.project-link:hover {
+  color: var(--text-light); 
+}
+
 .current-site-text {
   color: var(--text-alt);
   font-style: italic;
@@ -421,9 +425,10 @@ a.btn, a.btn:hover {
 }
 
 
-.web-links {
+.web-links, .web-links:visited {
   display: flex;
   flex-direction: column;
+  
   justify-content: center;
   align-items: center;
   gap: 1rem;
@@ -433,6 +438,7 @@ a.btn, a.btn:hover {
   font-size: 1.8rem;
   color: var(--text-light);
   transition: color 0.3s ease;
+  color: var(--text-light);
 }
 .web-links a:hover { color: var(--accent-gold); }
 
@@ -1013,7 +1019,7 @@ a.btn, a.btn:hover {
 /* mouse hover effect spotlight */
 
 /* --- Mouse Spotlight Effect --- */
-/* .spotlight-container {
+.spotlight-container {
   position: relative; 
   background-color: var(--background-dark); 
 }
@@ -1036,4 +1042,4 @@ a.btn, a.btn:hover {
   );
 
   transition: background 0.1s ease-out;
-} */
+}
