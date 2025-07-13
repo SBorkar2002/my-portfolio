@@ -580,6 +580,14 @@ a.btn, a.btn:hover {
 
 
 
+
+
+
+
+
+
+
+
 /* graphic design section */
 
 .graphic-art-container {
@@ -601,6 +609,8 @@ a.btn, a.btn:hover {
 
 .graphicbento-item {
   box-sizing: border-box;
+  position: relative; /* ESSENTIAL for the overlay */
+  overflow: hidden;   /* ESSENTIAL to contain the zoom effect */
 }
 
 
@@ -608,6 +618,44 @@ a.btn, a.btn:hover {
   width: 100%;
   height: 100%;
   object-fit:cover; 
+   transition: transform 0.4s ease; 
+}
+
+/* This styles the hidden overlay container */
+.graphicbento-item .bento-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* The dark layer */
+  color: var(--text-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.4s ease;
+}
+
+/* This styles the text inside the overlay */
+.graphicbento-item .bento-overlay p {
+  transform: translateY(10px);
+  transition: transform 0.4s ease;
+}
+
+/* This is the trigger: when you hover over the item... */
+.graphicbento-item:hover .bento-overlay {
+  opacity: 1; /* ...the overlay becomes visible. */
+}
+
+/* And these animations run */
+.graphicbento-item:hover .bento-overlay p {
+  transform: translateY(0);
+}
+.graphicbento-item:hover img {
+  transform: scale(1.05); /* The subtle zoom effect */
 }
 
 .graphicbento-item-1 { grid-column: span 1; grid-row: span 1; }
@@ -641,6 +689,18 @@ a.btn, a.btn:hover {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 /* --- Responsive for Projects --- */
 @media (max-width: 768px) {
   .project-grid {
@@ -659,6 +719,18 @@ a.btn, a.btn:hover {
   }
   .graphicbento-item-3 { grid-column: span 2; }
   .graphicbento-item-4 { grid-column: span 2; }
+
+  .bento-overlay {
+    padding: 0.3rem; 
+  }
+
+  /* This targets the paragraph inside the overlay */
+  .bento-overlay p {
+    font-size: 0.7rem; /* Significantly smaller font size for mobile */
+    line-height: 1.4; /* Adjust line height for the smaller font */
+    overflow-wrap: break-word; /* Ensures long words don't break the layout */
+    justify-content: center;
+  }
 }
  
 
@@ -953,4 +1025,45 @@ a.btn, a.btn:hover {
     justify-content: center; /* Ensures the buttons are centered */
   }
 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* mouse hover effect spotlight */
+
+/* --- Mouse Spotlight Effect --- */
+.spotlight-container {
+  position: relative; /* Needed for the ::before pseudo-element */
+  background-color: var(--background-dark); /* Ensure it has the base color */
+}
+
+.spotlight-container::before {
+  content: '';
+  position: fixed; /* Fixed to the viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none; /* Allows you to click through the effect */
+  z-index: 1000; /* Sits on top of most content */
+
+  /* The radial gradient that follows the mouse */
+  background: radial-gradient(
+    circle at var(--mouse-x) var(--mouse-y),
+    rgba(183, 192, 188, 0.1) 0%, /* A subtle light color */
+    rgba(183, 192, 188, 0.05) 10%,
+    transparent 30% /* Fades out to transparent */
+  );
+
+  /* Smoothly transition the effect */
+  transition: background 0.1s ease-out;
 }

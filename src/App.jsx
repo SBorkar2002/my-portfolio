@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import Navbar from './components/navbar/Navbar.jsx';
 import ExperienceItem from './components/experienceItem/ExperienceItem.jsx';
 import './App.css'; 
+import useMousePosition from './hooks/useMousePosition.jsx';
 
 // --- Import All Images ---
 // Hero
@@ -58,7 +59,7 @@ const uiuxProjects = [
 ];
 
 const webDevProjects = [
-  { img: websejal, title: 'Personel Portfolio Website', desc: 'Designed and developed a responsive portfolio site to showcase UI/UX designs, graphic designs, responsive webpages and digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript','Responsive'], isCurrentSite: true, githubLink: 'https://github.com/your-username/SBorkar2002' },
+  { img: websejal, title: 'Personel Portfolio Website', desc: 'Designed and developed a responsive portfolio site to showcase UI/UX designs, graphic designs, responsive webpages and digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript','Responsive'], isCurrentSite: true, githubLink: 'https://github.com/SBorkar2002' },
   { img: uijeneko, title: 'Digital Artist Portfolio Website', desc: 'Designed and developed a responsive personal portfolio site to showcase digital art projects.', tags: ['React.js', 'HTML', 'CSS', 'JavaScript','Responsive'], link: 'https://jeneko.vercel.app/' },
 ];
 
@@ -75,6 +76,7 @@ const digitalArtProjects = [
   { img: artBubble, desc: 'This is Sienna, An OC created by me.', gridClass: 'bento-item-5' },
   { img: artHimeno, desc: 'A Himeno fanart', gridClass: 'bento-item-6' },
 ];
+
 
 
 
@@ -105,8 +107,20 @@ const professionalExperience = [
 ];
 
 
+
+
+
+
+
+
 function App() {
   const [activeCategory, setActiveCategory] = useState('UI/UX Design');
+
+  const { x, y } = useMousePosition();
+
+    const handleExternalLink = (url) => {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    };
 
   const projectsRef = useRef(null);
   const contactRef = useRef(null);
@@ -118,6 +132,9 @@ function App() {
 };
 
   return (
+    <div 
+    className="spotlight-container" 
+    style={{ '--mouse-x': `${x}px`, '--mouse-y': `${y}px` }}>
     <div className="App">
       <div className="main-content">
         <Navbar />
@@ -161,9 +178,9 @@ function App() {
               <p>A creative and strategic product designer who transforms user needs and business goals into thoughtful, impactful digital experiences.</p>
               <div className="hero-social-icons">{/*...icons...*/}</div>
             <div className="hero-social-icons">
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
-          <a href="https://behance.net" target="_blank" rel="noopener noreferrer"><FaBehance /></a>
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
+          <a href="https://www.linkedin.com/in/sejal-borkar-141235304/" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
+          <a href="https://behance.net/sejalborakr04" target="_blank" rel="noopener noreferrer"><FaBehance /></a>
+          <a href="https://github.com/SBorkar2002" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
         </div>
             </div>
           </div>
@@ -332,13 +349,7 @@ function App() {
               </a>
             </div>
           ) : (
-            <a 
-              href={p.link} 
-              className="project-link"
-              target="_blank"
-              rel="noopener noreferrer">
-              View Project
-            </a>
+            <a href="#" onClick={() => handleExternalLink(p.link)}>View Project</a>
           )}
         </div>
       ))}
@@ -348,7 +359,7 @@ function App() {
             <div className="web-links">
               <span>Find More of my Code on</span>
               <div className="art-links-icons">
-                <a href="https://github.com/your-username" target="_blank"><FaGithub /></a>
+                <a href="https://github.com/SBorkar2002" target="_blank"><FaGithub /></a>
               </div>
             </div>
             
@@ -379,30 +390,65 @@ function App() {
                 <div className="art-links">
                   <span>Find More of my Artworks on </span>
                   <div className="art-links-icons">
-                  <a href="#" target="_blank"><FaArtstation /></a>
-                  <a href="#" target="_blank"><FaInstagram /></a>
+                  <a href="#" onClick={() => handleExternalLink('https://www.artstation.com/jen_chan')}><FaArtstation /></a>
+    <a href="#" onClick={() => handleExternalLink('https://www.instagram.com/_jeneko/')}><FaInstagram /></a>
                 </div>
                 </div>
               </div>
             )}
 
+
+
+          {/* --- graohic design --- */}
+
           {activeCategory === 'Graphic Design' && (
           <div className="graphic-art-container">
           <div className="graphicbento-grid">
-            <div className="graphicbento-item graphicbento-item-1"><img src={graphicburger1} alt="Burger Advertisement"/></div>
-            <div className="graphicbento-item graphicbento-item-2"><img src={graphicburger2} alt="Burger Advertisement 2"/></div>
-            <div className="graphicbento-item graphicbento-item-3"><img src={graphicopen1} alt="Cafe Opening Poster"/></div>
-            <div className="graphicbento-item graphicbento-item-4"><img src={graphiccerti} alt="Certificate Design"/></div>
-            <div className="graphicbento-item graphicbento-item-5"><img src={graphicposter} alt="Art Contest Poster"/></div>
-            <div className="graphicbento-item graphicbento-item-6"><img src={graphicramen} alt="Ramen Shop Poster"/></div>
-            <div className="graphicbento-item graphicbento-item-7"><img src={graphicmomos} alt="Ramen Shop Poster"/></div>
-            <div className="graphicbento-item graphicbento-item-8"><img src={graphicwings} alt="Ramen Shop Poster"/></div>
+            <div className="graphicbento-item graphicbento-item-1">
+        <img src={graphicburger1} alt="Burger Advertisement"/>
+        <div className="bento-overlay"><p>Carousel post 1st half.</p></div>
+      </div>
+      
+      <div className="graphicbento-item graphicbento-item-2">
+        <img src={graphicburger2} alt="Burger Advertisement 2"/>
+        <div className="bento-overlay"><p>Carousel post 2nd half.</p></div>
+      </div>
+      
+      <div className="graphicbento-item graphicbento-item-3">
+        <img src={graphicopen1} alt="Cafe Opening Poster"/>
+        <div className="bento-overlay"><p>New timings announcement post for maggilicious cafe.</p></div>
+      </div>
+      
+      <div className="graphicbento-item graphicbento-item-4">
+        <img src={graphiccerti} alt="Certificate Design"/>
+        <div className="bento-overlay"><p>A formal certificate design for completing a plant donation.</p></div>
+      </div>
+      
+      <div className="graphicbento-item graphicbento-item-5">
+        <img src={graphicposter} alt="Art Contest Poster"/>
+        <div className="bento-overlay"><p>Eye-catching poster design for Korean Ramen.</p></div>
+      </div>
+      
+      <div className="graphicbento-item graphicbento-item-6">
+        <img src={graphicramen} alt="Ramen Shop Poster"/>
+        <div className="bento-overlay"><p>Christmas offer instagram post for maggilicious cafe.</p></div>
+      </div>
+      
+      <div className="graphicbento-item graphicbento-item-7">
+        <img src={graphicmomos} alt="Momos Poster"/>
+        <div className="bento-overlay"><p>Momos added to menu on zomato!</p></div>
+      </div>
+      
+      <div className="graphicbento-item graphicbento-item-8">
+        <img src={graphicwings} alt="Wings Poster"/>
+        <div className="bento-overlay"><p>Chicken wings added to menu on zomato!</p></div>
+      </div>
           </div>
       
           <div className="graphic-links">
             <span>Find More of my Graphic Designs on </span>
             <div className="art-links-icons">
-            <a href="#" target="_blank"><FaInstagram /></a>
+            <a href="#" onClick={() => handleExternalLink('https://www.instagram.com/_jeneko/')}><FaInstagram /></a>
             </div>
             </div>
           </div>
@@ -446,16 +492,20 @@ function App() {
             <div className="info-group">
               <h4>Find Me Online</h4>
               <div className="contact-socials">
-                <a href="#" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
-                <a href="#" target="_blank" rel="noopener noreferrer"><FaBehance /></a>
-                <a href="#" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
+                <a href="https://www.linkedin.com/in/sejal-borkar-141235304/" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
+                <a href="https://www.behance.net/sejalborkar04" target="_blank" rel="noopener noreferrer"><FaBehance /></a>
+                <a href="https://github.com/SBorkar2002" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
               </div>
             </div>
           </div>
 
           {/* Right Column */}
           <div className="contact-right">
-            <form className="contact-form">
+            <form 
+              action="https://formspree.io/f/mqalzeqn"  // <<<  FORMSPREE URL 
+              method="POST"
+              className="contact-form">
+
               <div className="form-group">
                 <label htmlFor="name">Name*</label>
                 <input type="text" id="name" name="name" placeholder="Your Name" required />
@@ -488,6 +538,9 @@ function App() {
       
       </div>
     </div>
+    </div>
+
+    
   );
 }
 
