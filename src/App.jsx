@@ -26,7 +26,7 @@ import websejal from './assets/websejal.png';
 
 
 // Digital Art
-import artSakura from './assets/2SAKURA.png';
+import artSakura from './assets/sakura.png';
 import artWanda from './assets/wanda.PNG';
 import artHoshino from './assets/hoshinoai.png';
 import artDream from './assets/dreamfinal.png';
