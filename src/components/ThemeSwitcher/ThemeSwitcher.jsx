@@ -1,6 +1,6 @@
 import React from 'react';
 import './ThemeSwitcher.css';
-import { FaSun, FaMoon } from 'react-icons/fa'; // Import the icons
+import { FaSun, FaMoon } from 'react-icons/fa'; 
 
 const ThemeSwitcher = ({ theme, toggleTheme }) => {
   return (

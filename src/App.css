@@ -1,6 +1,5 @@
 
 body {
-  /* ...other styles... */
   background-color: #1E1E1E;
 }
 
@@ -28,7 +27,6 @@ body {
 /* --- The Name Overlay Effect --- */
 .hero-name-overlay {
   position: absolute;
-  /* top: 35%; */
   left: 0;
   transform: translateY(-122%);
   width: 100%;
@@ -54,13 +52,12 @@ body {
   width: 70vw;
   height: 70vh;
   background-color: #B7C0BC;
-  border-radius: 50%; /* Makes it a circle/ellipse */
-  filter: blur(150px); /* The layer blur effect */
-  opacity: 0.1; /* Reduced opacity */
-  z-index: 2; /* Sits above the background image but below content */
+  border-radius: 50%;
+  filter: blur(150px); 
+  opacity: 0.1;
+  z-index: 2; 
 }
 
-/* --- The Image & Positioning Fix --- */
 .hero-image-container {
   grid-column: 3 / 10;
   position: relative;
@@ -83,10 +80,9 @@ body {
 .hero-right,
 .hero-buttons {
   position: relative;
-  z-index: 4; /* Sits on top of everything */
+  z-index: 4; 
 }
 
-/* --- The "Hey! I'm" Fix --- */
 .hero-left {
   grid-column: 1 / 4;
 
@@ -149,7 +145,7 @@ body {
   gap: 1rem;
   padding-bottom: 3rem;
   font-weight: bold;
-  padding-top: 2rem; /* Adds space above the buttons */
+  padding-top: 2rem; 
   padding-bottom: 3rem;
 }
 
@@ -161,7 +157,6 @@ body {
   border-radius: 8px;
 }
 
-/* Ensure anchor tags styled as buttons have no underline */
 a.btn, a.btn:hover {
   text-decoration: none;
 }
@@ -189,11 +184,10 @@ a.btn, a.btn:hover {
 }
 
 
-/* Universal style for main section titles */
+
 .section-title {
-  /* position: absolute; */
-  top: 40px; /* Position from the top of the section */
-  font-size: 3rem; /* Larger font size */
+  top: 40px; 
+  font-size: 3rem;
   font-weight: bold;
   color:#C8A571;
 }
@@ -202,13 +196,12 @@ a.btn, a.btn:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
-  /* padding-top: 5rem; Push content down to make room for the floating title */
 }
 
 .about-content {
   display: grid;
-  grid-template-columns: 1.5fr 1fr; /* Left column is 1.5 times wider */
-  gap: 5rem; /* Space between columns */
+  grid-template-columns: 1.5fr 1fr; 
+  gap: 5rem; 
   align-items: start;
 }
 
@@ -225,21 +218,17 @@ a.btn, a.btn:hover {
 }
 
 .about-right .subsection-title {
-  /* This targets the 'Skills' title */
   font-size: 1.8rem;
   color: var(--accent-gold);
  
 }
 
 .skills-list {
-  /* display: flex; */
-  /* transform: translateY(-23%); */
   flex-direction: column;
   gap: 1.5rem;
 }
 
 .skill-category {
-  /* padding-bottom: 1.5rem; */
   border-bottom: 1px solid rgba(225, 226, 224, 0.2);
 }
 .skill-category h4 {
@@ -263,9 +252,9 @@ a.btn, a.btn:hover {
 
 
 
-/* --- Education Section Styling (Now full-width) --- */
+/* --- Education Section --- */
 .education-container {
-  margin-top: 6rem; /* Space above the education section */
+  margin-top: 6rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid rgba(225, 226, 224, 0.2);
 }
@@ -310,10 +299,8 @@ a.btn, a.btn:hover {
 }
 
 .section-subtitle {
-  /* text-align: center; */
   margin-top: 3rem;
   margin-bottom: 3rem;
-  /* color: var(--text-alt); */
   font-size: 1.1rem;
 }
 
@@ -370,16 +357,15 @@ a.btn, a.btn:hover {
 
 .project-card {
   background-color: transparent;
-  border-radius: 8px; /* Good practice for cards with images */
-  /* This is the key for the smooth animation */
+  border-radius: 8px; 
   transition: all 0.3s ease-in-out;
   padding: 20px;
 }
 
 .project-card:hover {
-  transform: translateY(-5px) scale(1.02); /* Lifts the card up slightly and makes it bigger */
-  background-color: rgba(225, 226, 224, 0.05); /* The subtle light color */
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* A soft shadow to enhance the lifted effect */
+  transform: translateY(-5px) scale(1.02);
+  background-color: rgba(225, 226, 224, 0.05); 
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); 
 }
 
 .project-card .project-image {
@@ -422,7 +408,7 @@ a.btn, a.btn:hover {
   font-weight: 600;
 }
 
-/* --- Styling for Special Project Links --- */
+
 .project-links-special {
   display: flex;
   flex-direction: column;
@@ -434,7 +420,7 @@ a.btn, a.btn:hover {
   opacity: 0.8;
 }
 
-/* --- Links below the grid --- */
+
 .web-links {
   display: flex;
   flex-direction: column;
@@ -470,7 +456,7 @@ a.btn, a.btn:hover {
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 400px; /* Control the height of rows */
+  grid-auto-rows: 400px;
   gap: 1rem;
   margin-bottom: 2rem;
 }
@@ -479,58 +465,50 @@ a.btn, a.btn:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease; /* Adds a subtle zoom effect on hover */
+  transition: transform 0.4s ease; 
 }
 
 .bento-overlay {
-  position: absolute; /* Lays the overlay on top of the image */
+  position: absolute; 
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-
-  /* The darkening effect */
   background-color: rgba(0, 0, 0, 0.7);
-
-  /* Text styling & centering */
   color: var(--text-light);
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 1rem;
-  
-  /* Hidden by default */
   opacity: 0;
-  
-  /* The smooth fade-in animation */
   transition: opacity 0.4s ease;
 }
 
 .bento-overlay p {
-  transform: translateY(10px); /* Start text slightly lower */
+  transform: translateY(10px); 
   transition: transform 0.4s ease;
 }
 
 /* --- The HOVER trigger --- */
 .bento-item:hover .bento-overlay {
-  opacity: 1; /* Make the overlay visible on hover */
+  opacity: 1;
 }
 
 .bento-item:hover .bento-overlay p {
-  transform: translateY(0); /* Move the text into place on hover */
+  transform: translateY(0);
 }
 
 .bento-item:hover img {
-  transform: scale(1.05); /* The subtle zoom effect */
+  transform: scale(1.05);
 }
 
 
 .bento-item {
-  position: relative; /* This is essential for positioning the overlay */
+  position: relative;
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
-  overflow: hidden; /* Hides any part of the overlay that might spill out */
+  overflow: hidden;
 }
 
 .bento-item-1 { grid-column: span 2; grid-row: span 1; }
@@ -552,7 +530,7 @@ a.btn, a.btn:hover {
 
 .art-links-icons {
   display: flex;
-  gap: 1.5rem; /* This creates horizontal space between the icons */
+  gap: 1.5rem; 
 }
 
 .art-links a {
@@ -609,8 +587,8 @@ a.btn, a.btn:hover {
 
 .graphicbento-item {
   box-sizing: border-box;
-  position: relative; /* ESSENTIAL for the overlay */
-  overflow: hidden;   /* ESSENTIAL to contain the zoom effect */
+  position: relative; 
+  overflow: hidden;   
 }
 
 
@@ -621,14 +599,13 @@ a.btn, a.btn:hover {
    transition: transform 0.4s ease; 
 }
 
-/* This styles the hidden overlay container */
 .graphicbento-item .bento-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* The dark layer */
+  background-color: rgba(0, 0, 0, 0.7); 
   color: var(--text-light);
   display: flex;
   justify-content: center;
@@ -639,23 +616,20 @@ a.btn, a.btn:hover {
   transition: opacity 0.4s ease;
 }
 
-/* This styles the text inside the overlay */
 .graphicbento-item .bento-overlay p {
   transform: translateY(10px);
   transition: transform 0.4s ease;
 }
 
-/* This is the trigger: when you hover over the item... */
 .graphicbento-item:hover .bento-overlay {
-  opacity: 1; /* ...the overlay becomes visible. */
+  opacity: 1; 
 }
 
-/* And these animations run */
 .graphicbento-item:hover .bento-overlay p {
   transform: translateY(0);
 }
 .graphicbento-item:hover img {
-  transform: scale(1.05); /* The subtle zoom effect */
+  transform: scale(1.05); 
 }
 
 .graphicbento-item-1 { grid-column: span 1; grid-row: span 1; }
@@ -668,7 +642,7 @@ a.btn, a.btn:hover {
 .graphicbento-item-8 { grid-column: span 1; grid-row: span 1; }
 
 
-/* --- graohic grid link --- */
+/* --- graphic grid link --- */
 .graphic-links {
   display: flex;
   flex-direction: column;
@@ -704,18 +678,18 @@ a.btn, a.btn:hover {
 /* --- Responsive for Projects --- */
 @media (max-width: 768px) {
   .project-grid {
-    grid-template-columns: 1fr; /* Single column on mobile */
+    grid-template-columns: 1fr;
   }
 
   .bento-grid {
-    grid-template-columns: 1fr 1fr; /* 2 column bento on mobile */
+    grid-template-columns: 1fr 1fr;
     grid-auto-rows: 150px;
   }
-  .bento-item-3 { grid-column: span 2; } /* Make large image take full width */
+  .bento-item-3 { grid-column: span 2; } 
 
   .graphicbento-grid {
-    grid-template-columns: repeat(2, 1fr); /* Change to a 2-column grid */
-    grid-auto-rows: 200px; /* Reduce the row height for mobile screens */
+    grid-template-columns: repeat(2, 1fr); 
+    grid-auto-rows: 200px; 
   }
   .graphicbento-item-3 { grid-column: span 2; }
   .graphicbento-item-4 { grid-column: span 2; }
@@ -724,11 +698,10 @@ a.btn, a.btn:hover {
     padding: 0.3rem; 
   }
 
-  /* This targets the paragraph inside the overlay */
   .bento-overlay p {
-    font-size: 0.7rem; /* Significantly smaller font size for mobile */
-    line-height: 1.4; /* Adjust line height for the smaller font */
-    overflow-wrap: break-word; /* Ensures long words don't break the layout */
+    font-size: 0.7rem; 
+    line-height: 1.4; 
+    overflow-wrap: break-word; 
     justify-content: center;
   }
 }
@@ -745,11 +718,11 @@ a.btn, a.btn:hover {
   padding: 100px 5%;
 }
 
-/* Find this rule */
+
 .contact-section .subsection-title {
   border-bottom: 1px solid rgba(225, 226, 224, 0.2);
   padding-bottom: 1rem;
-  margin-bottom: 2rem; /* <<< REDUCED from 4rem */
+  margin-bottom: 2rem;
 }
 
 .contact-grid {
@@ -825,8 +798,8 @@ a.btn, a.btn:hover {
 .contact-socials a:hover { color: var(--accent-gold); }
 
 
+
 /* --- Contact Form Styling --- */
-/* --- Contact Form Styling (Final Corrected Version) --- */
 
 .contact-form .form-group {
   margin-bottom: 1.5rem;
@@ -879,22 +852,21 @@ a.btn, a.btn:hover {
   font-size: 0.9rem;
 }
 
-/* --- ADD THIS NEW RULE --- */
 .contact-form textarea {
-  min-height: 350px; /* Adjust this value up or down to get the perfect alignment */
+  min-height: 350px; 
 }
 
 /* --- Responsive for Contact & Footer --- */
 @media (max-width: 768px) {
 
   .contact-grid {
-    grid-template-columns: 1fr; /* This is the key: changes the grid to a single column */
+    grid-template-columns: 1fr;
   }
 
   .footer {
-    flex-direction: column; /* Stacks the two footer text lines vertically */
-    gap: 1rem; /* Adds space between the stacked lines */
-    text-align: center; /* Centers the text */
+    flex-direction: column;
+    gap: 1rem; 
+    text-align: center; 
   }
 }
 
@@ -923,54 +895,54 @@ a.btn, a.btn:hover {
 
 
 /* --- RESPONSIVE STYLES --- */
-/* Apply these styles on screens 768px wide or smaller */
+
 @media (max-width: 768px) {
 
   /* --- Navbar on Mobile --- */
   .navbar-links {
-    display: none; /* Hide the links on mobile (we would add a hamburger menu here later) */
+    display: none; 
   }
   .navbar-logo a {
-    font-size: 1rem; /* Make the logo text smaller */
+    font-size: 1rem; 
   }
 
   /* --- Hero Section on Mobile --- */
   .hero-section {
-  display: flex; /* Changed from grid */
-  flex-direction: column; /* Stack everything vertically */
-  justify-content: center; /* Center the block of content vertically */
-  gap: 2.5rem; /* Consistent spacing between all items */
-  padding-top: 120px; /* Push content down below the fixed navbar */
+  display: flex; 
+  flex-direction: column;
+  justify-content: center; 
+  gap: 2.5rem; 
+  padding-top: 120px; 
   padding-bottom: 60px;
   text-align: center;
 }
 
   .hero-name-overlay {
-    font-size: 18vw; /* Make the background name even larger relative to the small screen */
-    top: 40%; /* Adjust position for mobile */
+    font-size: 18vw; 
+    top: 40%;
   }
 
-  /* All hero content now stacks vertically */
+  
   .hero-left, .hero-image-container, .hero-right {
-    grid-column: 1 / -1; /* Make each item span the full single column */
+    grid-column: 1 / -1; 
     padding: 0;
   }
   
   .hero-image-container {
-    padding-top: 5vh; /* Less space on mobile */
+    padding-top: 5vh; 
   }
 
   .hero-right {
-    height: auto; /* Let the height be natural */
+    height: auto; 
     margin-top: 2rem;
   }
 
   .hero-scroll-text {
-    display: none; /* The vertical scroll text does not work well on mobile */
+    display: none; 
   }
 
   .hero-social-icons {
-  justify-content: center; /* Horizontally centers the icons */
+  justify-content: center; 
 }
 
 
@@ -978,37 +950,37 @@ a.btn, a.btn:hover {
     display: none;
   }
 
-  /* SHOW the new mobile contact info */
+ 
   .hero-contact-info-mobile {
     display: block;
     color: var(--text-alt);
-    margin-top: 1rem; /* Add some space above it */
+    margin-top: 1rem;
   }
   .hero-contact-info-mobile p {
     margin: 0.2rem 0;
   }
 
   .hero-summary {
-    padding-left: 0; /* Remove side padding */
+    padding-left: 0;
   }
 
   /* --- About Me Section on Mobile --- */
   .about-grid {
-    grid-template-columns: 1fr; /* Stack the bio and skills columns */
+    grid-template-columns: 1fr; 
     gap: 3rem;
   }
   
   .education-item {
-    flex-direction: column; /* Stack the details and location */
+    flex-direction: column; 
     align-items: flex-start;
     gap: 1rem;
   }
   .education-location {
-    text-align: left; /* Align to the left on mobile */
+    text-align: left; 
   }
   
   .hero-buttons {
-  order: 4; /* Force the buttons to be the last item in the flex layout */
+  order: 4;
 }
 
   .experience-item {
@@ -1021,8 +993,8 @@ a.btn, a.btn:hover {
   }
 
   .filter-buttons {
-    flex-wrap: wrap; /* This is the key: allows buttons to wrap to the next line */
-    justify-content: center; /* Ensures the buttons are centered */
+    flex-wrap: wrap; 
+    justify-content: center; 
   }
 
 }

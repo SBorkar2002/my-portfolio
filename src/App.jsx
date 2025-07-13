@@ -1,12 +1,11 @@
 import React, { useState, useRef} from 'react';
 
-// Correctly import the component and the CSS
+
 import Navbar from './components/navbar/Navbar.jsx';
 import ExperienceItem from './components/experienceItem/ExperienceItem.jsx';
 import './App.css'; 
 import useMousePosition from './hooks/useMousePosition.jsx';
 
-// --- Import All Images ---
 // Hero
 import heroImage from './assets/face4.png'; 
 import { FaLinkedinIn, FaBehance, FaGithub, FaArtstation, FaInstagram } from 'react-icons/fa'; // Added art icons
@@ -127,7 +126,7 @@ function App() {
   const handleScrollTo = (ref) => {
   ref.current.scrollIntoView({
     behavior: 'smooth',
-    block: 'start', // Aligns the top of the section to the top of the viewport
+    block: 'start', 
   });
 };
 
@@ -144,7 +143,7 @@ function App() {
       className="hero-background-image" 
       style={{ backgroundImage: `url(${heroImage})` }}>
       </div>
-      {/* ADD THE DECORATIVE ELLIPSE HERE */}
+     
     <div className="hero-ellipse"></div>
           {/* BACKGROUND NAME EFFECT */}
           
@@ -153,7 +152,7 @@ function App() {
             <span>SEJAL GIRISH</span>
             <span>BORKAR</span>
           </h1>
-          {/* ADD THIS PART BACK */}
+       
           <div className="hero-contact-info">
             <p>sejalborkar2002@gmail.com</p>
             <p>+91-6362518173</p>
@@ -164,7 +163,7 @@ function App() {
             <img src={heroImage} alt="Portrait of Sejal Borkar" className="hero-image-fg" />
           </div>
           
-          {/* This is the contact info for MOBILE */}
+          {/* contact info for MOBILE */}
           <div className="hero-contact-info-mobile">
           <p>sejalborkar2002@gmail.com</p>
           <p>+91-6362518173</p>
@@ -176,7 +175,7 @@ function App() {
             <div className="hero-scroll-text">scroll</div>
             <div className="hero-summary">
               <p>A creative and strategic product designer who transforms user needs and business goals into thoughtful, impactful digital experiences.</p>
-              <div className="hero-social-icons">{/*...icons...*/}</div>
+              <div className="hero-social-icons"></div>
             <div className="hero-social-icons">
           <a href="https://www.linkedin.com/in/sejal-borkar-141235304/" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
           <a href="https://behance.net/sejalborakr04" target="_blank" rel="noopener noreferrer"><FaBehance /></a>
@@ -213,10 +212,10 @@ function App() {
 
          {/* ABOUT ME SECTION START */}
       <section id="about" className="about-section">
-  {/* The title is a direct child of the section */}
+  
   <h2 className="section-title">About Me</h2>
 
-  {/* NEW: A dedicated container for the two-column grid */}
+  
   <div className="about-grid">
     {/* Left Column */}
     <div className="about-left">
@@ -257,7 +256,7 @@ function App() {
     </div>
   </div>
 
-  {/* Education is now OUTSIDE the grid, so it will be full-width by default */}
+  
     <div className="education-container">
       <h3 className="subsection-title">Education</h3>
       <div className="education-item">
@@ -278,7 +277,7 @@ function App() {
 <div className="education-container">
   <h3 className="subsection-title">Professional Experience</h3>
   
-  {/* Map over the data and render a component for each job */}
+  
   {professionalExperience.map((exp, index) => (
     <ExperienceItem key={index} experience={exp} />
   ))}
@@ -325,10 +324,10 @@ function App() {
             )}
 
             {activeCategory === 'Web Development' && (
-  // NEW: A parent container for the two-column layout
+ 
   <div className="web-dev-layout">
 
-    {/* This grid now only contains the project cards */}
+    {/* contains the project cards */}
     <div className="project-grid">
       {webDevProjects.map(p => (
         <div className="project-card" key={p.title}>
@@ -399,7 +398,7 @@ function App() {
 
 
 
-          {/* --- graohic design --- */}
+          {/* --- graphic design --- */}
 
           {activeCategory === 'Graphic Design' && (
           <div className="graphic-art-container">
