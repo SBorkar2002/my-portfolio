@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef} from 'react';
 
 // Correctly import the component and the CSS
 import Navbar from './components/navbar/Navbar.jsx';
@@ -448,7 +448,7 @@ function App() {
           <div className="graphic-links">
             <span>Find More of my Graphic Designs on </span>
             <div className="art-links-icons">
-            <a href="#" onClick={() => handleExternalLink('https://www.instagram.com/_jeneko/')}><FaInstagram /></a>
+            <a href="#" onClick={() => handleExternalLink('https://www.instagram.com/maggilicious_cafe/')}><FaInstagram /></a>
             </div>
             </div>
           </div>

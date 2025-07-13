@@ -1041,29 +1041,27 @@ a.btn, a.btn:hover {
 /* mouse hover effect spotlight */
 
 /* --- Mouse Spotlight Effect --- */
-.spotlight-container {
-  position: relative; /* Needed for the ::before pseudo-element */
-  background-color: var(--background-dark); /* Ensure it has the base color */
+/* .spotlight-container {
+  position: relative; 
+  background-color: var(--background-dark); 
 }
 
 .spotlight-container::before {
   content: '';
-  position: fixed; /* Fixed to the viewport */
+  position: fixed; 
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  pointer-events: none; /* Allows you to click through the effect */
-  z-index: 1000; /* Sits on top of most content */
+  pointer-events: none;
+  z-index: 1000;
 
-  /* The radial gradient that follows the mouse */
   background: radial-gradient(
     circle at var(--mouse-x) var(--mouse-y),
-    rgba(183, 192, 188, 0.1) 0%, /* A subtle light color */
+    rgba(183, 192, 188, 0.1) 0%, 
     rgba(183, 192, 188, 0.05) 10%,
-    transparent 30% /* Fades out to transparent */
+    transparent 30% 
   );
 
-  /* Smoothly transition the effect */
   transition: background 0.1s ease-out;
-}
+} */

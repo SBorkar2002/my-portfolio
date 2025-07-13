@@ -23,3 +23,37 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+
+/* 
+[data-theme='dark'] {
+  --background-dark: #1E1E1E;
+  --accent-gold: #C8A571;
+  --text-light: #E1E2E0;
+  --text-alt: #F5E8CB;
+  --text-dark: #222222; 
+  --spotlight-color: rgba(183, 192, 188, 0.1);
+}
+
+[data-theme='light'] {
+  --background-dark: #F5F5F5; 
+  --accent-gold: #C8A571; 
+  --text-light: #222222; 
+  --text-alt: #555555; 
+  --text-dark: #FFFFFF; 
+  --spotlight-color: rgba(0, 0, 0, 0.05);
+}
+
+
+body {
+  margin: 0;
+  font-family: 'Bricolage+Grotesque', sans-serif;
+  
+  
+  background-color: var(--background-dark);
+  color: var(--text-alt); 
+
+  transition: background-color 0.3s ease, color 0.3s ease; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+} */
