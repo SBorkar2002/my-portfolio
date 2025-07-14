@@ -54,7 +54,7 @@ const uiuxProjects = [
   { img: uibooking, title: 'Booking.com Redesign', desc: 'Reworked and redesigned the booking.com website addressing the pain points', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','UX Research'], link: 'https://www.behance.net/gallery/227659831/Bookingcom-Redesign' },
   { img: uiTea, title: 'Lush & Leaf', desc: 'Designed a tea selling e-commerce page where users can purchase various of types of tea powder', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: 'https://www.behance.net/gallery/226337603/Lush-and-Leaf-Homepage' },
   { img: webDev, title: 'Digital Art Portfolio', desc: 'Designed a digital art based portfolio where an artist displays thier artwork with separate sections for personel projects and commisioned work', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','Responsive'], link: 'https://www.behance.net/gallery/229460931/Digital-Artist-Portfolio' },
-  { img: uimiki, title: 'Make it 10 Game UI design', desc: 'Designed a digital art based portfolio where an artist displays thier artwork with separate sections for personel projects and commisioned work', tags: ['Desktop', 'Figma', 'Home Screen', 'Application','Prototyping'], link: 'https://www.behance.net/gallery/227542669/Mikis-Math-Adventure' },
+  { img: uimiki, title: 'Make it 10 Game UI design', desc: 'Designed a digital art based portfolio where an artist displays thier artwork with separate sections for personel projects and commisioned work', tags: ['iPad', 'Figma', 'Home Screen', 'Application','Prototyping'], link: 'https://www.behance.net/gallery/227542669/Mikis-Math-Adventure' },
 ];
 
 const webDevProjects = [
@@ -348,7 +348,7 @@ function App() {
               </a>
             </div>
           ) : (
-            <a href="#" onClick={() => handleExternalLink(p.link)}>View Project</a>
+            <a href={p.link} className="project-link" target="_blank" rel="noopener noreferrer">View Project</a>
           )}
         </div>
       ))}
