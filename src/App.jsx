@@ -98,7 +98,7 @@ const professionalExperience = [
     company: 'Freelance',
     dates: 'Feb 2021 - Mar 2025',
     description: [
-      'Established a strong online presence via Fiverr, Discord, and Pixiv Fanbox platforms, attracting and securing commissions from 5+ new international clients within the first year.',
+      'Created custom artwork through Fiverr, Discord, and Pixiv Fanbox, maintaining a 4.9/5 average client rating while securing commissions from over 5 new international clients.',
     ]
   }
 ];
