@@ -176,7 +176,7 @@ function App() {
               <div className="hero-social-icons"></div>
             <div className="hero-social-icons">
           <a href="https://www.linkedin.com/in/sejalborkar/" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
-          <a href="https://behance.net/sejalborakr04" target="_blank" rel="noopener noreferrer"><FaBehance /></a>
+          <a href="https://behance.net/sejalborkar04" target="_blank" rel="noopener noreferrer"><FaBehance /></a>
           <a href="https://github.com/SBorkar2002" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
         </div>
             </div>
