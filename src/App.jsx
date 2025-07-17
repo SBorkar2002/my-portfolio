@@ -19,6 +19,7 @@ import uiTea from './assets/uitea.png';
 import uijeneko from './assets/uijeneko.png';
 import uibooking from './assets/uibooking.png';
 import uimiki from './assets/uimiki.png';
+import green from './greengallery.png';
 
 // Web Dev Projects
 import webDev from './assets/webdev.png';
@@ -54,7 +55,8 @@ const uiuxProjects = [
   { img: uibooking, title: 'Booking.com Redesign', desc: 'Reworked and redesigned the booking.com website addressing the pain points', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','UX Research'], link: 'https://www.behance.net/gallery/227659831/Bookingcom-Redesign' },
   { img: uiTea, title: 'Lush & Leaf', desc: 'Designed a tea selling e-commerce page where users can purchase various of types of tea powder', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: 'https://www.behance.net/gallery/226337603/Lush-and-Leaf-Homepage' },
   { img: webDev, title: 'Digital Art Portfolio', desc: 'Designed a digital art based portfolio where an artist displays thier artwork with separate sections for personel projects and commisioned work', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','Responsive'], link: 'https://www.behance.net/gallery/229460931/Digital-Artist-Portfolio' },
-  { img: uimiki, title: 'Make it 10 Game UI design', desc: 'Designed a digital art based portfolio where an artist displays thier artwork with separate sections for personel projects and commisioned work', tags: ['iPad', 'Figma', 'Home Screen', 'Application','Prototyping'], link: 'https://www.behance.net/gallery/227542669/Mikis-Math-Adventure' },
+  { img: uimiki, title: 'Make it 10 Game UI design', desc: 'A prototype for a children math game application called "Mikis Math Adventure" an interactive make it 10 game', tags: ['iPad', 'Figma', 'Home Screen', 'Application','Prototyping'], link: 'https://www.behance.net/gallery/227542669/Mikis-Math-Adventure' },
+  { img: green, title: 'Green Gallery - UI/UX Design | Landing Page', desc: 'Green Gallery lets you donate unwanted plants to loving new homes, explore expert care tips, and learn about medicinal, indoor, flowering, and cactus varieties. Contribute to a greener planet and earn a certificate for your kind gesture.', tags: ['Desktop', 'Mobile','Figma', 'Webpage', 'Application','Prototyping'], link: 'https://www.behance.net/gallery/230598001/Green-Gallery-UIUX-Design-Landing-Page' },
 ];
 
 const webDevProjects = [
