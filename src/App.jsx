@@ -19,7 +19,7 @@ import uiTea from './assets/uitea.png';
 import uijeneko from './assets/uijeneko.png';
 import uibooking from './assets/uibooking.png';
 import uimiki from './assets/uimiki.png';
-import green from './greengallery.png';
+import green from './assets/greengallery.png';
 
 // Web Dev Projects
 import webDev from './assets/webdev.png';
