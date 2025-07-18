@@ -49,7 +49,7 @@ import graphicwings from './assets/wings.png';
 
 // --- Project Data ---
 const uiuxProjects = [
-  { img: uiIndeed, title: 'Indeed Redesign', desc: 'Worked on a redesign job portal Indeed focusing no pain points', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping'], link: 'https://www.behance.net/gallery/228663695/Indeed-Redesign-App-UXUI-Design' },
+  { img: uiIndeed, title: 'Indeed Redesign', desc: 'Worked on a redesign job portal Indeed focusing on pain points', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping'], link: 'https://www.behance.net/gallery/228663695/Indeed-Redesign-App-UXUI-Design' },
   { img: uiSourced, title: 'Sourced - Artist Accountability & Segregation Platform', desc: 'Designed a UX case study for an art-focused platform that separates AI-generated and traditional artwork.', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping', 'UX Case Study'], link: 'https://www.behance.net/gallery/225405095/Sourced-UX-Case-Study' },
   { img: uiMaggi, title: 'Maggilicious Cafe Landing Page', desc: 'Designed a landing page for Maggilicious Cafe - an anime-themed cafe in karwar', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: 'https://www.behance.net/gallery/223118023/Maggilicious-Cafe-Home-Page' },
   { img: uibooking, title: 'Booking.com Redesign', desc: 'Reworked and redesigned the booking.com website addressing the pain points', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','UX Research'], link: 'https://www.behance.net/gallery/227659831/Bookingcom-Redesign' },
