@@ -86,7 +86,7 @@ const digitalArtProjects = [
 const professionalExperience = [
   {
     title: 'Post Production Digital Artist (Freelance)',
-    company: 'PocketFM',
+    company: 'PocketFM - PocketToons',
     dates: 'Aug 2025 - Dec 2025',
     description: [
       'Created and refined AI-generated images using tools such as NanoBanana, SeeDream, Google Imagen, SeedEdit, and Blaze Image Generator',
@@ -112,6 +112,7 @@ const professionalExperience = [
     dates: 'Feb 2021 - Mar 2025',
     description: [
       'Created custom artwork through Fiverr, Discord, and Pixiv Fanbox, maintaining a 4.9/5 average client rating while securing commissions from over 5 new international clients.',
+      <a>https://sejalborkarart.my.canva.site/</a>,
     ]
   }
 ];
@@ -166,7 +167,7 @@ function App() {
        
           <div className="hero-contact-info">
             <p>sejalborkar2002@gmail.com</p>
-            <p>+91-6362518173</p>
+            {/* <p>+91-6362518173</p> */}
           </div>
 
           {/* FOREGROUND UI - Center Image */}
@@ -272,9 +273,9 @@ function App() {
       <h3 className="subsection-title">Education</h3>
       <div className="education-item">
         <div className="education-details">
-          <p className="institution">Ramaiah Institute of Technology</p>
+          <p className="institution">M S Ramaiah Institute of Technology</p>
           <p>Master of Computer Applications</p>
-          <p><strong>CGPA:</strong> 8.53</p>
+          <p><strong>CGPA : </strong>8.84</p>
         </div>
         <div className="education-location">
           <p>Bengaluru, India</p>
