@@ -20,6 +20,7 @@ import uijeneko from './assets/uijeneko.png';
 import uibooking from './assets/uibooking.png';
 import uimiki from './assets/uimiki.png';
 import green from './assets/greengallery.png';
+import moduvo from './assets/moduvomockup.png';
 
 // Web Dev Projects
 import webDev from './assets/webdev.png';
@@ -52,6 +53,7 @@ const uiuxProjects = [
   { img: uiIndeed, title: 'Indeed Redesign', desc: 'Worked on a redesign job portal Indeed focusing on pain points', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping'], link: 'https://www.behance.net/gallery/228663695/Indeed-Redesign-App-UXUI-Design' },
   { img: uiSourced, title: 'Sourced - Artist Accountability & Segregation Platform', desc: 'Designed a UX case study for an art-focused platform that separates AI-generated and traditional artwork.', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping', 'UX Case Study'], link: 'https://www.behance.net/gallery/225405095/Sourced-UX-Case-Study' },
   { img: green, title: 'Green Gallery - UI/UX Design | Case Study', desc: 'Green Gallery lets you donate unwanted plants to loving new homes, explore expert care tips, and learn about medicinal, indoor, flowering, and cactus varieties. Contribute to a greener planet and earn a certificate for your kind gesture.', tags: ['Desktop', 'Mobile','Figma', 'Webpage', 'Application','Responsive','UX Case Study','Prototyping'], link: 'https://www.behance.net/gallery/230598001/Green-Gallery-UIUX-Design-Landing-Page' },
+  { img: moduvo, title: 'Moduvo - A SaaS Application', desc: 'Designed a modern, intuitive SaaS interface for team-based project and task management. It enables users to manage initiatives, projects, collaborations, and team activities through a unified workspace. Key features include an inbox for task updates, Kanban-style task tracking (Backlog, To-Do, In-Progress), progress indicators, user assignments, and seamless integration with external tools like Figma. The design focuses on clarity, dark-mode aesthetics, enhanced usability, and improved workflow visibility for product teams.', tags: ['Desktop','Figma', 'Application','SaaS','UX Case Study'], link: 'https://www.behance.net/gallery/239166879/Moduvo-A-SaaS-Application' },
   { img: uiMaggi, title: 'Maggilicious Cafe Landing Page', desc: 'Designed a landing page for Maggilicious Cafe - an anime-themed cafe in karwar', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: 'https://www.behance.net/gallery/223118023/Maggilicious-Cafe-Home-Page' },
   { img: uibooking, title: 'Booking.com Redesign', desc: 'Reworked and redesigned the booking.com website addressing the pain points', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','UX Research'], link: 'https://www.behance.net/gallery/227659831/Bookingcom-Redesign' },
   { img: uiTea, title: 'Lush & Leaf', desc: 'Designed a tea selling e-commerce page where users can purchase various of types of tea powder', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: 'https://www.behance.net/gallery/226337603/Lush-and-Leaf-Homepage' },
@@ -112,7 +114,6 @@ const professionalExperience = [
     dates: 'Feb 2021 - Mar 2025',
     description: [
       'Created custom artwork through Fiverr, Discord, and Pixiv Fanbox, maintaining a 4.9/5 average client rating while securing commissions from over 5 new international clients.',
-      <a>https://sejalborkarart.my.canva.site/</a>,
     ]
   }
 ];
@@ -250,7 +251,7 @@ function App() {
       <div className="skills-list">
         <div className="skill-category">
           <h4>UI/UX Design</h4>
-          <p>Wireframing, Prototyping, User Research, Information Architecture</p>
+          <p>Wireframing - low fidelity & high fidelity, Prototyping, User Research, Information Architecture, Empathy Mapping, Problem Solving, Visual Designing</p>
         </div>
         <div className="skill-category">
           <h4>Frontend</h4>
@@ -262,7 +263,7 @@ function App() {
         </div>
         <div className="skill-category">
           <h4>Additional Skills</h4>
-          <p>Digital Art (4+ years), Web Design</p>
+          <p>Digital Art (4+ years), Web Design, AI prompting</p>
         </div>
       </div>
     </div>
