@@ -51,12 +51,12 @@ import graphicwings from './assets/wings.png';
 const uiuxProjects = [
   { img: uiIndeed, title: 'Indeed Redesign', desc: 'Worked on a redesign job portal Indeed focusing on pain points', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping'], link: 'https://www.behance.net/gallery/228663695/Indeed-Redesign-App-UXUI-Design' },
   { img: uiSourced, title: 'Sourced - Artist Accountability & Segregation Platform', desc: 'Designed a UX case study for an art-focused platform that separates AI-generated and traditional artwork.', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping', 'UX Case Study'], link: 'https://www.behance.net/gallery/225405095/Sourced-UX-Case-Study' },
+  { img: green, title: 'Green Gallery - UI/UX Design | Case Study', desc: 'Green Gallery lets you donate unwanted plants to loving new homes, explore expert care tips, and learn about medicinal, indoor, flowering, and cactus varieties. Contribute to a greener planet and earn a certificate for your kind gesture.', tags: ['Desktop', 'Mobile','Figma', 'Webpage', 'Application','Responsive','UX Case Study','Prototyping'], link: 'https://www.behance.net/gallery/230598001/Green-Gallery-UIUX-Design-Landing-Page' },
   { img: uiMaggi, title: 'Maggilicious Cafe Landing Page', desc: 'Designed a landing page for Maggilicious Cafe - an anime-themed cafe in karwar', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: 'https://www.behance.net/gallery/223118023/Maggilicious-Cafe-Home-Page' },
   { img: uibooking, title: 'Booking.com Redesign', desc: 'Reworked and redesigned the booking.com website addressing the pain points', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','UX Research'], link: 'https://www.behance.net/gallery/227659831/Bookingcom-Redesign' },
   { img: uiTea, title: 'Lush & Leaf', desc: 'Designed a tea selling e-commerce page where users can purchase various of types of tea powder', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: 'https://www.behance.net/gallery/226337603/Lush-and-Leaf-Homepage' },
   { img: webDev, title: 'Digital Art Portfolio', desc: 'Designed a digital art based portfolio where an artist displays thier artwork with separate sections for personel projects and commisioned work', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','Responsive'], link: 'https://www.behance.net/gallery/229460931/Digital-Artist-Portfolio' },
   { img: uimiki, title: 'Make it 10 Game UI design', desc: 'A prototype for a children math game application called "Mikis Math Adventure" an interactive make it 10 game', tags: ['iPad', 'Figma', 'Home Screen', 'Application','Prototyping'], link: 'https://www.behance.net/gallery/227542669/Mikis-Math-Adventure' },
-  { img: green, title: 'Green Gallery - UI/UX Design | Case Study', desc: 'Green Gallery lets you donate unwanted plants to loving new homes, explore expert care tips, and learn about medicinal, indoor, flowering, and cactus varieties. Contribute to a greener planet and earn a certificate for your kind gesture.', tags: ['Desktop', 'Mobile','Figma', 'Webpage', 'Application','Responsive','UX Case Study','Prototyping'], link: 'https://www.behance.net/gallery/230598001/Green-Gallery-UIUX-Design-Landing-Page' },
 ];
 
 const webDevProjects = [
@@ -84,6 +84,17 @@ const digitalArtProjects = [
 
 // --- Experience Data ---
 const professionalExperience = [
+  {
+    title: 'Post Production Digital Artist (Freelance)',
+    company: 'PocketFM',
+    dates: 'Aug 2025 - Dec 2025',
+    description: [
+      'Created and refined AI-generated images using tools such as NanoBanana, SeeDream, Google Imagen, SeedEdit, and Blaze Image Generator',
+      'Arranged comic panels and visual sequences based on writer scripts to maintain narrative flow',
+      'Performed manual editing, retouching, and final output preparation using Adobe Photoshop',
+      'Collaborated with writers and the production team to ensure visual consistency and timely delivery'
+    ]
+  },
   {
     title: 'UI/UX Design Intern',
     company: 'CODETECH IT Solutions Pvt. Ltd.',
