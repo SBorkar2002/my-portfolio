@@ -99,7 +99,7 @@ const professionalExperience = [
   },
   {
     title: 'UI/UX Design Intern',
-    company: 'CODETECH IT Solutions Pvt. Ltd.',
+    company: 'CODTECH IT Solutions Pvt. Ltd.',
     dates: 'May 2025 - Jun 2025',
     description: [
       'Redesigned a landing page, improving navigation flow and reducing bounce rate by an estimated 25% based on client feedback and testing.',
