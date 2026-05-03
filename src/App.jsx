@@ -97,6 +97,17 @@ const digitalArtProjects = [
 // --- Experience Data ---
 const professionalExperience = [
   {
+    title: 'Design Intern',
+    company: 'AppsForBharat',
+    dates: 'Jan 2026 - Current',
+    description: [
+      'Created engaging graphic designs and edited videos for marketing and internal communications.',
+      'Contributed to employer branding initiatives by designing creative assets and visual campaigns.',
+      'Designed blog UI layouts to enhance user experience',
+      'Developed custom mascots to strengthen the company’s brand identity.'
+    ]
+  },
+  {
     title: 'Post Production Digital Artist (Freelance)',
     company: 'PocketFM - PocketToons',
     dates: 'Aug 2025 - Dec 2025',
@@ -197,7 +208,7 @@ function App() {
           <div className="hero-right">
             <div className="hero-scroll-text">scroll</div>
             <div className="hero-summary">
-              <p>A creative and strategic product designer who transforms user needs and business goals into thoughtful, impactful digital experiences.</p>
+              <p>A collection of product and UX design work spanning SaaS platforms, mobile apps and web experiences — each project driven by real research, intentional decisions and a focus on solving the right problem.</p>
               <div className="hero-social-icons"></div>
             <div className="hero-social-icons">
           <a href="https://www.linkedin.com/in/sejalborkar/" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
@@ -261,19 +272,19 @@ function App() {
       <div className="skills-list">
         <div className="skill-category">
           <h4>UI/UX Design</h4>
-          <p>Wireframing - low fidelity & high fidelity, Prototyping, User Research, Information Architecture, Empathy Mapping, Problem Solving, Visual Designing</p>
+          <p>Wireframing (low and high fidelity), Prototyping, User Research, Information Architecture, Empathy Mapping, User Personas, Visual Design</p>
         </div>
         <div className="skill-category">
           <h4>Frontend</h4>
-          <p>HTML, CSS, JavaScript, React.js</p>
+          <p>HTML, CSS, React.js</p>
         </div>
         <div className="skill-category">
           <h4>Design Tools</h4>
-          <p>Adobe Photoshop (4+ years), Adobe Illustrator, Figma</p>
+          <p>Figma, Adobe Photoshop (4+ years), Adobe Illustrator, Adobe Premiere Pro, Canva</p>
         </div>
         <div className="skill-category">
           <h4>Additional Skills</h4>
-          <p>Digital Art (4+ years), Web Design, AI prompting</p>
+          <p>Digital Art (4+ years), Web Design, Generative AI Tools</p>
         </div>
       </div>
     </div>
@@ -322,7 +333,7 @@ function App() {
       {/* PROJECTS SECTION START */}
         <section id="projects" ref={projectsRef} className="projects-section">
           <h2 className="section-title">Projects</h2>
-          <p className="section-subtitle">A comprehensive showcase of my projects spanning UI/UX design, web development, digital art and graphic design.</p>
+          <p className="section-subtitle">A comprehensive showcase of my projects spanning UI/UX design, Case Studies, web development, digital art and graphic design.</p>
 
           <div className="filter-buttons">
             <button onClick={() => setActiveCategory('UI/UX Design')} className={activeCategory === 'UI/UX Design' ? 'active' : ''}>UI/UX Design</button>
