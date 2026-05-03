@@ -50,15 +50,25 @@ import graphicwings from './assets/wings.png';
 
 // --- Project Data ---
 const uiuxProjects = [
-  { img: uiIndeed, title: 'Indeed Redesign', desc: 'Worked on a redesign job portal Indeed focusing on pain points', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping'], link: 'https://www.behance.net/gallery/228663695/Indeed-Redesign-App-UXUI-Design' },
-  { img: uiSourced, title: 'Sourced - Artist Accountability & Segregation Platform', desc: 'Designed a UX case study for an art-focused platform that separates AI-generated and traditional artwork.', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping', 'UX Case Study'], link: 'https://www.behance.net/gallery/225405095/Sourced-UX-Case-Study' },
+  { img: moduvo, title: 'Moduvo - A SaaS Application', desc: 'Designed a cross-organisational collaboration platform eliminating friction between teams, projects and the tools they use every day. Includes user flow, feature decisions and marketing landing page.', tags: ['Desktop','Figma', 'Application','SaaS','UX Case Study','Landing Page'], link: 'https://www.behance.net/gallery/239166879/Moduvo-A-SaaS-Application' },
+
+   { img: uiSourced, title: 'Sourced - Artist Accountability & Segregation Platform', desc: 'Conducted 25+ user interviews to uncover friction between AI and traditional artists. Designed an accountability platform with art buddy system, progress tracking and goal setting.', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping', 'UX Case Study'], link: 'https://www.behance.net/gallery/225405095/Sourced-UX-Case-Study' },
+
+  { img: uiIndeed, title: 'Indeed Redesign', desc: 'Identified usability issues in Indeed job search and application flow. Redesigned the information architecture and interaction patterns for improved navigation.orked on a redesign job portal Indeed focusing on pain points', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping'], link: 'https://www.behance.net/gallery/228663695/Indeed-Redesign-App-UXUI-Design' },
+
+
   { img: green, title: 'Green Gallery - UI/UX Design | Case Study', desc: 'Green Gallery lets you donate unwanted plants to loving new homes, explore expert care tips, and learn about medicinal, indoor, flowering, and cactus varieties. Contribute to a greener planet and earn a certificate for your kind gesture.', tags: ['Desktop', 'Mobile','Figma', 'Webpage', 'Application','Responsive','UX Case Study','Prototyping'], link: 'https://www.behance.net/gallery/230598001/Green-Gallery-UIUX-Design-Landing-Page' },
-  { img: moduvo, title: 'Moduvo - A SaaS Application', desc: 'Designed a clean and intuitive SaaS interface for managing tasks, teams, and projects. Included features like an inbox for updates, Kanban-style boards, progress indicators, and tool integration, focusing on clarity, usability, and workflow efficiency.', tags: ['Desktop','Figma', 'Application','SaaS','UX Case Study','Landing Page'], link: 'https://www.behance.net/gallery/239166879/Moduvo-A-SaaS-Application' },
-  { img: uiMaggi, title: 'Maggilicious Cafe Landing Page', desc: 'Designed a landing page for Maggilicious Cafe - an anime-themed cafe in karwar', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: 'https://www.behance.net/gallery/223118023/Maggilicious-Cafe-Home-Page' },
-  { img: uibooking, title: 'Booking.com Redesign', desc: 'Reworked and redesigned the booking.com website addressing the pain points', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','UX Research'], link: 'https://www.behance.net/gallery/227659831/Bookingcom-Redesign' },
-  { img: uiTea, title: 'Lush & Leaf', desc: 'Designed a tea selling e-commerce page where users can purchase various of types of tea powder', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: 'https://www.behance.net/gallery/226337603/Lush-and-Leaf-Homepage' },
+
+  { img: uimiki, title: 'Make it 10 Game UI design', desc: 'Designed an interactive iPad application for children to learn mathematics through gameplay. Focused on intuitive UI, age-appropriate interactions and engaging visual design', tags: ['iPad', 'Figma', 'Home Screen', 'Application','Prototyping'], link: 'https://www.behance.net/gallery/227542669/Mikis-Math-Adventure' },
+
+  // { img: uiMaggi, title: 'Maggilicious Cafe Landing Page', desc: 'Designed a landing page for Maggilicious Cafe - an anime-themed cafe in karwar', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: 'https://www.behance.net/gallery/223118023/Maggilicious-Cafe-Home-Page' },
+
+  // { img: uibooking, title: 'Booking.com Redesign', desc: 'Reworked and redesigned the booking.com website addressing the pain points', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','UX Research'], link: 'https://www.behance.net/gallery/227659831/Bookingcom-Redesign' },
+
+  // { img: uiTea, title: 'Lush & Leaf', desc: 'Designed a tea selling e-commerce page where users can purchase various of types of tea powder', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage'], link: 'https://www.behance.net/gallery/226337603/Lush-and-Leaf-Homepage' },
+
   { img: webDev, title: 'Digital Art Portfolio', desc: 'Designed a digital art based portfolio where an artist displays thier artwork with separate sections for personel projects and commisioned work', tags: ['Desktop', 'Figma', 'Landing Page', 'Webpage','Responsive'], link: 'https://www.behance.net/gallery/229460931/Digital-Artist-Portfolio' },
-  { img: uimiki, title: 'Make it 10 Game UI design', desc: 'A prototype for a children math game application called "Mikis Math Adventure" an interactive make it 10 game', tags: ['iPad', 'Figma', 'Home Screen', 'Application','Prototyping'], link: 'https://www.behance.net/gallery/227542669/Mikis-Math-Adventure' },
+
 ];
 
 const webDevProjects = [
@@ -233,7 +243,7 @@ function App() {
     {/* Left Column */}
     <div className="about-left">
       <p className="about-bio">
-        Aspiring Product Designer with a passion for crafting intuitive and user-centered digital experiences. Skilled in UI/UX design using Figma and Photoshop, with hands-on experience developing responsive web interfaces using React, HTML, and CSS. Adept at collaborating directly with clients as a freelance designer, delivering creative and impactful solutions by combining strong communication with technical expertise.
+        Creative UI/UX and Product Designer with hands-on internship experience and a strong foundation in user-centred design. Proficient in Figma and Adobe Creative Suite with working knowledge of React, HTML and CSS.
       </p>
         <a 
     href="/Sejal_Borkar_Resume.pdf" 
