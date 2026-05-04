@@ -208,7 +208,7 @@ function App() {
           <div className="hero-right">
             <div className="hero-scroll-text">scroll</div>
             <div className="hero-summary">
-              <p>A collection of product and UX design work spanning SaaS platforms, mobile apps and web experiences — each project driven by real research, intentional decisions and a focus on solving the right problem.</p>
+              <p>A collection of product and UX design work spanning SaaS platforms, mobile apps and web experiences, each project driven by real research, intentional decisions and a focus on solving the right problem.</p>
               <div className="hero-social-icons"></div>
             <div className="hero-social-icons">
           <a href="https://www.linkedin.com/in/sejalborkar/" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
