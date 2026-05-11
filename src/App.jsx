@@ -50,9 +50,9 @@ import graphicwings from './assets/wings.png';
 
 // --- Project Data ---
 const uiuxProjects = [
-  { img: moduvo, title: 'Moduvo - A SaaS Application', desc: 'Designed a cross-organisational collaboration platform eliminating friction between teams, projects and the tools they use every day. Includes user flow, feature decisions and marketing landing page.', tags: ['Desktop','Figma', 'Application','SaaS','UX Case Study','Landing Page'], link: 'https://www.behance.net/gallery/239166879/Moduvo-A-SaaS-Application' },
+  { img: moduvo, title: 'Moduvo - A SaaS Application', desc: 'Designed a cross-organisational collaboration platform eliminating friction between teams, projects and the tools they use every day. Includes user flow, feature decisions and marketing landing page.', tags: ['Desktop','Figma', 'Application','SaaS','UX Case Study','Landing Page'], link: 'https://www.behance.net/gallery/248458897/Moduvo-Cross-Org-Collaboration-Platform?platform=direct' },
 
-   { img: uiSourced, title: 'Sourced - Artist Accountability & Segregation Platform', desc: 'Conducted 25+ user interviews to uncover friction between AI and traditional artists. Designed an accountability platform with art buddy system, progress tracking and goal setting.', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping', 'UX Case Study'], link: 'https://www.behance.net/gallery/225405095/Sourced-UX-Case-Study' },
+   { img: uiSourced, title: 'Sourced - Artist Accountability & Verification Platform', desc: 'Conducted 25+ user interviews to uncover friction between AI and traditional artists. Designed an accountability platform with art buddy system, progress tracking and goal setting.', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping', 'UX Case Study'], link: 'https://www.behance.net/gallery/249130267/Sourced-Artist-Accountability-Verification-Platform?platform=direct' },
 
   { img: uiIndeed, title: 'Indeed Redesign', desc: 'Identified usability issues in Indeed job search and application flow. Redesigned the information architecture and interaction patterns for improved navigation.orked on a redesign job portal Indeed focusing on pain points', tags: ['UX Research', 'Figma', 'Mobile UI', 'Prototyping'], link: 'https://www.behance.net/gallery/228663695/Indeed-Redesign-App-UXUI-Design' },
 
