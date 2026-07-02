@@ -97,14 +97,23 @@ const digitalArtProjects = [
 // --- Experience Data ---
 const professionalExperience = [
   {
+    title: 'GenAI Product Design Intern - (Fi Money)',
+    company: 'Epifi',
+    dates: 'Jun 2026 - Current',
+    description: [
+      'Design frames and visual assets for Tetriz, Epifi B2B engineering intelligence platform, using Figma, Remotion and Claude Code',
+      'Automated frame creation pipeline by building custom Claude skill files, maintained and updated in a shared repository',
+      'Produce editorial-style animations using ElevenLabs and Higgsfield targeting CTOs and engineering decision-makers'
+    ]
+  },
+  {
     title: 'Design Intern',
     company: 'AppsForBharat',
-    dates: 'Jan 2026 - Current',
+    dates: 'Jan 2026 - Jun 2026',
     description: [
-      'Created engaging graphic designs and edited videos for marketing and internal communications.',
-      'Contributed to employer branding initiatives by designing creative assets and visual campaigns.',
-      'Designed blog UI layouts to enhance user experience',
-      'Developed custom mascots to strengthen the company’s brand identity.'
+      'Designed end-to-end blog UI in Figma including home page, article page, card components and tab navigation across mobile and desktop',
+      'Contributed to employer branding through creative assets, visual campaigns and custom mascots',
+      'Leveraged AI tools including Veo, Flow and Nanobanana for video generation in employer branding campaigns'
     ]
   },
   {
@@ -127,6 +136,14 @@ const professionalExperience = [
       'Developed a fully responsive webpage using HTML, CSS, and JavaScript, achieving 100% cross-device compatibility.',
       'Created a mobile app redesign prototype, reducing user pain points by 30% as identified through usability surveys.',
       'Designed AR/VR interface mockups focused on accessibility, enhancing interaction clarity for diverse user groups.'
+    ]
+  },
+  {
+    title: 'Graphic Designer',
+    company: 'Freelance',
+    dates: 'Aug 2023 - May 2025',
+    description: [
+      'Delivered posters, logos, banners and social media posts for brand consistency across 2 years of client work'
     ]
   },
   {
