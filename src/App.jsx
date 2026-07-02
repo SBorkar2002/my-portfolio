@@ -297,11 +297,11 @@ function App() {
         </div>
         <div className="skill-category">
           <h4>Design Tools</h4>
-          <p>Figma, Adobe Photoshop (4+ years), Adobe Illustrator, Adobe Premiere Pro, Canva</p>
+          <p>Figma, Adobe Photoshop, Adobe Illustrator, Adobe Premiere Pro, Canva, Remotion, ElevenLabs</p>
         </div>
         <div className="skill-category">
-          <h4>Additional Skills</h4>
-          <p>Digital Art (4+ years), Web Design, Generative AI Tools</p>
+          <h4>Creative</h4>
+          <p>Branding, Web Design, Mascot & Character Design, Digital Art, AI Prompting, Video Editing</p>
         </div>
       </div>
     </div>
