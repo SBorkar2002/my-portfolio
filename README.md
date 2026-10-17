@@ -59,23 +59,36 @@ components/
   SiteChrome.tsx                keyboard shortcuts, jump sheet, notices
   home/                         home page sections
   case/                         case study layout, rail, blocks, tappable phone
+  cat/                          the pixel cat and its nav toggle
 lib/
   projects.ts                   project list, links, socials
   sourcedApp.ts                 Sourced prototype screens and hotspots
   theme.ts                      theme helpers
+  cat/                          cat frames (generated), sprite renderer, on/off preference
 public/
   images/                       optimised WebP files (1x and 2x)
   icons/                        pixel icons from the Figma UI kit, used as CSS masks
   Sejal_Borkar_Resume.pdf
 scripts/
   optimise-images.mjs           turns source images into the WebP files in public/images
+  export-cat-frames.mjs         copies the cat frames from the cat studio export
 ```
 
 ## Design source
 
 The Figma file "Pixel portfolio · v1" is the source of truth for layout, copy and tokens. Images are exported from it, optimised with `scripts/optimise-images.mjs` and served from `public/images`. Nothing is hot-linked.
 
-The pixel cat is designed separately and is not part of this version. The layout leaves a slot for it: `#cat-root` in `app/layout.tsx`, and perches marked with `data-cat-perch` (hero panel, work heading, tile 03, art room heading, footer).
+### The cat
+
+The pixel cat lives on the home page. Its art (cat v2, 48 x 48 frames and timings) is owned by the cat studio; `scripts/export-cat-frames.mjs` copies it from the studio's `frames.json` into `lib/cat/frames.ts`:
+
+```bash
+node scripts/export-cat-frames.mjs ~/Documents/career/portfolio-pixel/cat-v2/preview/frames.json
+```
+
+`components/cat/CatLayer.tsx` draws it on one canvas at a whole-pixel scale in device pixels, with the colours from the `--cat-*` tokens, so it swaps with the theme. It moves between five perches marked with `data-cat-perch` (from the Home notes in Figma): it lands on the jump-in panel, walks along tile 01 and sits beside "Selected work", peeks over the Sourced tile, sits by the art room title and sleeps by the footer. Click or tap it to pet it.
+
+Rules it follows: it never covers text, links or images (each spot is checked against the content around it, and the cat skips a spot that does not fit), it only animates while its spot is on screen and the tab is visible, phones get only the panel and footer spots, `prefers-reduced-motion` gets a still cat at the panel and the footer, and the cat button in the nav hides it (the choice is remembered).
 
 ## Deploy
 
