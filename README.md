@@ -1,12 +1,90 @@
-# React + Vite
+# Sejal Borkar · portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The portfolio of Sejal Borkar, product designer. Live at [sejalborkar.vercel.app](https://sejalborkar.vercel.app).
 
-Currently, two official plugins are available:
+Pixel chrome, HD work: pixel type, keycaps and icons frame the site, while every piece of work is shown at full resolution in a readable body font. It is built for a recruiter in a hurry, so everything is one click or one key away.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## What is in this version
 
-## Expanding the ESLint configuration
+- Home: hero with a jump-in panel, selected work, experience, art room preview, contact.
+- Case study 01: Lead-gen assessment (`/work/lead-gen-assessment`).
+- Case study 03: Sourced (`/work/sourced`), with 11 tappable phones running the exported app screens and the same 83 hotspots as the Figma prototype.
+- Case studies 02, 04, 05, 06 and the art room page are still being designed, so they show as "coming soon" and are not clickable.
+- Light and dark themes. The site follows the system setting until a visitor picks one; the choice is saved in `localStorage`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Keyboard shortcuts
+
+| Where | Keys | Does |
+|---|---|---|
+| Everywhere | `W` `A` `E` `C` | Work, Art room, Experience, Contact |
+| Everywhere | `T` / `D` | Light / dark theme |
+| Everywhere | `?` or `⌘K` / `Ctrl+K` | Jump list and shortcut sheet |
+| Home | `1` to `6` | Open a case study (01 and 03 are live; the others say "coming soon") |
+| Case study | `1` to `6` | Jump to a section from the contents rail |
+| Case study | `Esc` | Back to home |
+| Case study | `←` / `→` | Previous / next live case study |
+
+Shortcuts are ignored while typing in a form field. Motion respects `prefers-reduced-motion`.
+
+## Stack
+
+- [Next.js](https://nextjs.org) 16 (App Router, every route prerendered as static HTML)
+- [Tailwind CSS](https://tailwindcss.com) v4, with the colour tokens from the Figma variables in `app/globals.css`
+- Google Fonts through `next/font` (self-hosted at build time): Jersey 15 for headings, Silkscreen for labels and keys, Rethink Sans for body text
+- No UI or animation libraries. Native scroll.
+
+## Run locally
+
+Needs Node 20 or newer.
+
+```bash
+npm install
+npm run dev
+```
+
+Then open http://localhost:3000. `npm run build` makes a production build and `npm run typecheck` runs TypeScript.
+
+## Folder structure
+
+```
+app/
+  layout.tsx                    fonts, theme script, nav, shortcut layer, cat slot
+  globals.css                   colour tokens (light and dark), type styles, pixel shadows
+  page.tsx                      home
+  work/lead-gen-assessment/     case study 01
+  work/sourced/                 case study 03
+components/
+  ui.tsx                        Keycap, Tag, Button, Icon, SectionTitle
+  Nav.tsx, ThemeToggle.tsx      top bar
+  SiteChrome.tsx                keyboard shortcuts, jump sheet, notices
+  home/                         home page sections
+  case/                         case study layout, rail, blocks, tappable phone
+lib/
+  projects.ts                   project list, links, socials
+  sourcedApp.ts                 Sourced prototype screens and hotspots
+  theme.ts                      theme helpers
+public/
+  images/                       optimised WebP files (1x and 2x)
+  icons/                        pixel icons from the Figma UI kit, used as CSS masks
+  Sejal_Borkar_Resume.pdf
+scripts/
+  optimise-images.mjs           turns source images into the WebP files in public/images
+```
+
+## Design source
+
+The Figma file "Pixel portfolio · v1" is the source of truth for layout, copy and tokens. Images are exported from it, optimised with `scripts/optimise-images.mjs` and served from `public/images`. Nothing is hot-linked.
+
+The pixel cat is designed separately and is not part of this version. The layout leaves a slot for it: `#cat-root` in `app/layout.tsx`, and perches marked with `data-cat-perch` (hero panel, work heading, tile 03, art room heading, footer).
+
+## Deploy
+
+Vercel deploys from GitHub: every push builds a preview, and `main` is production. `vercel.json` pins the framework to Next.js, because this project used to be a Vite site.
+
+## The old site
+
+The previous React and Vite portfolio is kept on the [`old-portfolio`](https://github.com/SBorkar2002/my-portfolio/tree/old-portfolio) branch and the `old-portfolio-final` tag (commit `e0dbd46`). Its history is also still part of `main`.
+
+## Credits
+
+All components are written for this site. Fonts: Jersey 15, Silkscreen and Rethink Sans, all under the SIL Open Font License via Google Fonts.
