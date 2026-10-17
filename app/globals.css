@@ -1,0 +1,227 @@
+@import "tailwindcss";
+
+/* Colour tokens: Figma variable collection "Portfolio · Color" (7:2).
+   Light is the base, dark follows the OS unless the visitor picked a theme. */
+:root {
+  color-scheme: light;
+  --bg-base: #f3f0fa;
+  --bg-raised: #ffffff;
+  --bg-sunken: #e7e2f2;
+  --line: #d4cde4;
+  --text-primary: #17141f;
+  --text-muted: #5d5770;
+  --text-on-pastel: #17141f;
+  --accent-ink: #5b47d6;
+  --pastel-lilac: #c3b5ff;
+  --pastel-peach: #ffb99a;
+  --pastel-mint: #9ee6c4;
+  --pastel-sky: #9ed2ff;
+  --pastel-pink: #ffafd2;
+  --pastel-butter: #ffe58a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg-base: #15131c;
+    --bg-raised: #1e1b28;
+    --bg-sunken: #0f0d15;
+    --line: #34304a;
+    --text-primary: #f2effa;
+    --text-muted: #a7a1bc;
+    --accent-ink: #c3b5ff;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-base: #15131c;
+  --bg-raised: #1e1b28;
+  --bg-sunken: #0f0d15;
+  --line: #34304a;
+  --text-primary: #f2effa;
+  --text-muted: #a7a1bc;
+  --accent-ink: #c3b5ff;
+}
+
+@theme inline {
+  --color-page: var(--bg-base);
+  --color-raised: var(--bg-raised);
+  --color-sunken: var(--bg-sunken);
+  --color-line: var(--line);
+  --color-primary: var(--text-primary);
+  --color-muted: var(--text-muted);
+  --color-on-pastel: var(--text-on-pastel);
+  --color-ink: var(--accent-ink);
+  --color-lilac: var(--pastel-lilac);
+  --color-peach: var(--pastel-peach);
+  --color-mint: var(--pastel-mint);
+  --color-sky: var(--pastel-sky);
+  --color-pink: var(--pastel-pink);
+  --color-butter: var(--pastel-butter);
+
+  --font-display: var(--font-jersey), ui-monospace, monospace;
+  --font-label: var(--font-silkscreen), ui-monospace, monospace;
+  --font-sans: var(--font-rethink), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Type styles from the Figma text styles. Display sizes are fluid: they hit the
+   exact Figma size at the 1440 frame and scale down on smaller screens. */
+@utility type-display-xl {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 7.292vw, 105px);
+  line-height: 0.9524;
+  letter-spacing: 0.01em;
+}
+@utility type-display-l {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 5.208vw, 75px);
+  line-height: 0.96;
+  letter-spacing: 0.01em;
+}
+@utility type-display-m {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 3.125vw, 45px);
+  line-height: 1.0222;
+  letter-spacing: 0.01em;
+}
+@utility type-heading-s {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 2.083vw, 30px);
+  line-height: 1.0667;
+  letter-spacing: 0.01em;
+}
+@utility type-label-s {
+  font-family: var(--font-label);
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+@utility type-label-m {
+  font-family: var(--font-label);
+  font-size: 16px;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+@utility type-key {
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 12px;
+}
+@utility type-body-l {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  line-height: 30px;
+}
+@utility type-body-m {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+}
+@utility type-body-s {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}
+@utility type-numeral {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 36px;
+  letter-spacing: -0.02em;
+}
+
+/* Hard pixel shadows: no blur, ever. */
+@utility shadow-pixel-8 {
+  box-shadow: 8px 8px 0 0 var(--pixel-shadow, var(--pastel-lilac));
+}
+@utility shadow-pixel-4 {
+  box-shadow: 4px 4px 0 0 var(--pixel-shadow, var(--text-primary));
+}
+
+/* Pixel icons: the SVG files in public/icons are used as masks so they take currentColor. */
+@utility icon {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  background-color: currentColor;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+@layer base {
+  html {
+    background: var(--bg-base);
+    color: var(--text-primary);
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 96px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-base);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--pastel-lilac);
+    color: var(--text-on-pastel);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent-ink);
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Theme toggle: highlight the side that matches the active theme. */
+.theme-toggle [data-side="light"] {
+  background: var(--pastel-butter);
+  color: var(--text-on-pastel);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle [data-side="dark"] {
+    background: var(--pastel-butter);
+    color: var(--text-on-pastel);
+  }
+  :root:not([data-theme="light"]) .theme-toggle [data-side="light"] {
+    background: transparent;
+    color: var(--text-muted);
+  }
+}
+:root[data-theme="dark"] .theme-toggle [data-side="dark"] {
+  background: var(--pastel-butter);
+  color: var(--text-on-pastel);
+}
+:root[data-theme="dark"] .theme-toggle [data-side="light"] {
+  background: transparent;
+  color: var(--text-muted);
+}
+
+/* Sourced prototype: screens dissolve in like the Figma prototype (0.25s). */
+@keyframes dissolve {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
