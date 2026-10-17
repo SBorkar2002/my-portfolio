@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 
-export type IconName = "arrow-right" | "arrow-left" | "download" | "moon" | "sun";
+export type IconName = "arrow-right" | "arrow-left" | "download" | "moon" | "sun" | "cat";
 
 export function Icon({ name, size = 16, className = "" }: { name: IconName; size?: number; className?: string }) {
   return (

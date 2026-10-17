@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import type { MouseEvent } from "react";
 import { links } from "@/lib/projects";
 import { homeSections, jumpTo, useChrome } from "./SiteChrome";
+import { CatToggle } from "./cat/CatToggle";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button, Keycap } from "./ui";
 
@@ -38,7 +39,7 @@ export function Nav() {
           <span className="type-label-s hidden text-muted sm:inline">SEJAL BORKAR</span>
         </Link>
         <span className="min-w-px flex-1" />
-        <ul className="hidden items-center gap-6 min-[1300px]:flex">
+        <ul className="hidden items-center gap-6 min-[1400px]:flex">
           {homeSections.map((s) => (
             <li key={s.id}>
               <a
@@ -52,7 +53,7 @@ export function Nav() {
             </li>
           ))}
         </ul>
-        <span aria-hidden="true" className="hidden h-7 w-0.5 shrink-0 bg-line min-[1300px]:block" />
+        <span aria-hidden="true" className="hidden h-7 w-0.5 shrink-0 bg-line min-[1400px]:block" />
         <button
           type="button"
           onClick={openSheet}
@@ -65,6 +66,7 @@ export function Nav() {
           </span>
         </button>
         <ThemeToggle />
+        {isHome && <CatToggle />}
         <div className="hidden md:block">
           <Button href={links.resume} label="RESUME" icon="download" download />
         </div>

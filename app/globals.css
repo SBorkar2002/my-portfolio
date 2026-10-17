@@ -18,6 +18,16 @@
   --pastel-sky: #9ed2ff;
   --pastel-pink: #ffafd2;
   --pastel-butter: #ffe58a;
+  /* Cat colours (Figma cat/*), used by the canvas cat. */
+  --cat-body: #17141f;
+  --cat-body-far: #423b54;
+  --cat-eye: #ffd43b;
+  --cat-pupil: #17141f;
+  --cat-shine: #ffffff;
+  --cat-mouth: #ff8fb1;
+  --cat-mouth-inner: #c4456e;
+  --cat-zzz: #8f7bff;
+  --cat-heart: #ff6f9c;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -30,6 +40,11 @@
     --text-primary: #f2effa;
     --text-muted: #a7a1bc;
     --accent-ink: #c3b5ff;
+    --cat-body: #f2effa;
+    --cat-body-far: #beb7d2;
+    --cat-pupil: #15131c;
+    --cat-zzz: #c3b5ff;
+    --cat-heart: #ff8fb1;
   }
 }
 
@@ -42,6 +57,11 @@
   --text-primary: #f2effa;
   --text-muted: #a7a1bc;
   --accent-ink: #c3b5ff;
+  --cat-body: #f2effa;
+  --cat-body-far: #beb7d2;
+  --cat-pupil: #15131c;
+  --cat-zzz: #c3b5ff;
+  --cat-heart: #ff8fb1;
 }
 
 @theme inline {
@@ -224,4 +244,14 @@
   to {
     opacity: 1;
   }
+}
+
+/* Cat toggle: butter while the cat is out, muted once it is hidden. */
+.cat-toggle {
+  background: var(--pastel-butter);
+  color: var(--text-on-pastel);
+}
+:root[data-cat="off"] .cat-toggle {
+  background: transparent;
+  color: var(--text-muted);
 }

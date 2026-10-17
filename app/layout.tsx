@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Jersey_15, Rethink_Sans, Silkscreen } from "next/font/google";
+import { CatLayer } from "@/components/cat/CatLayer";
 import { Nav } from "@/components/Nav";
 import { SiteChrome } from "@/components/SiteChrome";
+import { catInitScript } from "@/lib/cat/prefs";
 import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
@@ -33,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning className={`${jersey.variable} ${silkscreen.variable} ${rethink.variable}`}>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript + catInitScript }} />
       </head>
       <body>
         <a
@@ -45,8 +47,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteChrome>
           <Nav />
           <main id="main">{children}</main>
-          {/* Slot for the pixel cat (owned by the cat studio). Pages mark perches with data-cat-perch. */}
-          <div id="cat-root" aria-hidden="true" />
+          {/* The pixel cat (art owned by the cat studio). Pages mark perches with data-cat-perch. */}
+          <div id="cat-root">
+            <CatLayer />
+          </div>
         </SiteChrome>
       </body>
     </html>
