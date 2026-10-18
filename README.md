@@ -7,9 +7,9 @@ Pixel chrome, HD work: pixel type, keycaps and icons frame the site, while every
 ## What is in this version
 
 - Home: hero with a jump-in panel, selected work, experience, art room preview, contact.
-- Case study 01: Lead-gen assessment (`/work/lead-gen-assessment`).
-- Case study 03: Sourced (`/work/sourced`), with 11 tappable phones running the exported app screens and the same 83 hotspots as the Figma prototype.
-- Case studies 02, 04, 05, 06 and the art room page are still being designed, so they show as "coming soon" and are not clickable.
+- Sourced (`/work/sourced`), with 11 tappable phones running the exported app screens and the same 83 hotspots as the Figma prototype, plus its Behance case study.
+- Lead-gen assessment (`/work/lead-gen-assessment`), linked under "More work".
+- Projects without an inner page link straight to their source in a new tab (AFB Figma and live blog). Art room cards link to ArtStation, Webtoon and the Canva graphics site.
 - Light and dark themes. The site follows the system setting until a visitor picks one; the choice is saved in `localStorage`.
 
 ## Keyboard shortcuts
@@ -19,7 +19,7 @@ Pixel chrome, HD work: pixel type, keycaps and icons frame the site, while every
 | Everywhere | `W` `A` `E` `C` | Work, Art room, Experience, Contact |
 | Everywhere | `T` / `D` | Light / dark theme |
 | Everywhere | `?` or `⌘K` / `Ctrl+K` | Jump list and shortcut sheet |
-| Home | `1` to `6` | Open a case study (01 and 03 are live; the others say "coming soon") |
+| Home | `1` to `6` | Open a project: its case study, its source in a new tab, or its tile |
 | Case study | `1` to `6` | Jump to a section from the contents rail |
 | Case study | `Esc` | Back to home |
 | Case study | `←` / `→` | Previous / next live case study |
