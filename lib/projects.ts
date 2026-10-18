@@ -27,7 +27,8 @@ export const projects: Project[] = [
     meta: "EPIFI · TETRIZ · 2026",
     summary:
       "Five feature pages in production Next.js, composed from one shared kit. The feature nav went from a pillar taxonomy to a flat five.",
-    href: null,
+    href: "/work/marketing-site",
+    links: [{ label: "TETRIZ.AI", href: "https://tetriz.ai/features/ai-adoption/" }],
   },
   {
     number: 2,
