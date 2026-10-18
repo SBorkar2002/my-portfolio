@@ -280,7 +280,7 @@ export default function LeadGenAssessment() {
         </CardRow>
       </CaseSection>
 
-      <NextCard project={next} media={<Img name="w03_sourced" width={584} alt="Three Sourced app screens" />} />
+      <NextCard project={next} media={<Img name="w02_features" width={584} alt="Tetriz AI Adoption feature page" />} />
     </CaseLayout>
   );
 }

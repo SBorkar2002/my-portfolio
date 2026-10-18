@@ -275,21 +275,7 @@ export default function Sourced() {
         </CardRow>
       </CaseSection>
 
-      <NextCard
-        project={next}
-        media={
-          <div className="grid size-full grid-cols-2 items-center gap-[6%] bg-sunken px-[8%]">
-            {[
-              ["w01_intro", "Shipped intro screen"],
-              ["w01_result", "Shipped result screen"],
-            ].map(([name, alt]) => (
-              <div key={name} className="aspect-[320/275] border-2 border-line bg-white shadow-[4px_4px_0_0_var(--line)]">
-                <Img name={name} width={320} alt={alt} />
-              </div>
-            ))}
-          </div>
-        }
-      />
+      <NextCard project={next} media={<Img name="afb_home" width={920} alt="AppsForBharat blog home page" position="top" />} />
     </CaseLayout>
   );
 }

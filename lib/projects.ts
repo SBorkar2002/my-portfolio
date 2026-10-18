@@ -58,11 +58,8 @@ export const projects: Project[] = [
     meta: "APPSFORBHARAT · 2026",
     summary:
       "Home, article and category pages, live at blog.appsforbharat.com. One visual identity per category.",
-    href: null,
-    links: [
-      { label: "FIGMA", href: "https://www.figma.com/design/72tXrfMYH64v0hkxDF1m2n/Untitled?node-id=114-1729" },
-      { label: "LIVE BLOG", href: "https://blog.appsforbharat.com/" },
-    ],
+    href: "/work/afb-blog",
+    links: [{ label: "THE LIVE BLOG", href: "https://blog.appsforbharat.com/" }],
   },
   {
     number: 5,
