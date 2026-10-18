@@ -4,12 +4,12 @@ const STORAGE_KEY = "theme";
 const EVENT = "themechange";
 
 /** Runs in <head> before paint so a stored choice never flashes the wrong theme. */
-export const themeInitScript = `try{var t=localStorage.getItem("${STORAGE_KEY}");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
+export const themeInitScript = `try{var t=localStorage.getItem("${STORAGE_KEY}");document.documentElement.dataset.theme=t==="dark"?"dark":"light"}catch(e){document.documentElement.dataset.theme="light"}`;
 
 export function currentTheme(): Theme {
   const set = document.documentElement.dataset.theme;
   if (set === "light" || set === "dark") return set;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return "light";
 }
 
 export function setTheme(theme: Theme) {
