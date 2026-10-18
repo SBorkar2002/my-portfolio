@@ -3,7 +3,7 @@ import type { CSSProperties } from "react";
 import { CardRow, CaseHero, CaseLayout, CaseSection, Decision, Facts, NextCard, NumberCard, Stage } from "@/components/case/blocks";
 import { TappablePhone } from "@/components/case/TappablePhone";
 import { Img } from "@/components/Img";
-import { nextLiveProject } from "@/lib/projects";
+import { nextLiveProject, projectByNumber } from "@/lib/projects";
 import { screenSrc } from "@/lib/sourcedApp";
 
 export const metadata: Metadata = {
@@ -31,15 +31,16 @@ const keyScreens: [number, string][] = [
 ];
 
 export default function Sourced() {
-  const next = nextLiveProject(3);
+  const next = nextLiveProject(2);
   return (
     <CaseLayout rail={rail}>
       <CaseHero
-        kicker="CASE STUDY 03 / 06"
+        kicker="CASE STUDY 02 / 06"
         tag="personal"
         company="SOLO PROJECT · MOBILE APP"
         title="Sourced: human-made and AI art, side by side"
         lead="Art you can trace back to a human, and buddies who keep you making it."
+        links={projectByNumber(2)?.links}
         meta={[
           ["FOCUS", "Authenticity and motivation"],
           ["PLATFORM", "Mobile app"],

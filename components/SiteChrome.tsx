@@ -48,9 +48,6 @@ function isTyping(target: EventTarget | null) {
   return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || target.isContentEditable;
 }
 
-function comingSoon(n: number) {
-  return `Case study 0${n} is coming soon`;
-}
 
 export function SiteChrome({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -78,9 +75,11 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       const project = projectByNumber(n);
       if (!project) return;
       if (project.href) router.push(project.href);
-      else announce(comingSoon(n));
+      else if (project.links?.length) window.open(project.links[0].href, "_blank", "noopener,noreferrer");
+      else if (location.pathname === "/") jumpTo(`project-${n}`);
+      else router.push(`/#project-${n}`);
     },
-    [router, announce],
+    [router],
   );
 
   const goToSection = useCallback(
@@ -197,7 +196,7 @@ function ShortcutSheet({ ref, onClose, onProject, onSection }: SheetProps) {
           <button
             key={p.number}
             type="button"
-            className={`${rowClass} ${p.href ? "" : "text-muted"}`}
+            className={rowClass}
             onClick={() => {
               onClose();
               onProject(p.number);
@@ -205,7 +204,7 @@ function ShortcutSheet({ ref, onClose, onProject, onSection }: SheetProps) {
           >
             <Keycap>{p.number}</Keycap>
             <span className="type-body-m flex-1">{p.name}</span>
-            <span className="type-label-s text-muted">{p.href ? p.tag.toUpperCase() : "COMING SOON"}</span>
+            <span className="type-label-s text-muted">{p.href || !p.links ? p.tag.toUpperCase() : `${p.links[0].label} ↗`}</span>
           </button>
         ))}
         <p className="type-label-s border-t-2 border-line pt-5 pb-3 text-ink">SECTIONS</p>

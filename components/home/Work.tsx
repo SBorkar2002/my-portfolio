@@ -8,8 +8,9 @@ const tileBase = "flex border-2 border-line bg-raised shadow-pixel-8";
 const tileLive =
   "transition-[transform,box-shadow] duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[10px_10px_0_0_var(--pastel-lilac)]";
 
-/** Selected work (Figma 27:447): tile 01 wide, two rows of two, tile 06 wide. */
+/** Selected work: two rows of two, then the video system wide. The lead-gen case study sits under "More work". */
 export function Work() {
+  const more = projectByNumber(6)!;
   return (
     <section id="work" aria-labelledby="work-title" className="border-t-2 border-line">
       <div className="mx-auto flex max-w-[1440px] flex-col gap-10 px-[clamp(20px,8.333vw,120px)] pt-16 pb-20 lg:pt-24 lg:pb-32">
@@ -19,65 +20,85 @@ export function Work() {
           <p className="type-label-s hidden text-right text-muted md:block">6 PROJECTS · PRESS 1 TO 6</p>
         </div>
 
-        <TileShell project={projectByNumber(1)!} className="flex-col lg:flex-row">
-          <div className="grid shrink-0 grid-cols-2 items-center gap-3 bg-sunken px-4 py-6 sm:gap-6 sm:px-8 sm:py-10 lg:w-[60.9%]">
-            <Screen name="w01_intro" alt="Shipped intro screen: How AI-native is your engineering org?" />
-            <Screen name="w01_result" alt="Shipped result screen with the stage, the score and the answers people gave" />
-          </div>
-          <TileBody project={projectByNumber(1)!} padding="p-6 sm:p-9" stats />
-        </TileShell>
-
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-6">
-          <StackedTile n={2} image="w02_features" alt="Tetriz feature page: Adoption isn't logins, it's shipped work" />
-          <StackedTile n={3} image="w03_sourced" alt="Three Sourced app screens: onboarding, the feed and the Flow tracker" perch="tile-03" />
+          <StackedTile n={1} image="w02_features" alt="Tetriz feature page: Adoption isn't logins, it's shipped work" />
+          <StackedTile n={2} image="w03_sourced" alt="Three Sourced app screens: onboarding, the feed and the Flow tracker" perch="tile-03" />
         </div>
 
         <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-6">
-          <StackedTile n={4} image="w04_futureofhr" alt="The #futureofhr landing page hero: The Future of Remote Hiring" />
-          <StackedTile n={5} image="w05_afb" alt="AppsForBharat blog home page with the latest post and category filters" />
+          <StackedTile n={3} image="w04_futureofhr" alt="The #futureofhr landing page hero: The Future of Remote Hiring" />
+          <StackedTile n={4} image="w05_afb" alt="AppsForBharat blog home page with the latest post and category filters" />
         </div>
 
-        <TileShell project={projectByNumber(6)!} className="flex-col-reverse lg:flex-row">
-          <TileBody project={projectByNumber(6)!} padding="p-6 sm:p-9" />
+        <TileShell project={projectByNumber(5)!} className="flex-col-reverse lg:flex-row">
+          <TileBody project={projectByNumber(5)!} padding="p-6 sm:p-9" />
           <div className="aspect-[720/276] shrink-0 lg:aspect-auto lg:w-[60.2%] lg:self-stretch">
             <Img name="w06_media" width={720} alt="Recommendations screen listing installable skills, rules and hooks" />
           </div>
         </TileShell>
+
+        <Link
+          href={more.href!}
+          id={`project-${more.number}`}
+          className="group flex flex-wrap items-center gap-x-4 gap-y-2 border-y-2 border-line py-5"
+        >
+          <span className="type-label-s text-ink">MORE WORK</span>
+          <Tag kind={more.tag} />
+          <span className="type-body-m min-w-0 flex-1 text-primary group-hover:text-ink">{more.title}</span>
+          <span className="type-label-s flex items-center gap-2.5 text-ink">
+            READ THE CASE STUDY
+            <Icon name="arrow-right" className="transition-transform duration-150 group-hover:translate-x-1" />
+          </span>
+          <span className="hidden md:contents">
+            <Keycap>{more.number}</Keycap>
+          </span>
+        </Link>
       </div>
     </section>
   );
 }
 
 function TileShell({ project, className, children }: { project: Project; className: string; children: ReactNode }) {
+  const id = `project-${project.number}`;
   if (project.href) {
     return (
-      <Link href={project.href} aria-label={`${project.title}. Read the case study`} className={`group ${tileBase} ${tileLive} ${className}`}>
+      <Link href={project.href} id={id} aria-label={`${project.title}. Read the case study`} className={`group ${tileBase} ${tileLive} ${className}`}>
         {children}
       </Link>
     );
   }
-  return <article className={`${tileBase} ${className}`}>{children}</article>;
+  if (project.links?.length === 1) {
+    return (
+      <a href={project.links[0].href} id={id} target="_blank" rel="noopener noreferrer" aria-label={`${project.title}. Open on ${project.links[0].label.toLowerCase()} in a new tab`} className={`group ${tileBase} ${tileLive} ${className}`}>
+        {children}
+      </a>
+    );
+  }
+  return (
+    <article id={id} className={`group ${tileBase} ${className}`}>
+      {children}
+    </article>
+  );
 }
 
 function StackedTile({ n, image, alt, perch }: { n: number; image: string; alt: string; perch?: string }) {
   const project = projectByNumber(n)!;
   return (
     <TileShell project={project} className="flex-col overflow-hidden">
-      <div className="aspect-[584/368] w-full" data-cat-perch={perch}>
-        <Img name={image} width={584} alt={alt} />
-      </div>
+      {!project.href && project.links && project.links.length > 1 ? (
+        <a href={project.links[0].href} target="_blank" rel="noopener noreferrer" className="block aspect-[584/368] w-full" data-cat-perch={perch}>
+          <Img name={image} width={584} alt={`${alt} (opens ${project.links[0].label.toLowerCase()} in a new tab)`} />
+        </a>
+      ) : (
+        <div className="aspect-[584/368] w-full" data-cat-perch={perch}>
+          <Img name={image} width={584} alt={alt} />
+        </div>
+      )}
       <TileBody project={project} padding="p-6 sm:p-7" />
     </TileShell>
   );
 }
 
-function Screen({ name, alt }: { name: string; alt: string }) {
-  return (
-    <div className="aspect-[320/275] border-2 border-line bg-white shadow-[4px_4px_0_0_var(--line)]">
-      <Img name={name} width={320} alt={alt} />
-    </div>
-  );
-}
 
 function TileBody({
   project,
@@ -119,9 +140,22 @@ function TileBody({
             <span className="type-label-s text-ink">READ THE CASE STUDY</span>
             <Icon name="arrow-right" className="text-ink transition-transform duration-150 group-hover:translate-x-1" />
           </>
-        ) : (
-          <span className="type-label-s text-muted">CASE STUDY COMING SOON</span>
-        )}
+        ) : project.links && project.links.length > 1 ? (
+          <span className="flex flex-wrap gap-x-5 gap-y-2">
+            {project.links.map((l) => (
+              <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="type-label-s group/link flex items-center gap-2.5 text-ink hover:text-primary">
+                {l.label}
+                <Icon name="arrow-right" className="transition-transform duration-150 group-hover/link:translate-x-1" />
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
+            ))}
+          </span>
+        ) : project.links ? (
+          <>
+            <span className="type-label-s text-ink">VIEW ON {project.links[0].label}</span>
+            <Icon name="arrow-right" className="text-ink transition-transform duration-150 group-hover:translate-x-1" />
+          </>
+        ) : null}
         <span className="min-w-px flex-1" />
         <span className="hidden md:contents">
           <Keycap>{project.number}</Keycap>

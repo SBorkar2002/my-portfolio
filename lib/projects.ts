@@ -9,24 +9,18 @@ export type Project = {
   tag: TagKind;
   meta: string;
   summary: string;
-  /** Route of the case study, or null while it is still being designed. */
+  /** Route of the case study, or null when there is no inner page yet. */
   href: string | null;
+  /** Live site or source files, opened in a new tab. Only real URLs from the inventory. */
+  links?: { label: string; href: string }[];
+  /** Listed under "More work" instead of the main grid. */
+  more?: boolean;
 };
 
-// Copy from Figma "Home · Desktop (Dark)" 27:386 (jump-in panel 27:404, tiles 27:454 to 27:548).
+// Copy from Figma "Home · Desktop (Dark)" 27:386; order and links from Sejal (18 Oct).
 export const projects: Project[] = [
   {
     number: 1,
-    name: "Lead-gen assessment",
-    title: "Lead-gen assessment, redesigned and shipped",
-    tag: "shipped",
-    meta: "EPIFI · TETRIZ · 2026",
-    summary:
-      "I rebuilt the result around the answers people gave, then added the email step the funnel was missing.",
-    href: "/work/lead-gen-assessment",
-  },
-  {
-    number: 2,
     name: "Marketing site and component library",
     title: "Marketing site and a 20-component library",
     tag: "shipped",
@@ -36,7 +30,7 @@ export const projects: Project[] = [
     href: null,
   },
   {
-    number: 3,
+    number: 2,
     name: "Sourced",
     title: "Sourced: human-made and AI art, side by side",
     tag: "personal",
@@ -44,9 +38,10 @@ export const projects: Project[] = [
     summary:
       "An app that verifies human artists and pairs them as Art Buddies. Shaped by a survey of 25+ artists.",
     href: "/work/sourced",
+    links: [{ label: "BEHANCE", href: "https://www.behance.net/gallery/257216237/Sourced-Artist-Accountability-Verification-Platform" }],
   },
   {
-    number: 4,
+    number: 3,
     name: "#futureofhr webinar page",
     title: "#futureofhr: a webinar page built like a video call",
     tag: "take-home",
@@ -55,7 +50,7 @@ export const projects: Project[] = [
     href: null,
   },
   {
-    number: 5,
+    number: 4,
     name: "AppsForBharat blog",
     title: "Company blog and a themed thumbnail system",
     tag: "shipped",
@@ -63,9 +58,13 @@ export const projects: Project[] = [
     summary:
       "Home, article and category pages, live at blog.appsforbharat.com. One visual identity per category.",
     href: null,
+    links: [
+      { label: "FIGMA", href: "https://www.figma.com/design/72tXrfMYH64v0hkxDF1m2n/Untitled?node-id=114-1729" },
+      { label: "LIVE BLOG", href: "https://blog.appsforbharat.com/" },
+    ],
   },
   {
-    number: 6,
+    number: 5,
     name: "Video production system",
     title: "Video production system",
     tag: "shipped",
@@ -73,6 +72,17 @@ export const projects: Project[] = [
     summary:
       "Script to final render, with reusable skill files in the repo and review gates. Storyboards went from 4 days to 1.",
     href: null,
+  },
+  {
+    number: 6,
+    name: "Lead-gen assessment",
+    title: "Lead-gen assessment, redesigned and shipped",
+    tag: "shipped",
+    meta: "EPIFI · TETRIZ · 2026",
+    summary:
+      "I rebuilt the result around the answers people gave, then added the email step the funnel was missing.",
+    href: "/work/lead-gen-assessment",
+    more: true,
   },
 ];
 

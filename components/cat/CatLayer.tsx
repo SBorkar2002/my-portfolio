@@ -79,8 +79,10 @@ const perches: { id: string; mobile: boolean; plan: (el: HTMLElement, ctx: Ctx) 
     id: "hero-panel",
     mobile: true,
     plan: (el, { sprite }) => {
-      const s = sprite.pixelScale(2);
       const panel = page(el);
+      const above = el.closest("section");
+      const room = above ? panel.top - page(above).top : 96;
+      const s = sprite.pixelScale(2.6, room, SIZE - Math.min(sprite.stateBox("Land").top, sprite.stateBox("Sit").top, sprite.stateBox("Look").top, sprite.stateBox("Yawn").top));
       const rest = panel.right - 28 - (sprite.stateBox("Sit").right + 1) * s;
       return {
         s,
@@ -99,7 +101,7 @@ const perches: { id: string; mobile: boolean; plan: (el: HTMLElement, ctx: Ctx) 
     id: "work-gutter",
     mobile: false,
     plan: (el, { sprite }) => {
-      const s = sprite.pixelScale(2);
+      const s = sprite.pixelScale(2.6);
       const tile = el.nextElementSibling;
       const title = el.firstElementChild;
       if (!tile || !title) return null;
@@ -131,13 +133,13 @@ const perches: { id: string; mobile: boolean; plan: (el: HTMLElement, ctx: Ctx) 
       const edge = t.top;
       // Free space between this tile and the tile above it, minus that tile's 8px hard shadow.
       let above = -Infinity;
-      for (const other of section.querySelectorAll("a, article")) {
+      for (const other of section.querySelectorAll('a, article, [data-cat-perch="work-gutter"]')) {
         const o = page(other);
         if (other !== tile && o.bottom <= edge && o.right > t.left && o.left < t.right) above = Math.max(above, o.bottom + 8);
       }
       const room = edge - (Number.isFinite(above) ? above : edge - 160);
       const peekRows = SIZE - sprite.stateBox("Peek").top;
-      const s = sprite.pixelScale(2, room, peekRows);
+      const s = sprite.pixelScale(2.6, room, peekRows);
       if (peekRows * s > room) return null;
       const rest = t.right - 56 - (sprite.stateBox("Peek").right + 1) * s;
       return {
@@ -156,7 +158,7 @@ const perches: { id: string; mobile: boolean; plan: (el: HTMLElement, ctx: Ctx) 
     id: "art-room",
     mobile: false,
     plan: (el, { sprite }) => {
-      const s = sprite.pixelScale(2);
+      const s = sprite.pixelScale(2.6);
       const heading = el.firstElementChild;
       if (!heading) return null;
       const rest = page(heading).right + 32 - sprite.stateBox("Sit").left * s;
@@ -176,7 +178,7 @@ const perches: { id: string; mobile: boolean; plan: (el: HTMLElement, ctx: Ctx) 
     id: "footer",
     mobile: true,
     plan: (el, { sprite }) => {
-      const s = sprite.pixelScale(2);
+      const s = sprite.pixelScale(2.6);
       const label = el.firstElementChild;
       const button = el.lastElementChild;
       if (!label || !button) return null;

@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { links, socials } from "@/lib/projects";
 import { Img } from "../Img";
 import { Button, Icon, SectionTitle, Tag, type TagKind } from "../ui";
@@ -86,6 +86,7 @@ const categories = [
     chip: "bg-peach",
     line: "Jeneko, 2020 to now",
     note: "38 PIECES ON ARTSTATION",
+    href: "https://www.artstation.com/jen_chan",
     pieces: [
       ["a_ill_1", "Painted illustration of a girl asleep in a dreamlike landscape"],
       ["a_ill_2", "Painted portrait of a silver-haired woman with a dragon"],
@@ -99,6 +100,7 @@ const categories = [
     chip: "bg-butter",
     line: "Webtoon, Pocket FM, The Last Over",
     note: "SOLO AND CLIENT WORK",
+    href: "https://www.webtoons.com/en/canvas/one-last-chance/list?title_no=772592",
     pieces: [
       ["a_com_1", "Comic panel of a bearded man thinking"],
       ["a_com_2", "Comic page with action panels and sound effects"],
@@ -112,6 +114,7 @@ const categories = [
     chip: "bg-sky",
     line: "Brand, print, merch, social",
     note: "CAFE, STARTUP, TAKE-HOMES",
+    href: "https://sejalborkarart.my.canva.site/",
     pieces: [
       ["a_gra_1", "Cafe student offer poster"],
       ["a_gra_2", "Illustrated appreciation card"],
@@ -125,6 +128,7 @@ const categories = [
     chip: "bg-pink",
     line: "Comic series, launch films",
     note: "BEST EPISODE 30,000+ VIEWS",
+    href: null,
     pieces: [
       ["a_mot_1", "Frame from a comic series episode"],
       ["a_mot_2", "Frame from a comic series episode with a single character"],
@@ -145,32 +149,43 @@ export function ArtRoom() {
             <p className="type-body-m text-muted">Drawing since 2020. It is still part of how I design.</p>
           </div>
           <span className="min-w-px flex-1" />
-          <p className="type-label-s text-muted md:pb-2">ART ROOM COMING SOON</p>
         </div>
         <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {categories.map((c) => (
             <li
               key={c.label}
-              className="flex flex-col self-start overflow-hidden border-2 border-line bg-raised shadow-pixel-8"
+              className="self-start border-2 border-line bg-raised shadow-pixel-8"
               style={{ "--pixel-shadow": c.color } as CSSProperties}
             >
-              <div className="grid grid-cols-2 gap-0.5 bg-sunken">
-                {c.pieces.map(([name, alt]) => (
-                  <div key={name} className="aspect-square">
-                    <Img name={name} width={140} alt={alt} />
-                  </div>
-                ))}
-              </div>
-              <div className="flex flex-col items-start gap-2 px-5 pt-[18px] pb-5">
-                <span className={`type-label-s px-2 py-1.5 text-on-pastel ${c.chip}`}>{c.label}</span>
-                <p className="type-body-m text-primary">{c.line}</p>
-                <p className="type-label-s text-muted">{c.note}</p>
-              </div>
+              <CardLink href={c.href}>
+                <div className="grid grid-cols-2 gap-0.5 bg-sunken">
+                  {c.pieces.map(([name, alt]) => (
+                    <div key={name} className="aspect-square">
+                      <Img name={name} width={140} alt={alt} />
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-col items-start gap-2 px-5 pt-[18px] pb-5">
+                  <span className={`type-label-s px-2 py-1.5 text-on-pastel ${c.chip}`}>{c.label}</span>
+                  <p className="type-body-m text-primary">{c.line}</p>
+                  <p className="type-label-s text-muted">{c.note}</p>
+                </div>
+              </CardLink>
             </li>
           ))}
         </ul>
       </div>
     </section>
+  );
+}
+
+function CardLink({ href, children }: { href: string | null; children: ReactNode }) {
+  if (!href) return <div className="flex flex-col overflow-hidden">{children}</div>;
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="group flex flex-col overflow-hidden">
+      {children}
+      <span className="sr-only">(opens in a new tab)</span>
+    </a>
   );
 }
 
@@ -183,7 +198,6 @@ export function Contact() {
         <h2 id="contact-title" className="type-display-l max-w-[1000px] text-primary">
           Hiring a product designer?
         </h2>
-        <p className="type-body-l max-w-[640px] text-muted">Open to product design roles from December 2026.</p>
         <div className="flex flex-wrap items-center gap-4">
           <Button href={`mailto:${links.email}`} label="EMAIL ME" />
           <Button href={links.resume} label="RESUME" icon="download" kind="secondary" download />
@@ -206,7 +220,7 @@ export function Contact() {
           ))}
         </ul>
         <div className="flex w-full flex-wrap items-start gap-4 pt-[72px]" data-cat-perch="footer">
-          <p className="type-label-s text-muted">SEJAL BORKAR · BENGALURU · 2026</p>
+          <p className="type-label-s text-muted">SEJAL BORKAR · BENGALURU</p>
           <span className="min-w-px flex-1" />
           <button
             type="button"

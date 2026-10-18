@@ -49,25 +49,34 @@ function JumpPanel() {
         <p className="type-label-s hidden text-muted md:block">KEYS 1 TO 6</p>
       </div>
       <ul>
-        {projects.map((p) =>
-          p.href ? (
-            <li key={p.number}>
-              <Link href={p.href} className={`${row} group`}>
-                <Keycap>{p.number}</Keycap>
-                <span className="type-body-m flex-1 text-primary transition-colors duration-100 group-hover:text-ink">
-                  {p.name}
-                </span>
-                <span className="type-label-s text-muted">{p.tag.toUpperCase()}</span>
-              </Link>
-            </li>
-          ) : (
-            <li key={p.number} className={row}>
+        {projects.map((p) => {
+          const label = <span className="type-label-s text-muted">{p.href || !p.links ? p.tag.toUpperCase() : `${p.links[0].label} ↗`}</span>;
+          const inner = (
+            <>
               <Keycap>{p.number}</Keycap>
-              <span className="type-body-m flex-1 text-muted">{p.name}</span>
-              <span className="type-label-s text-muted">COMING SOON</span>
+              <span className="type-body-m flex-1 text-primary transition-colors duration-100 group-hover:text-ink">{p.name}</span>
+              {label}
+            </>
+          );
+          return (
+            <li key={p.number}>
+              {p.href ? (
+                <Link href={p.href} className={`${row} group`}>
+                  {inner}
+                </Link>
+              ) : p.links ? (
+                <a href={p.links[0].href} target="_blank" rel="noopener noreferrer" className={`${row} group`}>
+                  {inner}
+                  <span className="sr-only">(opens in a new tab)</span>
+                </a>
+              ) : (
+                <a href={`#project-${p.number}`} className={`${row} group`}>
+                  {inner}
+                </a>
+              )}
             </li>
-          ),
-        )}
+          );
+        })}
       </ul>
       <div className="flex items-center gap-2.5 border-t-2 border-line pt-4">
         <button type="button" onClick={openSheet} className="type-label-s flex items-center gap-2.5 text-muted hover:text-primary">

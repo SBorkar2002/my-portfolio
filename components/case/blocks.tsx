@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import type { Project } from "@/lib/projects";
 import { Img } from "../Img";
-import { Icon, Keycap, Tag, type TagKind } from "../ui";
+import { Button, Icon, Keycap, Tag, type TagKind } from "../ui";
 import { CaseRail } from "./CaseRail";
 
 const gutter = "mx-auto max-w-[1440px] px-[clamp(20px,8.333vw,120px)]";
@@ -33,6 +33,7 @@ export function CaseHero({
   title,
   lead,
   meta,
+  links,
   children,
 }: {
   kicker: string;
@@ -41,6 +42,7 @@ export function CaseHero({
   title: string;
   lead: string;
   meta: [string, string][];
+  links?: { label: string; href: string }[];
   children: ReactNode;
 }) {
   return (
@@ -52,6 +54,13 @@ export function CaseHero({
       </div>
       <h1 className="type-display-l text-primary">{title}</h1>
       <p className="type-body-l max-w-[700px] text-muted">{lead}</p>
+      {links && links.length > 0 && (
+        <div className="flex flex-wrap gap-4">
+          {links.map((l) => (
+            <Button key={l.href} href={l.href} label={`VIEW ON ${l.label}`} kind="secondary" external />
+          ))}
+        </div>
+      )}
       <dl className="grid w-full grid-cols-2 pt-2 sm:grid-cols-3 lg:grid-cols-5">
         {meta.map(([label, value]) => (
           <div key={label} className="flex flex-col gap-2 border-t-2 border-line pt-4 pr-4 pb-4 lg:pb-0">

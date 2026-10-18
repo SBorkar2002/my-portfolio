@@ -27,11 +27,11 @@ export const metadata: Metadata = {
 const rail = ["Overview", "The problem", "Before", "Decisions", "What shipped", "What I would change"];
 
 export default function LeadGenAssessment() {
-  const next = nextLiveProject(1);
+  const next = nextLiveProject(6);
   return (
     <CaseLayout rail={rail}>
       <CaseHero
-        kicker="CASE STUDY 01 / 06"
+        kicker="CASE STUDY 06 / 06"
         tag="shipped"
         company="EPIFI · TETRIZ"
         title="Lead-gen assessment, redesigned and shipped"

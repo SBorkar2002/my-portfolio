@@ -95,7 +95,7 @@ export class FrameCache {
  */
 export function pixelScale(targetCssPerSpritePx: number, maxCssHeight?: number, rows = SIZE) {
   const dpr = window.devicePixelRatio || 1;
-  let k = Math.max(1, Math.floor(targetCssPerSpritePx * dpr));
+  let k = Math.max(1, Math.round(targetCssPerSpritePx * dpr));
   if (maxCssHeight !== undefined) {
     while (k > 1 && (k / dpr) * rows > maxCssHeight) k--;
   }
