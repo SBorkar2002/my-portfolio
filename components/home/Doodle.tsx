@@ -28,11 +28,13 @@ export function Doodle() {
       old.width = canvas.width;
       old.height = canvas.height;
       if (canvas.width) old.getContext("2d")!.drawImage(canvas, 0, 0);
+      const prev = dpr;
       dpr = Math.min(2, window.devicePixelRatio || 1);
       canvas.width = Math.ceil(section.clientWidth * dpr);
       canvas.height = Math.ceil(section.clientHeight * dpr);
       g.imageSmoothingEnabled = false;
-      g.drawImage(old, 0, 0);
+      // Scaled by the change in pixel ratio (zoom, another screen) so the drawing stays where it was.
+      g.drawImage(old, 0, 0, (old.width * dpr) / prev, (old.height * dpr) / prev);
     };
     size();
     const resize = new ResizeObserver(size);

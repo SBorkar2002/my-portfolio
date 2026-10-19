@@ -19,7 +19,6 @@ export function TappablePhone({ start, size = "small", label }: { start: number;
   const [current, setCurrent] = useState(start);
   const [previous, setPrevious] = useState<number | null>(null);
   const [hint, setHint] = useState(false);
-  const timer = useRef<number | undefined>(undefined);
   const hintTimer = useRef<number | undefined>(undefined);
   const screen = screens[current];
   const f = frame[size];
@@ -34,7 +33,6 @@ export function TappablePhone({ start, size = "small", label }: { start: number;
 
   useEffect(
     () => () => {
-      window.clearTimeout(timer.current);
       window.clearTimeout(hintTimer.current);
     },
     [],
@@ -42,7 +40,6 @@ export function TappablePhone({ start, size = "small", label }: { start: number;
 
   function go(to: number) {
     if (to === current) return;
-    window.clearTimeout(timer.current);
     // Instant cut, no transition. The old screen stays underneath only until the new one has loaded, so there is
     // never a blank frame.
     setPrevious(current);
@@ -83,6 +80,7 @@ export function TappablePhone({ start, size = "small", label }: { start: number;
           loading={size === "hero" ? "eager" : "lazy"}
           decoding="async"
           onLoad={() => setPrevious(null)}
+          onError={() => setPrevious(null)}
           className="absolute inset-0 size-full object-cover"
         />
         {screen.hotspots.map(([text, x, y, w, h, to], i) => (

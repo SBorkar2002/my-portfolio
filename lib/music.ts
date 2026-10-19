@@ -61,6 +61,8 @@ function tick(at: number) {
 
 function schedule() {
   if (!audio || !playing) return;
+  // After a stall (busy main thread), skip ahead instead of playing every missed note at once.
+  if (nextTime < audio.currentTime) nextTime = audio.currentTime + 0.05;
   while (nextTime < audio.currentTime + 0.25) {
     tick(nextTime);
     nextTime += STEP;
@@ -69,7 +71,10 @@ function schedule() {
 }
 
 function start() {
-  if (playing) return;
+  if (playing) {
+    void audio?.resume(); // a later gesture can unlock a context the first touch could not
+    return;
+  }
   try {
     audio ??= new AudioContext();
     if (!master) {
@@ -79,7 +84,8 @@ function start() {
     }
     void audio.resume();
     playing = true;
-    nextTime = audio.currentTime + 0.05;
+    // Notes from before a quick off and on are still queued up to 0.25 s ahead: carry on after them.
+    nextTime = Math.max(nextTime, audio.currentTime + 0.05);
     schedule();
   } catch {
     playing = false; // no Web Audio: the site just stays quiet
@@ -114,8 +120,9 @@ export function setMusicEnabled(on: boolean) {
   window.dispatchEvent(new CustomEvent(EVENT));
 }
 
+/** True once sound is actually coming out (the context is unlocked and running). */
 export function musicPlaying() {
-  return playing;
+  return playing && audio?.state === "running";
 }
 
 export function onMusicChange(callback: () => void) {
@@ -123,27 +130,27 @@ export function onMusicChange(callback: () => void) {
   return () => window.removeEventListener(EVENT, callback);
 }
 
-/** Starts the music on the first click, tap or key press if it is on, and pauses it while the tab is hidden. */
+/** Starts the music on the first click, tap or key press if it is on, and pauses it while the tab is hidden.
+    Browsers only unlock audio on some events (on touch: the end of a tap, never a scroll swipe), so it keeps
+    listening until the context is really running. */
+const UNLOCK = ["pointerdown", "pointerup", "touchend", "click", "keydown"] as const;
 export function bootMusic() {
   const first = (e: Event) => {
     if ((e.target as Element | null)?.closest?.("[data-music-toggle]")) return; // the toggle handles itself
-    remove();
-    if (musicEnabled()) {
-      start();
+    if (!musicEnabled()) return remove();
+    start();
+    void audio?.resume().then(() => {
+      if (audio?.state === "running") remove();
       window.dispatchEvent(new CustomEvent(EVENT));
-    }
+    });
   };
-  const remove = () => {
-    window.removeEventListener("pointerdown", first, true);
-    window.removeEventListener("keydown", first, true);
-  };
+  const remove = () => UNLOCK.forEach((type) => window.removeEventListener(type, first, true));
   const visibility = () => {
     if (!audio || !playing) return;
     if (document.hidden) void audio.suspend();
     else void audio.resume();
   };
-  window.addEventListener("pointerdown", first, true);
-  window.addEventListener("keydown", first, true);
+  UNLOCK.forEach((type) => window.addEventListener(type, first, true));
   document.addEventListener("visibilitychange", visibility);
   return () => {
     remove();

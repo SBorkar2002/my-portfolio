@@ -318,7 +318,7 @@ export function Experience() {
       aria-labelledby="experience-title"
       data-exp-story=""
       className="border-t-2 border-line"
-      style={{ height: storyHeight }}
+      style={{ height: storyHeight ?? `calc(100vh * ${chapters.length * 0.85 + 0.6})` }}
     >
       <div className="sticky top-[72px] h-[calc(100vh-72px)] overflow-hidden">
         {/* Concentric frames that zoom with the scroll: this section's own treatment. */}

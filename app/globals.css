@@ -507,14 +507,19 @@ nav[aria-label="Sections"] {
   position: absolute;
   left: 0;
   width: 2px;
+  top: 0;
   height: 140px;
-  top: -140px;
   background: linear-gradient(transparent, var(--pastel-lilac), transparent);
   animation: gutter-drop var(--dur, 8s) linear var(--delay, 0s) infinite;
 }
+/* Transform only, so the moving light never triggers layout or a full repaint. The gutter is at most a few
+   thousand px tall; 4000px plus the light's own height clears it. */
 @keyframes gutter-drop {
+  from {
+    translate: 0 -140px;
+  }
   to {
-    top: 100%;
+    translate: 0 4000px;
   }
 }
 .gutter-star {

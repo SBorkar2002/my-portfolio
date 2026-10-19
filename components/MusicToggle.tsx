@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { bootMusic, musicEnabled, onMusicChange, setMusicEnabled } from "@/lib/music";
+import { bootMusic, musicEnabled, musicPlaying, onMusicChange, setMusicEnabled } from "@/lib/music";
 
 // 12 x 12 pixel speaker, '#' filled. ON adds sound waves, OFF adds a cross.
 const SPEAKER = [
@@ -47,7 +47,8 @@ export function MusicToggle() {
       type="button"
       data-music-toggle=""
       aria-pressed={on === null ? undefined : on}
-      onClick={() => setMusicEnabled(!musicEnabled())}
+      // On but not yet playing (no gesture so far): a tap means "play", not "turn off".
+      onClick={() => setMusicEnabled(!(musicEnabled() && musicPlaying()))}
       title={on ? "Turn the music off" : "Turn the music on"}
       className={`relative flex shrink-0 items-center gap-2 border-2 border-line p-2 transition-colors duration-100 lg:pr-3 ${
         on ? "bg-butter text-on-pastel" : "text-muted hover:text-primary"

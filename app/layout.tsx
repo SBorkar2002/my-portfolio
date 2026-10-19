@@ -53,7 +53,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Reveal />
         <SiteChrome>
           <Nav />
-          <main id="main">{children}</main>
+          <main id="main" tabIndex={-1} className="outline-none">
+            {children}
+          </main>
           <GoTop />
           {/* The pixel cat (art owned by the cat studio). Pages mark perches with data-cat-perch. */}
           <div id="cat-root">

@@ -20,11 +20,12 @@ export function Loader() {
         // The loader's text and bar fade; the cat keeps spinning above where the bar was.
         root.dataset.loaderExit = "1";
         window.setTimeout(() => {
-          // Tell the cat first, while the layout is still final, then let the hero rise from the bottom.
-          window.dispatchEvent(new CustomEvent("loaderdone"));
-          root.dataset.intro = "1";
+          // Clear the loading lock first (the scrollbar comes back), then tell the cat so it measures the final layout,
+          // then let the hero rise from the bottom. All in one task, so nothing paints in between.
           delete root.dataset.loading;
           delete root.dataset.loaderExit;
+          window.dispatchEvent(new CustomEvent("loaderdone"));
+          root.dataset.intro = "1";
           // The nav comes in once the cat has reached the bottom of the hero (intro-rise is 1.1 s).
           window.setTimeout(() => delete root.dataset.intro, 1150);
         }, 220);

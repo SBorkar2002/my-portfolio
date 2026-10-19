@@ -330,6 +330,7 @@ function Cat() {
 
     /** Settles into a spot with its entrance, then its behaviour. */
     function go(next: Spot) {
+      if (intro) finishIntro(false);
       stop();
       hideBubble();
       if (next.enter === "run" && ctx && !ctx.reduced) return runIn(next);
@@ -620,6 +621,7 @@ function Cat() {
       spot = { ...hero, id: "intro", fixed: true };
       placeHit();
       wrap.style.zIndex = "";
+      introHero = hero;
       const list = ctx.data.frames.Fall.map((_, i) => i);
       const t0 = performance.now();
       const tick = () => {
@@ -631,15 +633,33 @@ function Cat() {
         frame = { state: "Fall", index: list[Math.floor((performance.now() - t0) / 90) % list.length], flip: false };
         draw();
         if (t < 1) timer = window.setTimeout(tick, 33);
-        else {
-          intro = false;
-          spot = hero;
-          x = hero.left;
-          y = hero.floor;
-          play("Land", () => behave(hero));
-        }
+        else finishIntro(true);
       };
       tick();
+    }
+
+    /** Ends the intro on the hero spot. Also used when something interrupts the drop (tab switch, tile hover),
+        so the intro can never stay half done and block the cat for the rest of the visit. */
+    let introHero: Spot | null = null;
+    function finishIntro(land: boolean) {
+      if (!intro) return;
+      intro = false;
+      wrap.style.zIndex = "";
+      const hero = introHero;
+      introHero = null;
+      if (!hero || !ctx) return;
+      stop();
+      spot = hero;
+      x = hero.left;
+      y = hero.floor;
+      if (land) play("Land", () => behave(hero));
+      else {
+        mode = "idle";
+        frame = { state: "Sit", index: 0, flip: false };
+        draw();
+      }
+      // The reader may have scrolled during the drop: go where the scroll position says.
+      choose();
     }
 
     let pending: string | null | undefined;
@@ -672,7 +692,7 @@ function Cat() {
     // ---------- hover a work tile: the cat hops onto that tile's top edge and says its line ----------
 
     const onTileEnter = (e: Event) => {
-      if (!ctx || ctx.reduced || ctx.mobile) return;
+      if (!ctx || intro || ctx.reduced || ctx.mobile) return;
       const tile = e.currentTarget as HTMLElement;
       // Only when the tile's top edge is on screen, so the cat is never sitting out of view.
       const top = tile.getBoundingClientRect().top;
@@ -790,8 +810,19 @@ function Cat() {
     };
     const onKey = () => wake();
     const onVisibility = () => {
-      if (document.hidden) stop();
-      else if (spot && ctx && !ctx.reduced && (mode === "idle" || mode === "sleeping")) (spot.then === "doze" ? doze : idle)();
+      if (document.hidden) {
+        if (intro) finishIntro(false);
+        stop();
+        return;
+      }
+      if (!spot || !ctx || ctx.reduced) return;
+      if (mode === "idle" || mode === "sleeping") (spot.then === "doze" ? doze : idle)();
+      else if (mode === "moving") {
+        // A move was cut off by the tab switch: arrive again instead of staying frozen mid-move.
+        const again = spot;
+        spot = null;
+        go({ ...again, parked: false });
+      }
     };
     const resize = new ResizeObserver(() => {
       if (!spot || spot.parked || spot.id === "experience" || mode === "moving" || mode === "laser" || hoverTile) return;
@@ -879,6 +910,7 @@ function Cat() {
       window.removeEventListener("pointermove", onPointer);
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("exprole", onExp);
+      window.removeEventListener("loaderdone", dropIntoHero);
       document.removeEventListener("visibilitychange", onVisibility);
       tiles.forEach((t) => {
         t.removeEventListener("pointerenter", onTileEnter);
