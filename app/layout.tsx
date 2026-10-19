@@ -5,6 +5,7 @@ import { Nav } from "@/components/Nav";
 import { SiteChrome } from "@/components/SiteChrome";
 import { catInitScript } from "@/lib/cat/prefs";
 import { loaderInitScript } from "@/lib/loader";
+import { GoTop } from "@/components/GoTop";
 import { Loader } from "@/components/Loader";
 import { Reveal } from "@/components/Reveal";
 import { themeInitScript } from "@/lib/theme";
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteChrome>
           <Nav />
           <main id="main">{children}</main>
+          <GoTop />
           {/* The pixel cat (art owned by the cat studio). Pages mark perches with data-cat-perch. */}
           <div id="cat-root">
             <CatLayer />

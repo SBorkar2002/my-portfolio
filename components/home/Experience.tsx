@@ -200,8 +200,6 @@ function Visual({ c, size }: { c: Chapter; size: "l" | "s" }) {
   );
 }
 
-const STORY = "(min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)";
-
 /** Experience as a zoom scroll story. On wide, tall screens the section pins and each scroll step zooms the
     current chapter out past the camera while the next one zooms in from the distance. Concentric frames behind
     it zoom with the scroll. The cat sits on one ledge as the guide and reacts per chapter (CatLayer reads
@@ -212,14 +210,23 @@ export function Experience() {
   const items = useRef<(HTMLDivElement | null)[]>([]);
   const frames = useRef<(HTMLDivElement | null)[]>([]);
   const [story, setStory] = useState(false);
+  // Pixel height fixed when the story mounts, so a changing viewport height never resizes the page under the reader.
+  const [storyHeight, setStoryHeight] = useState<number | undefined>(undefined);
+  useEffect(() => {
+    if (story) setStoryHeight(Math.round(innerHeight * (chapters.length * 0.85 + 0.6)));
+  }, [story]);
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    const query = matchMedia(STORY);
-    const update = () => setStory(query.matches);
+    // Decided on load and again only when the width crosses the breakpoint. Height changes (browser toolbars
+    // showing and hiding near the bottom of the page, zoom) must never switch modes: the pinned story is thousands
+    // of pixels taller, so switching mid-scroll used to throw the reader back up to the art room.
+    const wide = matchMedia("(min-width: 1024px)");
+    const update = () =>
+      setStory(wide.matches && innerHeight >= 640 && !matchMedia("(prefers-reduced-motion: reduce)").matches);
     update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
+    wide.addEventListener("change", update);
+    return () => wide.removeEventListener("change", update);
   }, []);
 
   useEffect(() => {
@@ -285,8 +292,11 @@ export function Experience() {
           <SectionTitle kicker="02 · EXPERIENCE" title="Where I have worked" id="experience-title" />
           <ol className="flex flex-col gap-10">
             {chapters.map((c) => (
-              <li key={c.key} className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-8">
-                <Visual c={c} size="s" />
+              <li key={c.key} data-reveal className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-8">
+                {/* The cat sits beside the role nearest the middle of the screen (CatLayer). */}
+                <div data-cat-perch="exp-role" data-cat-line={c.line} className="self-start">
+                  <Visual c={c} size="s" />
+                </div>
                 <div className="flex min-w-0 flex-1 flex-col items-start gap-2">
                   <p className="type-label-s text-muted">{c.dates}</p>
                   <h3 className="type-heading-s text-primary">{c.role}</h3>
@@ -308,7 +318,7 @@ export function Experience() {
       aria-labelledby="experience-title"
       data-exp-story=""
       className="border-t-2 border-line"
-      style={{ height: `calc(100vh * ${chapters.length * 0.85 + 0.6})` }}
+      style={{ height: storyHeight }}
     >
       <div className="sticky top-[72px] h-[calc(100vh-72px)] overflow-hidden">
         {/* Concentric frames that zoom with the scroll: this section's own treatment. */}

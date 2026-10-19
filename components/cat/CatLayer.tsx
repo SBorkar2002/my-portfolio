@@ -268,15 +268,18 @@ function Cat() {
       const w = bubble.offsetWidth;
       const s = spot.s;
       const b = ctx.sprite.stateBox("Sit");
-      // Beside the head: left of the cat, else right of it, else above it, always inside the screen.
+      // Beside the head: left of the cat, else right of it, else above it, and always clamped 12 px inside the screen.
+      const M = 12;
       const vx = spot.fixed ? x : x - scrollX;
+      const vw = document.documentElement.clientWidth;
       let left = b.left * s - w - 10;
       let top = (b.top + 2) * s;
-      if (vx + left < 8) left = (b.right + 1) * s + 10;
-      if (vx + left + w > innerWidth - 8) {
-        left = Math.min(innerWidth - 8 - w - vx, Math.max(8 - vx, ((b.left + b.right) / 2) * s - w / 2));
+      if (vx + left < M) left = (b.right + 1) * s + 10;
+      if (vx + left + w > vw - M) {
+        left = ((b.left + b.right) / 2) * s - w / 2;
         top = b.top * s - bubble.offsetHeight - 8;
       }
+      left = Math.min(vw - M - w - vx, Math.max(M - vx, left));
       bubble.style.left = `${left}px`;
       bubble.style.top = `${top}px`;
       window.clearTimeout(bubbleTimer);
@@ -454,11 +457,15 @@ function Cat() {
         const panel = document.querySelector('[data-cat-perch="hero-panel"]');
         const hero = panel?.closest("section");
         if (!panel || !hero) return null;
-        const big = ctx.sprite.pixelScale(ctx.mobile ? 3 : 4);
         const p = page(panel);
         const h = page(hero);
-        const left = ctx.mobile ? h.right - 20 - (sit.right + 1) * big : p.left - 32 - (sit.right + 1) * big;
-        return { id, s: big, left, floor: h.bottom - 2, enter: "fall", then: "talk", line, spins: 1 };
+        if (ctx.mobile) {
+          // Phones: smaller, and on top of the jump-in panel (the hero bottom is crowded there).
+          const small = ctx.sprite.pixelScale(2);
+          return { id, s: small, left: p.right - 16 - (sit.right + 1) * small, floor: p.top, enter: "fall", then: "talk", line, spins: 1 };
+        }
+        const big = ctx.sprite.pixelScale(4);
+        return { id, s: big, left: p.left - 32 - (sit.right + 1) * big, floor: h.bottom - 2, enter: "fall", then: "talk", line, spins: 1 };
       }
       if (id === "work" || id === "art") {
         const el = document.getElementById(id);
@@ -493,6 +500,22 @@ function Cat() {
         const p = page(best);
         const peek = ctx.sprite.stateBox("Peek");
         return { id: `work-peek:${best.id}`, s, left: p.right - 40 - (peek.right + 1) * s, floor: p.top, enter: "peek", then: "hold" };
+      }
+      if (id === "exp-role") {
+        let best: HTMLElement | null = null;
+        let bestD = Infinity;
+        for (const el of document.querySelectorAll<HTMLElement>('[data-cat-perch="exp-role"]')) {
+          const r = el.getBoundingClientRect();
+          const d = Math.abs(r.top + r.height / 2 - innerHeight * 0.5);
+          if (r.bottom > 80 && r.top < innerHeight - 40 && d < bestD) {
+            bestD = d;
+            best = el;
+          }
+        }
+        if (!best) return null;
+        const p = page(best);
+        const i = [...document.querySelectorAll('[data-cat-perch="exp-role"]')].indexOf(best);
+        return { id: `exp-role:${i}`, s, left: p.right + 12 - sit.left * s, floor: p.bottom, enter: "pop", then: "guide", line: best.dataset.catLine };
       }
       if (id === "experience") {
         // The guide: one ledge in the pinned story, in viewport coordinates, for every chapter.
@@ -534,6 +557,11 @@ function Cat() {
       if (contact && contact.getBoundingClientRect().top < vh * 0.55) return "footer";
       const art = document.getElementById("art");
       if (between(art, "bottom", 160)) return "art";
+      // Experience as a plain list (phones, short screens): the cat sits beside the role nearest the middle.
+      if (document.querySelector("#experience:not([data-exp-story])")) {
+        const ex = document.getElementById("experience")!.getBoundingClientRect();
+        if (ex.top < vh * 0.5 && ex.bottom > vh * 0.5) return "exp-role";
+      }
       const exp = document.querySelector("#experience[data-exp-story]");
       if (exp) {
         const r = exp.getBoundingClientRect();
@@ -870,7 +898,7 @@ function Cat() {
           ref={bubbleRef}
           hidden
           role="status"
-          className="type-label-s absolute z-10 border-2 border-primary bg-primary w-max max-w-[min(380px,calc(100vw-32px))] px-2.5 py-2 leading-relaxed text-page shadow-[3px_3px_0_0_var(--pastel-lilac)]"
+          className="type-label-s absolute z-10 border-2 border-primary bg-primary w-max max-w-[min(380px,calc(100vw-24px))] break-words px-2.5 py-2 leading-relaxed text-page shadow-[3px_3px_0_0_var(--pastel-lilac)]"
         />
         <button
           ref={hitRef}

@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from "react";
 
 const PX = 6;
 
-/** Doodle mode, contact section only: drag anywhere that is not a link or button to draw chunky pixels.
-    On by default with a mouse or pen; on touch it starts off so the page still scrolls, and the toggle turns it on. */
+/** Doodle mode, contact section only: with a mouse, drag anywhere that is not a link or button to draw chunky
+    pixels. On touch it starts off, and when on it only draws inside the open space beside the cat
+    ([data-doodle-pad]), so a swipe anywhere else still scrolls the page. */
 export function Doodle() {
   const ref = useRef<HTMLCanvasElement>(null);
   const [on, setOn] = useState(true);
@@ -44,7 +45,9 @@ export function Doodle() {
     const section = canvas?.closest("section");
     if (!canvas || !section || !on) return;
     const g = canvas.getContext("2d")!;
-    section.style.touchAction = "none";
+    // Only the pad stops touch scrolling; the rest of the section scrolls as usual.
+    const pad = section.querySelector<HTMLElement>("[data-doodle-pad]");
+    if (pad) pad.style.touchAction = "none";
     let last: [number, number] | null = null;
     let id = -1;
     const cell = (e: PointerEvent): [number, number] => {
@@ -80,6 +83,7 @@ export function Doodle() {
     };
     const down = (e: PointerEvent) => {
       if (e.button !== 0 || (e.target as Element).closest("a, button, input, label, [data-no-doodle]")) return;
+      if (e.pointerType !== "mouse" && !(e.target as Element).closest("[data-doodle-pad]")) return;
       e.preventDefault();
       id = e.pointerId;
       section.setPointerCapture(id);
@@ -104,7 +108,7 @@ export function Doodle() {
     section.addEventListener("pointerup", up);
     section.addEventListener("pointercancel", up);
     return () => {
-      section.style.touchAction = "";
+      if (pad) pad.style.touchAction = "";
       section.removeEventListener("pointerdown", down);
       section.removeEventListener("pointermove", move);
       section.removeEventListener("pointerup", up);

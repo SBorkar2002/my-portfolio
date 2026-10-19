@@ -134,7 +134,7 @@ export function Contact() {
           <div className="flex min-w-0 flex-col items-start gap-9 lg:w-[min(720px,60%)]">
             <p className="type-label-s text-ink">04 · CONTACT</p>
             <h2 id="contact-title" data-reveal className="type-display-l text-primary">
-              Hiring a product designer?
+              Say hello.
             </h2>
             <div className="flex flex-wrap items-center gap-4">
               <Button href={`mailto:${links.email}`} label="EMAIL ME" />
@@ -154,7 +154,7 @@ export function Contact() {
             </ul>
           </div>
           {/* Empty on purpose: the cat sits here. */}
-          <div data-cat-perch="contact" aria-hidden="true" className="h-[240px] w-full lg:h-auto lg:min-h-[400px] lg:flex-1" />
+          <div data-cat-perch="contact" data-doodle-pad="" aria-hidden="true" className="h-[240px] w-full lg:h-auto lg:min-h-[400px] lg:flex-1" />
         </div>
         <div className="flex w-full flex-wrap items-center gap-3 pt-10" data-cat-perch="footer">
           <p className="type-label-s text-muted">SEJAL BORKAR · BENGALURU</p>

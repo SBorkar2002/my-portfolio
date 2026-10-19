@@ -16,7 +16,7 @@ export function Hero() {
         <div className="flex min-w-0 flex-1 flex-col items-start gap-7">
           <p className="flex items-center gap-2.5 border-2 border-line bg-raised px-3 py-2">
             <span aria-hidden="true" className="size-2.5 shrink-0 bg-mint" />
-            <span className="type-label-s text-muted">PRODUCT DESIGNER AT EPIFI · OPEN TO PRODUCT DESIGN ROLES</span>
+            <span className="type-label-s text-muted">FROM DIGITAL ARTIST TO PRODUCT DESIGNER</span>
           </p>
           <h1 id="hero-title" className="hero-title text-primary">
             <span className="font-serif">Product </span>
