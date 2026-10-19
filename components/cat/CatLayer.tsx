@@ -84,7 +84,6 @@ class CatBoundary extends Component<{ children: ReactNode }, { failed: boolean }
 function Cat() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const shadowRef = useRef<HTMLCanvasElement>(null);
   const hitRef = useRef<HTMLButtonElement>(null);
   const bubbleRef = useRef<HTMLDivElement>(null);
   const laserRef = useRef<HTMLDivElement>(null);
@@ -110,7 +109,6 @@ function Cat() {
     const fineQuery = matchMedia("(pointer: fine)");
     const wrap = wrapRef.current!;
     const canvas = canvasRef.current!;
-    const shadow = shadowRef.current!;
     const hit = hitRef.current!;
     const bubble = bubbleRef.current!;
     const laser = laserRef.current!;
@@ -137,8 +135,7 @@ function Cat() {
       g.drawImage(cache.get(state, index), 0, 0, size, size);
     }
 
-    /** ground is the floor under the cat: the landing spot while it falls, otherwise its own feet. */
-    function draw(shadowScale = 1, ground = y) {
+    function draw() {
       if (!ctx || !spot) return;
       const s = spot.s;
       paint(canvas, frame.state, frame.index, frame.flip, s);
@@ -148,11 +145,6 @@ function Cat() {
       wrap.style.position = spot.fixed ? "fixed" : "absolute";
       wrap.style.transform = `translate(${snap(x)}px, ${snap(top)}px)`;
       wrap.dataset.state = `${spot.id}:${frame.state}`;
-      // Ground shadow moves with the cat and grows as it comes down (2.5D cue). Not drawn while it peeks over an edge.
-      // (style.display, not the hidden attribute: the canvas has a display class that would win.)
-      const grounded = spot.enter !== "peek" && spot.enter !== "side";
-      shadow.style.display = grounded ? "block" : "none";
-      if (grounded) shadow.style.transform = `translate(0px, ${snap(ground - y + s)}px) scale(${shadowScale})`;
     }
 
     function stop() {
@@ -295,7 +287,6 @@ function Cat() {
         width: `${(b.right - b.left + 1) * s}px`,
         height: `${(SIZE - b.top) * s}px`,
       });
-      paint(shadow, "Shadow", 0, false, s);
     }
 
     /** Settles into a spot with its entrance, then its behaviour. */
@@ -335,7 +326,7 @@ function Cat() {
           y = startY + distance * t * t;
           const [st, i] = seq[Math.min(seq.length - 1, Math.floor(t * seq.length))];
           frame = { state: st, index: i, flip: false };
-          draw(0.4 + 0.6 * t, next.floor);
+          draw();
           if (t < 1) timer = window.setTimeout(tick, 33);
           else {
             y = next.floor;
@@ -388,7 +379,7 @@ function Cat() {
         return;
       }
       if (next.then === "guide") {
-        say(line, idle);
+        say(document.getElementById("experience")?.dataset.expLine || line, idle);
         return;
       }
       if (next.then === "hold") {
@@ -419,11 +410,11 @@ function Cat() {
       const lines = SECTION_LINES[id] ?? [];
       const line = lines.length ? lines[lineIndex % lines.length] : undefined;
       if (id === "hero-panel") {
-        // Lands on the bottom edge of the hero, beside the jump-in panel (never on it). 30% bigger here.
+        // Lands on the bottom edge of the hero, beside the jump-in panel (never on it). One whole pixel bigger than elsewhere.
         const panel = document.querySelector('[data-cat-perch="hero-panel"]');
         const hero = panel?.closest("section");
         if (!panel || !hero) return null;
-        const big = ctx.sprite.pixelScale((ctx.mobile ? 2.4 : 3.4) * 1.3);
+        const big = ctx.sprite.pixelScale(ctx.mobile ? 3 : 4);
         const p = page(panel);
         const h = page(hero);
         const left = ctx.mobile ? h.right - 20 - (sit.right + 1) * big : p.left - 32 - (sit.right + 1) * big;
@@ -461,13 +452,14 @@ function Cat() {
         if (!ledge) return null;
         const r = ledge.getBoundingClientRect();
         const mid = ((sit.left + sit.right + 1) / 2) * s;
-        return { id, s, fixed: true, left: r.left + r.width / 2 - mid, floor: r.top, enter: "pop", then: "guide", line: expLine };
+        const line = document.getElementById("experience")?.dataset.expLine || expLine;
+        return { id, s, fixed: true, left: r.left + r.width / 2 - mid, floor: r.top, enter: "pop", then: "guide", line };
       }
       if (id === "footer") {
-        // Centred in the empty space beside "Hiring a product designer?", 30% bigger than round 2.
+        // Centred in the empty space beside "Hiring a product designer?", about 30% bigger than round 2 at a whole-pixel scale.
         const el = document.querySelector('[data-cat-perch="contact"]');
         if (!el) return null;
-        const big = ctx.sprite.pixelScale((ctx.mobile ? 3.6 : 5.25) * 1.3);
+        const big = ctx.sprite.pixelScale(ctx.mobile ? 5 : 7);
         const p = page(el);
         const mid = ((sit.left + sit.right + 1) / 2) * big;
         return { id, s: big, left: p.left + p.width / 2 - mid, floor: p.bottom, enter: "run", then: "doze", line: CONTACT_LINE };
@@ -534,6 +526,9 @@ function Cat() {
     const onTileEnter = (e: Event) => {
       if (!ctx || ctx.reduced || ctx.mobile) return;
       const tile = e.currentTarget as HTMLElement;
+      // Only when the tile's top edge is on screen, so the cat is never sitting out of view.
+      const top = tile.getBoundingClientRect().top;
+      if (top < 80 || top > innerHeight - 40) return;
       // A pending scroll spot must not land after this and move the cat to another tile.
       window.clearTimeout(settle);
       pending = undefined;
@@ -620,8 +615,9 @@ function Cat() {
       expLine = (e as CustomEvent<{ line: string }>).detail?.line ?? "";
       if (spot?.id !== "experience" || !ctx || ctx.reduced || mode === "moving") return;
       stop();
-      hideBubble();
-      play("React", () => say(expLine, idle));
+      // The line shows at once so a fast scroll never skips it; the hop and the talk follow.
+      showBubble(expLine);
+      play("React", () => play("Talk", idle));
     };
     const onKey = () => wake();
     const onVisibility = () => {
@@ -712,13 +708,12 @@ function Cat() {
     <>
       <div ref={laserRef} hidden aria-hidden="true" className="laser-dot pointer-events-none fixed top-0 left-0 z-[65]" />
       <div ref={wrapRef} hidden className="pointer-events-none absolute top-0 left-0 z-40" style={{ width: 0, height: 0 }}>
-        <canvas ref={shadowRef} aria-hidden="true" className="absolute top-0 left-0 block origin-bottom [image-rendering:pixelated]" />
         <canvas ref={canvasRef} aria-hidden="true" className="relative block [image-rendering:pixelated]" />
         <div
           ref={bubbleRef}
           hidden
           role="status"
-          className="type-label-s absolute z-10 border-2 border-line bg-raised w-max max-w-[min(280px,calc(100vw-32px))] px-2.5 py-2 text-primary shadow-[3px_3px_0_0_var(--pastel-lilac)]"
+          className="type-label-s absolute z-10 border-2 border-line bg-raised w-max max-w-[min(380px,calc(100vw-32px))] px-2.5 py-2 leading-relaxed text-primary shadow-[3px_3px_0_0_var(--pastel-lilac)]"
         />
         <button
           ref={hitRef}

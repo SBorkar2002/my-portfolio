@@ -9,8 +9,8 @@ if (!src) {
   process.exit(1);
 }
 
-// Fall is used when the cat drops into a section.
-const STATES = ["Sit", "Idle", "Walk", "Look", "Inspect", "Yawn", "Sleep", "Peek", "React", "Fall", "Land", "Run", "Tumble", "PeekSide", "PeekTop", "Talk", "Shadow"];
+// Fall is used when the cat drops into a section. The ground shadow is drawn inside each frame (rows 46 and 47).
+const STATES = ["Sit", "Idle", "Walk", "Look", "Inspect", "Yawn", "Sleep", "Peek", "React", "Fall", "Land", "Run", "Tumble", "PeekSide", "PeekTop", "Talk"];
 // Shipped by the cat studio in later rounds; copied when present, and the code falls back without them.
 const OPTIONAL = ["Sphinx", "SphinxTap", "Pounce"];
 const data = JSON.parse(readFileSync(src, "utf8"));

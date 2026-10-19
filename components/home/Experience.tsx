@@ -236,6 +236,7 @@ export function Experience() {
         last = now;
         setStep(now);
         el.dataset.expStep = String(now);
+        el.dataset.expLine = chapters[now].line;
         window.dispatchEvent(new CustomEvent("exprole", { detail: { step: now, line: chapters[now].line } }));
       }
     };
@@ -246,6 +247,7 @@ export function Experience() {
       window.removeEventListener("scroll", render);
       window.removeEventListener("resize", render);
       delete el.dataset.expStep;
+      delete el.dataset.expLine;
     };
   }, [story]);
 
