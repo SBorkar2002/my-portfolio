@@ -108,7 +108,7 @@ function Cat() {
     let bubbleTimer = 0;
     let hoverTile: Element | null = null;
     let expLine = "";
-    /** Which side of the screen the cat last left by, so it comes back into contact from the same side. */
+    /** Which side of the screen the cat last left by. */
     let lastExit: "left" | "right" = "right";
     const reducedQuery = matchMedia("(prefers-reduced-motion: reduce)");
     const mobileQuery = matchMedia("(max-width: 767px)");
@@ -372,7 +372,8 @@ function Cat() {
         wrap.hidden = false;
         placeHit();
         const sit = ctx!.sprite.stateBox("Sit");
-        x = lastExit === "left" ? scrollX - (sit.right + 1) * next.s : scrollX + innerWidth - sit.left * next.s + 8;
+        // Always comes in from the right edge, so it never walks across the contact text.
+        x = scrollX + innerWidth - sit.left * next.s + 8;
         y = next.floor;
         moveTo(next.left, next.floor, "Run", () => play("Sit", () => behave(next), { frames: [0] }));
       };
@@ -844,7 +845,7 @@ function Cat() {
           ref={bubbleRef}
           hidden
           role="status"
-          className="type-label-s absolute z-10 border-2 border-line bg-raised w-max max-w-[min(380px,calc(100vw-32px))] px-2.5 py-2 leading-relaxed text-primary shadow-[3px_3px_0_0_var(--pastel-lilac)]"
+          className="type-label-s absolute z-10 border-2 border-primary bg-primary w-max max-w-[min(380px,calc(100vw-32px))] px-2.5 py-2 leading-relaxed text-page shadow-[3px_3px_0_0_var(--pastel-lilac)]"
         />
         <button
           ref={hitRef}

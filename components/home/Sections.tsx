@@ -152,7 +152,6 @@ export function Contact() {
                 </li>
               ))}
             </ul>
-            <p className="type-body-s text-muted">Some effects adapted from Vengeance UI (MIT), Skiper UI and scroll-craft (MIT).</p>
           </div>
           {/* Empty on purpose: the cat sits here. */}
           <div data-cat-perch="contact" aria-hidden="true" className="h-[240px] w-full lg:h-auto lg:min-h-[400px] lg:flex-1" />

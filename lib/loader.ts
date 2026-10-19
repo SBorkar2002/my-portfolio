@@ -1,2 +1,3 @@
-/** Runs in <head>: marks JS for reveals, and shows the loading screen once per visit on the home page. */
-export const loaderInitScript = `try{var d=document.documentElement;d.classList.add("js");if(location.pathname==="/"&&!sessionStorage.getItem("loaded")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)d.dataset.loading="1"}catch(e){}`;
+/** Runs in <head>: marks JS for reveals and shows the loading screen on every full load. On the home page a reload
+    always starts at the hero: no restored scroll position and no stale hash. */
+export const loaderInitScript = `try{var d=document.documentElement;d.classList.add("js");d.dataset.loading="1";if(location.pathname==="/"){history.scrollRestoration="manual";if(location.hash)history.replaceState(null,"",location.pathname+location.search);window.scrollTo(0,0);addEventListener("load",function(){window.scrollTo(0,0)})}}catch(e){}`;

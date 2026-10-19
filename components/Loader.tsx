@@ -2,18 +2,20 @@
 
 import { useEffect } from "react";
 
-/** Pixel loading screen, first visit to home only. Clears after the page loads (at least 0.7s, at most 1.6s).
+/** Pixel loading screen.
+    Shown on every full load for at least 2 s (no minimum with reduced motion), longer while assets still load.
     The cat spins on top of the bar (CatLayer), then falls while the page rises from the bottom to meet it. */
 export function Loader() {
   useEffect(() => {
     const root = document.documentElement;
     if (!root.dataset.loading) return;
-    const started = performance.now();
+    const started = 0; // the loader has been up since navigation start
     let done = false;
     const finish = () => {
       if (done) return;
       done = true;
-      const wait = Math.max(0, 700 - (performance.now() - started));
+      const min = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 2000;
+      const wait = Math.max(0, min - (performance.now() - started));
       window.setTimeout(() => {
         // The loader's text and bar fade; the cat keeps spinning above where the bar was.
         root.dataset.loaderExit = "1";
@@ -23,11 +25,6 @@ export function Loader() {
           root.dataset.intro = "1";
           delete root.dataset.loading;
           delete root.dataset.loaderExit;
-          try {
-            sessionStorage.setItem("loaded", "1");
-          } catch {
-            // Storage blocked: the loader just shows again next visit.
-          }
           // The nav comes in once the cat has reached the bottom of the hero (intro-rise is 1.1 s).
           window.setTimeout(() => delete root.dataset.intro, 1150);
         }, 220);
@@ -35,7 +32,8 @@ export function Loader() {
     };
     if (document.readyState === "complete") finish();
     else window.addEventListener("load", finish, { once: true });
-    const cap = window.setTimeout(finish, 1600);
+    // Never stuck: give up waiting for slow assets after 8 s.
+    const cap = window.setTimeout(finish, 8000);
     return () => window.clearTimeout(cap);
   }, []);
 

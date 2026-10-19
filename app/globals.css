@@ -205,6 +205,26 @@
     -webkit-font-smoothing: antialiased;
     overflow-x: clip;
   }
+  /* Pixel fish-cookie cursor (scripts/build-cursor.mjs), hotspot on its nose. Links and controls keep the pointer,
+     text fields keep the text cursor. */
+  html {
+    cursor: url(/cursors/fish-cookie-32.png) 2 2, auto;
+    cursor: -webkit-image-set(url(/cursors/fish-cookie-32.png) 1x, url(/cursors/fish-cookie-64.png) 2x) 2 2, auto;
+    cursor: image-set(url(/cursors/fish-cookie-32.png) 1x, url(/cursors/fish-cookie-64.png) 2x) 2 2, auto;
+  }
+  a[href],
+  button:not(:disabled),
+  [role="button"],
+  label[for],
+  select,
+  summary {
+    cursor: pointer;
+  }
+  input:not([type="checkbox"], [type="radio"], [type="button"], [type="submit"]),
+  textarea,
+  [contenteditable="true"] {
+    cursor: text;
+  }
   ::selection {
     background: var(--pastel-lilac);
     color: var(--text-on-pastel);
@@ -379,8 +399,10 @@
 }
 /* First visit: after the loader the page rises from the bottom while the cat falls, like following a raindrop
    down to the ground. The nav and the section rail come in once it lands. */
-:root[data-intro] main {
-  animation: intro-rise 1.1s cubic-bezier(0.2, 0.7, 0.25, 1) both;
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-intro] main {
+    animation: intro-rise 1.1s cubic-bezier(0.2, 0.7, 0.25, 1) both;
+  }
 }
 @keyframes intro-rise {
   from {
@@ -529,8 +551,9 @@ nav[aria-label="Sections"] {
   filter: grayscale(0.6);
 }
 [data-ice] > .art-collage {
-  opacity: 0.9;
-  filter: none;
+  /* Faded back so the panels in front stand out when the ice cracks. */
+  opacity: 0.4;
+  filter: saturate(0.8);
 }
 /* Contact: dotted drawing paper for doodle mode. */
 .contact-paper {
