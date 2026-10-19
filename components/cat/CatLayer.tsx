@@ -206,7 +206,7 @@ function Cat() {
     function idle() {
       mode = "idle";
       if (performance.now() - lastActive > SLEEP_AFTER) return sleep();
-      if (Math.random() < 0.15) play("Look", idle, { frames: [0, 1] });
+      if (Math.random() < 0.15) play("Sit", idle, { frames: [0, 3] });
       else play("Sit", idle);
     }
 
@@ -406,7 +406,7 @@ function Cat() {
       );
       mode = "idle";
       if (room) play("React", idle);
-      else play("Look", idle, { frames: [0, 1, 0] });
+      else play("Sit", idle, { frames: [0, 3, 0] });
     };
 
     async function boot() {
