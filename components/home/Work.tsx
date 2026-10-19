@@ -13,7 +13,7 @@ const tileLive =
 export function Work() {
   const more = projectByNumber(6)!;
   return (
-    <section id="work" aria-labelledby="work-title" className="section-fx border-t-2 border-line [--fx-x:85%] [--fx-x2:8%] [--fx-y2:60%] [--fx-y:6%]">
+    <section id="work" aria-labelledby="work-title" className="work-fx border-t-2 border-line">
       <div className="mx-auto flex max-w-[1440px] flex-col gap-10 px-[clamp(20px,8.333vw,120px)] pt-16 pb-20 lg:pt-24 lg:pb-32">
         <div className="flex items-end gap-6" data-cat-perch="work-gutter" data-reveal>
           <SectionTitle kicker="01 · SELECTED WORK" title="Selected work" id="work-title" />

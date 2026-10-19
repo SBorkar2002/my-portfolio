@@ -11,11 +11,13 @@ if (!src) {
 
 // Fall is used when the cat drops into a section.
 const STATES = ["Sit", "Idle", "Walk", "Look", "Inspect", "Yawn", "Sleep", "Peek", "React", "Fall", "Land", "Run", "Tumble", "PeekSide", "PeekTop", "Talk", "Shadow"];
+// Shipped by the cat studio in later rounds; copied when present, and the code falls back without them.
+const OPTIONAL = ["Sphinx", "SphinxTap", "Pounce"];
 const data = JSON.parse(readFileSync(src, "utf8"));
 
 const frames = {};
 const timings = {};
-for (const state of STATES) {
+for (const state of [...STATES, ...OPTIONAL.filter((st) => data.frames[st])]) {
   // Trailing transparent pixels are dropped from each row to keep the file small.
   frames[state] = data.frames[state].map((rows) => rows.map((row) => row.replace(/\.+$/, "")));
   timings[state] = data.timings[state];

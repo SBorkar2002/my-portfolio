@@ -1,146 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { type CSSProperties, type ReactNode } from "react";
 import { links, socials } from "@/lib/projects";
 import { Img } from "../Img";
+export { Experience } from "./Experience";
 import { ArtCollage } from "./ArtCollage";
+import { Doodle } from "./Doodle";
 import { UnderlineLink } from "../vendor/underline-link";
-import { Button, Icon, SectionTitle, Tag, type TagKind } from "../ui";
+import { Button, Icon, SectionTitle } from "../ui";
 
 const gutter = "mx-auto max-w-[1440px] px-[clamp(20px,8.333vw,120px)]";
-
-const roles: { dates: string; role: string; detail: string; tag: TagKind }[] = [
-  {
-    dates: "JUN TO NOV 2026",
-    role: "GenAI Product Designer (Consultant) · Epifi Technologies (Fi Money)",
-    detail: "Tetriz, a B2B engineering-intelligence platform. Assessment, marketing site, video system, comic series.",
-    tag: "shipped",
-  },
-  {
-    dates: "JAN TO JUN 2026",
-    role: "Design Intern · AppsForBharat",
-    detail: "Company blog, print and merch, employer-brand campaigns with AI video.",
-    tag: "shipped",
-  },
-  {
-    dates: "AUG TO DEC 2025",
-    role: "Post-production Digital Artist · Pocket FM",
-    detail: "Comic panels, posters and openings: generation, retouch, lettering and layout.",
-    tag: "client",
-  },
-  {
-    dates: "AUG 2023 TO MAY 2025",
-    role: "Graphic Designer (Freelance) · Maggilicious Cafe and others",
-    detail: "Brand identity: logo, menus, posters and social creatives.",
-    tag: "client",
-  },
-  {
-    dates: "FEB 2021 TO MAR 2025",
-    role: "Freelance Digital Artist · Jeneko",
-    detail: "Character art and commissions on Fiverr, Discord and Pixiv Fanbox.",
-    tag: "client",
-  },
-];
-
-/** Experience as scrollytelling: on wide, tall screens the section pins and each scroll step reveals the next role.
-    The cat follows the active role (it reads data-exp-active). Phones, short screens and reduced motion get the plain list. */
-export function Experience() {
-  const outer = useRef<HTMLElement>(null);
-  const [step, setStep] = useState(-1); // -1 = not pinned, show everything
-  useEffect(() => {
-    const el = outer.current;
-    if (!el) return;
-    const query = matchMedia("(min-width: 1024px) and (min-height: 760px) and (prefers-reduced-motion: no-preference)");
-    let timer = 0;
-    const update = () => {
-      timer = 0;
-      if (!query.matches) return setStep(-1);
-      const r = el.getBoundingClientRect();
-      const total = el.offsetHeight - innerHeight;
-      const progress = Math.min(1, Math.max(0, -r.top / Math.max(1, total)));
-      const next = Math.min(roles.length - 1, Math.floor(progress * roles.length));
-      setStep((prev) => {
-        if (prev !== next) window.dispatchEvent(new CustomEvent("exprole"));
-        return next;
-      });
-    };
-    const onScroll = () => {
-      if (!timer) timer = window.setTimeout(update, 40);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    query.addEventListener("change", update);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      query.removeEventListener("change", update);
-      window.clearTimeout(timer);
-    };
-  }, []);
-  const pinned = step >= 0;
-
-  return (
-    <section
-      ref={outer}
-      id="experience"
-      aria-labelledby="experience-title"
-      className="section-fx border-t-2 border-line [--fx-x:15%] [--fx-x2:90%] [--fx-y:15%] [--fx-y2:85%]"
-      style={pinned ? { minHeight: "calc(100vh * 3.2)" } : undefined}
-    >
-      <div className={pinned ? "sticky top-[72px] flex min-h-[calc(100vh-72px)] items-center" : ""}>
-        <div className={`${gutter} flex w-full flex-col gap-10 pt-16 pb-20 lg:pt-12 lg:pb-16`}>
-          <div className="flex items-end gap-6">
-            <SectionTitle kicker="02 · EXPERIENCE" title="Where I have worked" id="experience-title" />
-            <span className="min-w-px flex-1" />
-            {pinned && (
-              <p className="type-label-s text-muted" aria-hidden="true">
-                {String(step + 1).padStart(2, "0")} / {String(roles.length).padStart(2, "0")} · SCROLL
-              </p>
-            )}
-          </div>
-          <div className="flex flex-col gap-12 lg:flex-row lg:gap-16">
-            <div className="flex w-full max-w-[360px] shrink-0 flex-col gap-4">
-              <div className="aspect-square w-full border-2 border-line shadow-pixel-8 [--pixel-shadow:var(--pastel-mint)] lg:max-w-[300px]">
-                <Img name="portrait" width={360} alt="Portrait of Sejal Borkar" />
-              </div>
-              <p className="type-body-m text-primary">
-                Hi, I am Sejal. Before product design I spent four years drawing for clients as Jeneko, and it still shapes how I work.
-              </p>
-              <div className="flex flex-col gap-1.5">
-                <p className="type-label-s text-muted">EDUCATION</p>
-                <p className="type-body-s text-primary">MCA, Ramaiah Institute of Technology, Bengaluru · 2024 to 2025</p>
-              </div>
-            </div>
-            <ol className="min-w-0 flex-1 border-b-2 border-line">
-              {roles.map((r, i) => {
-                const state = !pinned ? "shown" : i < step ? "past" : i === step ? "active" : "future";
-                return (
-                  <li
-                    key={r.role}
-                    data-exp-active={state === "active" ? "" : undefined}
-                    data-step={i}
-                    className={`exp-role flex flex-col gap-3 border-t-2 border-line py-[18px] pl-4 md:flex-row md:items-start md:gap-8 ${
-                      state === "active" ? "border-l-4 border-l-lilac bg-raised/80" : "border-l-4 border-l-transparent"
-                    }`}
-                    data-state={state}
-                  >
-                    <p className="type-label-s shrink-0 text-muted md:w-[190px]">{r.dates}</p>
-                    <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                      <p className="type-body-m font-semibold text-primary">{r.role}</p>
-                      <p className="type-body-s text-muted">{r.detail}</p>
-                    </div>
-                    <div className="flex">
-                      <Tag kind={r.tag} />
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 const categories = [
   {
@@ -204,7 +73,7 @@ const categories = [
 /** Art room preview (Figma 28:466). The full art room page is not designed yet. */
 export function ArtRoom() {
   return (
-    <section id="art" aria-labelledby="art-title" className="section-fx border-t-2 border-line [--fx-x:80%] [--fx-x2:12%]">
+    <section id="art" aria-labelledby="art-title" className="relative isolate border-t-2 border-line">
       <ArtCollage />
       <div className={`${gutter} flex flex-col gap-10 pt-16 pb-20 lg:pt-24 lg:pb-32`}>
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:gap-6" data-cat-perch="art-room" data-reveal>
@@ -254,35 +123,43 @@ function CardLink({ href, children }: { href: string | null; children: ReactNode
   );
 }
 
-/** Contact and footer (Figma 28:524). */
+/** Contact and footer (Figma 28:524). The cat sits in the empty space beside the heading, and the whole section is a
+    doodle canvas. */
 export function Contact() {
   return (
-    <section id="contact" aria-labelledby="contact-title" className="section-fx border-t-2 border-line bg-sunken [--fx-x:70%] [--fx-x2:15%] [--fx-y:30%] [--fx-y2:80%]">
+    <section id="contact" aria-labelledby="contact-title" className="contact-paper relative isolate border-t-2 border-line bg-sunken">
       <div className={`${gutter} flex flex-col items-start gap-9 pt-20 pb-14 lg:pt-28`}>
-        <p className="type-label-s text-ink">04 · CONTACT</p>
-        <h2 id="contact-title" data-reveal className="type-display-l max-w-[1000px] text-primary">
-          Hiring a product designer?
-        </h2>
-        <div className="flex flex-wrap items-center gap-4">
-          <Button href={`mailto:${links.email}`} label="EMAIL ME" />
-          <Button href={links.resume} label="RESUME" icon="download" kind="secondary" download />
-          <p className="type-body-l break-all text-primary">{links.email}</p>
+        <div className="flex w-full flex-col gap-9 lg:flex-row lg:items-stretch">
+          <div className="flex min-w-0 flex-col items-start gap-9 lg:w-[min(720px,60%)]">
+            <p className="type-label-s text-ink">04 · CONTACT</p>
+            <h2 id="contact-title" data-reveal className="type-display-l text-primary">
+              Hiring a product designer?
+            </h2>
+            <div className="flex flex-wrap items-center gap-4">
+              <Button href={`mailto:${links.email}`} label="EMAIL ME" />
+              <Button href={links.resume} label="RESUME" icon="download" kind="secondary" download />
+              <p data-no-doodle className="type-body-l break-all text-primary">{links.email}</p>
+            </div>
+            <ul className="flex flex-wrap gap-x-7 gap-y-4 pt-2">
+              {socials.map((s) => (
+                <li key={s.label}>
+                  <UnderlineLink href={s.href} className="type-label-s gap-2 text-primary hover:text-ink">
+                    {s.label}
+                    <Icon name="arrow-right" />
+                    <span className="sr-only">(opens in a new tab)</span>
+                  </UnderlineLink>
+                </li>
+              ))}
+            </ul>
+            <p className="type-body-s text-muted">Some effects adapted from Vengeance UI (MIT), Skiper UI and scroll-craft (MIT).</p>
+          </div>
+          {/* Empty on purpose: the cat sits here. */}
+          <div data-cat-perch="contact" aria-hidden="true" className="h-[240px] w-full lg:h-auto lg:min-h-[360px] lg:flex-1" />
         </div>
-        <ul className="flex flex-wrap gap-x-7 gap-y-4 pt-2">
-          {socials.map((s) => (
-            <li key={s.label}>
-              <UnderlineLink href={s.href} className="type-label-s gap-2 text-primary hover:text-ink">
-                {s.label}
-                <Icon name="arrow-right" />
-                <span className="sr-only">(opens in a new tab)</span>
-              </UnderlineLink>
-            </li>
-          ))}
-        </ul>
-        <p className="type-body-s text-muted">Some effects adapted from Vengeance UI (MIT) and Skiper UI.</p>
-        <div className="flex w-full flex-wrap items-start gap-4 pt-[72px]" data-cat-perch="footer">
+        <div className="flex w-full flex-wrap items-center gap-4 pt-10" data-cat-perch="footer">
           <p className="type-label-s text-muted">SEJAL BORKAR · BENGALURU</p>
           <span className="min-w-px flex-1" />
+          <Doodle />
           <button
             type="button"
             onClick={() =>

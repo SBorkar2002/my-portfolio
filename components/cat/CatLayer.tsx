@@ -16,18 +16,23 @@ type Spot = {
   left: number;
   floor: number;
   s: number;
-  /** How it arrives: fall in from above, peek over an edge, poke out sideways, hang from a top edge, or just appear. */
-  enter: "fall" | "peek" | "side" | "hang" | "appear";
-  /** What it does once there. */
-  then: "talk" | "wander" | "nap" | "hold";
+  /** How it arrives: fall in from above, peek over an edge, poke out sideways, hop in, run in from the left, or just appear. */
+  enter: "fall" | "peek" | "side" | "pop" | "run" | "appear";
+  /** What it does once there. Guide reacts per experience chapter; doze loops sit, yawn and sleep and ignores the pointer. */
+  then: "talk" | "wander" | "hold" | "guide" | "doze";
   line?: string;
   flip?: boolean;
+  /** Viewport coordinates instead of page coordinates (the pinned experience story). */
+  fixed?: boolean;
+  /** Spins on the way down. */
+  spins?: number;
 };
 
 const SIZE = 48;
 const SLEEP_AFTER = 5000;
-const LASER_REST = 1200;
-const LASER_COOLDOWN = 9000;
+const LASER_REST = 1000;
+const RUN_SPEED = 900;
+const CONTACT_LINE = "In this section, you're free to draw.";
 
 // One short line per work tile (hover), no em dashes. Order matches lib/projects.ts.
 const TILE_LINES: Record<string, string> = {
@@ -41,7 +46,6 @@ const SECTION_LINES: Record<string, string[]> = {
   "hero-panel": ["hey!", "press 1 to 6", "try the ? key"],
   work: ["tap a tile", "press 2 for Sourced"],
   art: ["drawing since 2020"],
-  footer: ["say hi!"],
 };
 
 function page(el: Element) {
@@ -100,7 +104,7 @@ function Cat() {
     let lineIndex = 0;
     let bubbleTimer = 0;
     let hoverTile: Element | null = null;
-    let lastLaser = 0;
+    let expLine = "";
     const reducedQuery = matchMedia("(prefers-reduced-motion: reduce)");
     const mobileQuery = matchMedia("(max-width: 767px)");
     const fineQuery = matchMedia("(pointer: fine)");
@@ -112,6 +116,9 @@ function Cat() {
     const laser = laserRef.current!;
 
     const baseScale = () => ctx!.sprite.pixelScale(ctx!.mobile ? 2.4 : 3.4);
+    /** States the cat studio ships in later rounds; the cat falls back to older ones until they land. */
+    const has = (st: string) => Boolean(ctx && (ctx.data.frames as Record<string, unknown>)[st]);
+    const pick = (...list: string[]) => (list.find(has) ?? "Sit") as CatState;
 
     function paint(target: HTMLCanvasElement, state: CatState, index: number, flip: boolean, s: number) {
       if (!cache) return;
@@ -130,19 +137,22 @@ function Cat() {
       g.drawImage(cache.get(state, index), 0, 0, size, size);
     }
 
-    function draw(shadowScale = 1) {
+    /** ground is the floor under the cat: the landing spot while it falls, otherwise its own feet. */
+    function draw(shadowScale = 1, ground = y) {
       if (!ctx || !spot) return;
       const s = spot.s;
       paint(canvas, frame.state, frame.index, frame.flip, s);
       const dpr = window.devicePixelRatio || 1;
       const snap = (v: number) => Math.round(v * dpr) / dpr;
       const top = Math.round((y - SIZE * s) / s) * s;
+      wrap.style.position = spot.fixed ? "fixed" : "absolute";
       wrap.style.transform = `translate(${snap(x)}px, ${snap(top)}px)`;
       wrap.dataset.state = `${spot.id}:${frame.state}`;
-      // Ground shadow stays on the floor and grows as the cat comes down (2.5D cue). Not drawn for peeks.
-      const grounded = spot.enter === "fall" || spot.enter === "appear";
-      shadow.hidden = !grounded;
-      if (grounded) shadow.style.transform = `translate(0px, ${snap(spot.floor - y + 3 * s)}px) scale(${shadowScale})`;
+      // Ground shadow moves with the cat and grows as it comes down (2.5D cue). Not drawn while it peeks over an edge.
+      // (style.display, not the hidden attribute: the canvas has a display class that would win.)
+      const grounded = spot.enter !== "peek" && spot.enter !== "side";
+      shadow.style.display = grounded ? "block" : "none";
+      if (grounded) shadow.style.transform = `translate(0px, ${snap(ground - y + s)}px) scale(${shadowScale})`;
     }
 
     function stop() {
@@ -170,7 +180,7 @@ function Cat() {
     /** Walks or runs to a point, timer driven and quantised to sprite pixels, then calls next. */
     function moveTo(targetX: number, targetY: number, state: "Walk" | "Run", next: () => void) {
       if (!ctx || !spot) return;
-      const speed = state === "Run" ? 520 : 140;
+      const speed = state === "Run" ? RUN_SPEED : 140;
       const startX = x;
       const startY = y;
       const dist = Math.hypot(targetX - startX, targetY - startY);
@@ -213,35 +223,53 @@ function Cat() {
       });
     }
 
+    /** Contact: sit a while, yawn, sleep, wake, and again. It stays put whatever the pointer does. */
+    function doze() {
+      mode = "idle";
+      play("Sit", () =>
+        play("Yawn", () => {
+          mode = "sleeping";
+          play("Sleep", () => play("Sit", doze, { frames: [2, 3, 0] }), { loops: 4 });
+        }),
+        { loops: 3 },
+      );
+    }
+
     function wake() {
       lastActive = performance.now();
-      if (mode !== "sleeping" || !ctx || ctx.reduced) return;
+      if (mode !== "sleeping" || !ctx || ctx.reduced || spot?.then === "doze") return;
       stop();
       mode = "idle";
       play("Sit", idle, { frames: [2, 3, 0] });
     }
 
-    function say(text: string | undefined, then: () => void) {
+    function say(text: string | undefined, then: () => void, ms?: number) {
       if (!text || !ctx) return then();
-      showBubble(text);
+      showBubble(text, ms);
       if (ctx.reduced) return then();
       play("Talk", then);
     }
 
-    function showBubble(text: string) {
+    function showBubble(text: string, ms = 4200) {
       if (!spot || !ctx) return;
       bubble.textContent = text;
       bubble.hidden = false;
       const w = bubble.offsetWidth;
       const s = spot.s;
       const b = ctx.sprite.stateBox("Sit");
-      // Beside the head: left of the cat, or right of it when the left side would leave the screen.
+      // Beside the head: left of the cat, else right of it, else above it, always inside the screen.
+      const vx = spot.fixed ? x : x - scrollX;
       let left = b.left * s - w - 10;
-      if (x + left < 8) left = (b.right + 1) * s + 10;
+      let top = (b.top + 2) * s;
+      if (vx + left < 8) left = (b.right + 1) * s + 10;
+      if (vx + left + w > innerWidth - 8) {
+        left = Math.min(innerWidth - 8 - w - vx, Math.max(8 - vx, ((b.left + b.right) / 2) * s - w / 2));
+        top = b.top * s - bubble.offsetHeight - 8;
+      }
       bubble.style.left = `${left}px`;
-      bubble.style.top = `${(b.top + 2) * s}px`;
+      bubble.style.top = `${top}px`;
       window.clearTimeout(bubbleTimer);
-      if (!ctx.reduced) bubbleTimer = window.setTimeout(hideBubble, 4200);
+      if (!ctx.reduced && ms > 0) bubbleTimer = window.setTimeout(hideBubble, ms);
     }
 
     function hideBubble() {
@@ -274,6 +302,7 @@ function Cat() {
     function go(next: Spot) {
       stop();
       hideBubble();
+      if (next.enter === "run" && ctx && !ctx.reduced) return runIn(next);
       spot = next;
       wrap.hidden = false;
       placeHit();
@@ -282,7 +311,7 @@ function Cat() {
       x = next.left;
       y = next.floor;
       if (ctx.reduced) {
-        frame = next.then === "nap" ? { state: "Sleep", index: 0, flip: false } : { state: "Sit", index: 0, flip: false };
+        frame = next.then === "doze" ? { state: "Sleep", index: 0, flip: false } : { state: "Sit", index: 0, flip: false };
         mode = "idle";
         draw();
         if (next.line) showBubble(next.line);
@@ -291,18 +320,14 @@ function Cat() {
       mode = "moving";
       const after = () => behave(next);
       if (next.enter === "fall") {
-        // Fall from the top of the screen, spinning: Fall x2, Tumble x2, Fall, then Land.
+        // One clean drop from the top of the screen: the Fall loop is one full turn, played once or twice, then Land.
         const startY = Math.min(Math.max(next.floor - innerHeight, scrollY + 60) + SIZE * s * 0.6, next.floor);
         y = startY;
         const distance = next.floor - startY;
         const duration = Math.min(1300, Math.max(650, Math.sqrt(Math.max(0, distance)) * 34));
         const seq: [CatState, number][] = [];
         const add = (st: CatState) => ctx!.data.frames[st].forEach((_, i) => seq.push([st, i]));
-        add("Fall");
-        add("Fall");
-        add("Tumble");
-        add("Tumble");
-        add("Fall");
+        for (let k = 0; k < (next.spins ?? 1); k++) add("Fall");
         const t0 = performance.now();
         const tick = () => {
           if (disposed || !ctx) return;
@@ -310,7 +335,7 @@ function Cat() {
           y = startY + distance * t * t;
           const [st, i] = seq[Math.min(seq.length - 1, Math.floor(t * seq.length))];
           frame = { state: st, index: i, flip: false };
-          draw(0.4 + 0.6 * t);
+          draw(0.4 + 0.6 * t, next.floor);
           if (t < 1) timer = window.setTimeout(tick, 33);
           else {
             y = next.floor;
@@ -320,25 +345,59 @@ function Cat() {
         tick();
       } else if (next.enter === "peek") play("Peek", after);
       else if (next.enter === "side") play("PeekSide", after, { flip: next.flip });
-      else if (next.enter === "hang") play("PeekTop", after);
+      else if (next.enter === "pop") play("React", after);
       else after();
+    }
+
+    /** Contact entrance: run off the nearest side of the screen, then come back in from the left and run to the spot. */
+    function runIn(next: Spot) {
+      if (!ctx) return;
+      mode = "moving";
+      const comeIn = () => {
+        spot = next;
+        wrap.hidden = false;
+        placeHit();
+        const sit = ctx!.sprite.stateBox("Sit");
+        x = (next.fixed ? 0 : scrollX) - (sit.right + 1) * next.s;
+        y = next.floor;
+        moveTo(next.left, next.floor, "Run", () => play("Sit", () => behave(next), { frames: [0] }));
+      };
+      const vx = x - scrollX;
+      const vy = y - scrollY;
+      const onScreen = spot && !wrap.hidden && !spot.fixed && vx > -100 && vx < innerWidth && vy > 0 && vy < innerHeight + 100;
+      if (!onScreen) return comeIn();
+      const w = SIZE * spot!.s;
+      spot = { ...spot!, enter: "appear" };
+      const edge = vx + w / 2 < innerWidth / 2 ? scrollX - w : scrollX + innerWidth + 8;
+      moveTo(edge, y, "Run", comeIn);
     }
 
     function behave(next: Spot) {
       lastActive = performance.now();
       const line = next.line;
-      if (next.then === "hold") {
+      if (next.then === "hold" && next.enter === "pop") {
+        // Sitting on top of a hovered tile with its line, until the pointer leaves.
         mode = "idle";
-        if (line) showBubble(line);
-        const st: CatState = next.enter === "peek" ? "Peek" : next.enter === "side" ? "PeekSide" : "PeekTop";
-        const last = ctx!.data.frames[st].length - 1;
-        const loop = () => play(st, loop, { frames: [last - 1, last], flip: next.flip });
+        if (line) showBubble(line, 0);
+        const loop = () => play("Sit", loop);
         loop();
         return;
       }
-      if (next.then === "nap") {
-        // Contact: sit, then yawn and sleep; waking brings it back to sitting.
+      if (next.then === "doze") {
+        say(line, doze, 7000);
+        return;
+      }
+      if (next.then === "guide") {
         say(line, idle);
+        return;
+      }
+      if (next.then === "hold") {
+        mode = "idle";
+        if (line) showBubble(line);
+        const st: CatState = next.enter === "side" ? "PeekSide" : "Peek";
+        const last = ctx!.data.frames[st].length - 1;
+        const loop = () => play(st, loop, { frames: [last - 1, last], flip: next.flip });
+        loop();
         return;
       }
       if (next.then === "wander") {
@@ -360,10 +419,15 @@ function Cat() {
       const lines = SECTION_LINES[id] ?? [];
       const line = lines.length ? lines[lineIndex % lines.length] : undefined;
       if (id === "hero-panel") {
-        const el = document.querySelector('[data-cat-perch="hero-panel"]');
-        if (!el) return null;
-        const p = page(el);
-        return { id, s, left: p.right - 28 - (sit.right + 1) * s, floor: p.top, enter: "fall", then: "talk", line };
+        // Lands on the bottom edge of the hero, beside the jump-in panel (never on it). 30% bigger here.
+        const panel = document.querySelector('[data-cat-perch="hero-panel"]');
+        const hero = panel?.closest("section");
+        if (!panel || !hero) return null;
+        const big = ctx.sprite.pixelScale((ctx.mobile ? 2.4 : 3.4) * 1.3);
+        const p = page(panel);
+        const h = page(hero);
+        const left = ctx.mobile ? h.right - 20 - (sit.right + 1) * big : p.left - 32 - (sit.right + 1) * big;
+        return { id, s: big, left, floor: h.bottom - 2, enter: "fall", then: "talk", line, spins: 1 };
       }
       if (id === "work" || id === "art") {
         const el = document.getElementById(id);
@@ -371,7 +435,7 @@ function Cat() {
         if (!el || !inner) return null;
         const box = page(inner);
         const pad = parseFloat(getComputedStyle(inner).paddingRight || "0");
-        return { id, s, left: box.right - pad - (sit.right + 1) * s, floor: page(el).bottom - 2, enter: "fall", then: "wander", line };
+        return { id, s, left: box.right - pad - (sit.right + 1) * s, floor: page(el).bottom - 2, enter: "fall", then: "wander", line, spins: 2 };
       }
       if (id === "work-peek") {
         // Peek over the top edge of the work tile nearest the middle of the screen, so the cat is never missing here.
@@ -392,30 +456,21 @@ function Cat() {
         return { id: `work-peek:${best.id}`, s, left: p.right - 40 - (peek.right + 1) * s, floor: p.top, enter: "peek", then: "hold" };
       }
       if (id === "experience") {
-        const row = document.querySelector<HTMLElement>("[data-exp-active]");
-        if (!row) return null;
-        const p = page(row);
-        const side = ctx.sprite.stateBox("PeekSide");
-        // Pokes out from behind the right edge of the active role, into the gutter.
-        const headMid = ((side.top + side.bottom) / 2) * s;
-        return {
-          id: `experience:${row.dataset.step ?? ""}`,
-          s,
-          left: p.right,
-          floor: p.top + p.height / 2 - headMid + SIZE * s,
-          enter: "side",
-          then: "hold",
-        };
+        // The guide: one ledge in the pinned story, in viewport coordinates, for every chapter.
+        const ledge = document.querySelector('[data-cat-perch="exp-guide"]');
+        if (!ledge) return null;
+        const r = ledge.getBoundingClientRect();
+        const mid = ((sit.left + sit.right + 1) / 2) * s;
+        return { id, s, fixed: true, left: r.left + r.width / 2 - mid, floor: r.top, enter: "pop", then: "guide", line: expLine };
       }
       if (id === "footer") {
-        const el = document.querySelector('[data-cat-perch="footer"]');
-        const section = document.getElementById("contact");
-        const inner = section?.querySelector(":scope > .mx-auto");
-        if (!el || !inner) return null;
-        const big = ctx.sprite.pixelScale(ctx.mobile ? 3.6 : 5.25);
-        const box = page(inner);
-        const pad = parseFloat(getComputedStyle(inner).paddingRight || "0");
-        return { id, s: big, left: box.right - pad - (sit.right + 1) * big, floor: page(el).top - 8, enter: "appear", then: "nap", line };
+        // Centred in the empty space beside "Hiring a product designer?", 30% bigger than round 2.
+        const el = document.querySelector('[data-cat-perch="contact"]');
+        if (!el) return null;
+        const big = ctx.sprite.pixelScale((ctx.mobile ? 3.6 : 5.25) * 1.3);
+        const p = page(el);
+        const mid = ((sit.left + sit.right + 1) / 2) * big;
+        return { id, s: big, left: p.left + p.width / 2 - mid, floor: p.bottom, enter: "run", then: "doze", line: CONTACT_LINE };
       }
       return null;
     }
@@ -432,10 +487,10 @@ function Cat() {
       if (contact && contact.getBoundingClientRect().top < vh * 0.55) return "footer";
       const art = document.getElementById("art");
       if (between(art, "bottom", 160)) return "art";
-      const exp = document.getElementById("experience");
+      const exp = document.querySelector("#experience[data-exp-story]");
       if (exp) {
         const r = exp.getBoundingClientRect();
-        if (r.top < vh * 0.5 && r.bottom > vh * 0.5 && document.querySelector("[data-exp-active]")) return "experience";
+        if (r.top <= 80 && r.bottom >= vh - 4) return "experience";
       }
       const work = document.getElementById("work");
       if (between(work, "bottom", 160)) return "work";
@@ -443,8 +498,8 @@ function Cat() {
         const r = work.getBoundingClientRect();
         if (r.top < vh * 0.6 && r.bottom > vh * 0.4) return "work-peek";
       }
-      const panel = document.querySelector('[data-cat-perch="hero-panel"]');
-      if (between(panel, "top", 80)) return "hero-panel";
+      const hero = document.querySelector('[data-cat-perch="hero-panel"]')?.closest("section");
+      if (between(hero ?? null, "bottom", 160, vh + 40)) return "hero-panel";
       return null;
     }
 
@@ -465,6 +520,7 @@ function Cat() {
       pending = key;
       settle = window.setTimeout(() => {
         pending = undefined;
+        if (hoverTile || mode === "laser") return;
         const fresh = want ? spotFor(want) : null;
         if (fresh && fresh.id !== spot?.id) {
           lineIndex++;
@@ -473,24 +529,29 @@ function Cat() {
       }, 160);
     }
 
-    // ---------- hover a work tile: the cat hangs from its top edge and says one line ----------
+    // ---------- hover a work tile: the cat hops onto that tile's top edge and says its line ----------
 
     const onTileEnter = (e: Event) => {
       if (!ctx || ctx.reduced || ctx.mobile) return;
       const tile = e.currentTarget as HTMLElement;
+      // A pending scroll spot must not land after this and move the cat to another tile.
+      window.clearTimeout(settle);
+      pending = undefined;
       hoverTile = tile;
       const p = page(tile);
       const s = baseScale();
-      const top = ctx.sprite.stateBox("PeekTop");
-      go({ id: `hover:${tile.id}`, s, left: p.right - 48 - (top.right + 1) * s, floor: p.top + SIZE * s, enter: "hang", then: "hold", line: TILE_LINES[tile.id] });
+      const sit = ctx.sprite.stateBox("Sit");
+      go({ id: `hover:${tile.id}`, s, left: p.right - 40 - (sit.right + 1) * s, floor: p.top, enter: "pop", then: "hold", line: TILE_LINES[tile.id] });
     };
-    const onTileLeave = () => {
+    const onTileLeave = (e: Event) => {
+      if (hoverTile !== e.currentTarget) return;
       hoverTile = null;
       spot = null;
       choose();
     };
 
-    // ---------- laser pointer: a dot follows the pointer; when it rests, the cat runs over once and inspects it ----------
+    // ---------- laser pointer: when the dot rests for a second, the cat runs straight to it, settles in the sphinx pose
+    // and taps it two or three times, rests, and taps again until the pointer moves. Never over controls or in contact. ----------
 
     let restTimer = 0;
     let laserX = 0;
@@ -500,33 +561,42 @@ function Cat() {
       if (!ctx || ctx.reduced || !fineQuery.matches) return;
       laserX = e.clientX;
       laserY = e.clientY;
+      const inContact = Boolean((e.target as Element | null)?.closest?.("#contact"));
       laser.style.transform = `translate(${laserX + 10}px, ${laserY + 10}px)`;
-      laser.hidden = false;
+      laser.hidden = inContact;
       window.clearTimeout(restTimer);
-      if (mode === "laser") return;
-      restTimer = window.setTimeout(chaseLaser, LASER_REST);
+      if (mode === "laser") {
+        // The dot moved: stop tapping and sit where it is until the dot rests again.
+        stop();
+        mode = "idle";
+        play("Sit", idle, { frames: [0] });
+      }
+      if (!inContact) restTimer = window.setTimeout(chaseLaser, LASER_REST);
     };
     function chaseLaser() {
-      if (!ctx || !spot || hoverTile || mode === "moving" || performance.now() - lastLaser < LASER_COOLDOWN) return;
+      if (!ctx || !spot || hoverTile || spot.fixed || spot.then === "doze" || mode === "moving") return;
       const el = document.elementFromPoint(laserX, laserY);
-      if (el?.closest("a, button, input, nav, header, dialog")) return; // stay calm over controls
-      lastLaser = performance.now();
+      if (el?.closest("a, button, input, nav, header, dialog, #contact")) return; // stay calm over controls
       stop();
       hideBubble();
       mode = "laser";
       const s = spot.s;
-      const insp = ctx.sprite.stateBox("Inspect");
+      const pose = pick("Sphinx", "Sit");
+      const box = ctx.sprite.stateBox(pose);
       const dotX = laserX + 10 + scrollX;
       const dotY = laserY + 10 + scrollY;
       const fromLeft = x + SIZE * s * 0.5 < dotX;
-      const goalX = fromLeft ? dotX - (insp.right + 1) * s : dotX - (SIZE - 1 - insp.right) * s;
+      // Front paws end at the dot.
+      const goalX = fromLeft ? dotX - (box.right + 1) * s : dotX - box.left * s;
       spot = { ...spot, id: "laser", enter: "appear", then: "talk" };
-      moveTo(goalX, dotY + 4 * s, "Run", () =>
-        play("Inspect", () => {
-          mode = "idle";
-          idle();
-        }, { flip: !fromLeft }),
-      );
+      moveTo(goalX, dotY + 3 * s, "Run", () => tapDot(!fromLeft));
+    }
+    function tapDot(flip: boolean) {
+      if (mode !== "laser") return;
+      const tap = pick("SphinxTap", "Pounce", "Inspect");
+      const rest = pick("Sphinx", "Sit");
+      const taps = (tap as string) === "SphinxTap" ? 2 + Math.round(Math.random()) : 1;
+      play(tap, () => play(rest, () => tapDot(flip), { flip, loops: 2 }), { flip, loops: taps });
     }
 
     // ---------- wiring ----------
@@ -545,16 +615,18 @@ function Cat() {
           choose();
         }, 80);
     };
-    const onExp = () => {
-      if (spot?.id.startsWith("experience")) {
-        spot = null;
-        choose();
-      }
+    // A new experience chapter zoomed in: the guide hops and reads its line, and stays on its ledge.
+    const onExp = (e: Event) => {
+      expLine = (e as CustomEvent<{ line: string }>).detail?.line ?? "";
+      if (spot?.id !== "experience" || !ctx || ctx.reduced || mode === "moving") return;
+      stop();
+      hideBubble();
+      play("React", () => say(expLine, idle));
     };
     const onKey = () => wake();
     const onVisibility = () => {
       if (document.hidden) stop();
-      else if (spot && ctx && !ctx.reduced && (mode === "idle" || mode === "sleeping")) idle();
+      else if (spot && ctx && !ctx.reduced && (mode === "idle" || mode === "sleeping")) (spot.then === "doze" ? doze : idle)();
     };
     const resize = new ResizeObserver(() => {
       if (!spot || mode === "moving" || mode === "laser" || hoverTile) return;
@@ -570,11 +642,12 @@ function Cat() {
       if (!ctx || !spot || ctx.reduced || mode === "moving") return;
       lastActive = performance.now();
       stop();
-      const lines = SECTION_LINES[spot.id] ?? ["meow"];
+      const lines = spot.then === "doze" ? [CONTACT_LINE] : SECTION_LINES[spot.id] ?? ["meow"];
       showBubble(lines[lineIndex++ % lines.length]);
       mode = "idle";
-      if (spot.enter === "fall" || spot.enter === "appear") play("React", idle);
-      else play("Sit", idle, { frames: [0, 3, 0] });
+      const after = spot.then === "doze" ? doze : idle;
+      if (spot.enter === "peek" || spot.enter === "side") play("Sit", after, { frames: [0, 3, 0] });
+      else play("React", after);
     };
 
     async function boot() {
@@ -645,7 +718,7 @@ function Cat() {
           ref={bubbleRef}
           hidden
           role="status"
-          className="type-label-s absolute z-10 border-2 border-line bg-raised px-2.5 py-2 whitespace-nowrap text-primary shadow-[3px_3px_0_0_var(--pastel-lilac)]"
+          className="type-label-s absolute z-10 border-2 border-line bg-raised w-max max-w-[min(280px,calc(100vw-32px))] px-2.5 py-2 text-primary shadow-[3px_3px_0_0_var(--pastel-lilac)]"
         />
         <button
           ref={hitRef}

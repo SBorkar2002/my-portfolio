@@ -444,61 +444,35 @@
   }
 }
 
-/* Section atmosphere (round 2): the hero's grid and lilac + lime glow on every home section. */
-.section-fx {
+/* Section treatments (round 3), one per section. */
+/* Work: a dot matrix that fades in from the top right corner. */
+.work-fx {
   position: relative;
   isolation: isolate;
 }
-.section-fx::before,
-.section-fx::after {
+.work-fx::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
+  background: radial-gradient(color-mix(in srgb, var(--accent-ink) 30%, transparent) 1.2px, transparent 1.6px) 0 0 / 22px 22px;
+  mask-image: radial-gradient(60% 45% at 92% 0%, #000, transparent 75%);
 }
-.section-fx::before {
-  background-image: linear-gradient(color-mix(in srgb, var(--line) 60%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--line) 60%, transparent) 1px, transparent 1px);
-  background-size: 32px 32px;
-  mask-image: radial-gradient(ellipse 70% 60% at var(--fx-x, 80%) var(--fx-y, 20%), #000 10%, transparent 70%);
-}
-.section-fx::after {
-  background: radial-gradient(35% 45% at var(--fx-x, 80%) var(--fx-y, 20%), color-mix(in srgb, var(--pastel-lilac) 28%, transparent), transparent 70%),
-    radial-gradient(28% 38% at var(--fx-x2, 10%) var(--fx-y2, 90%), color-mix(in srgb, var(--accent-lime) 18%, transparent), transparent 70%);
-}
-
-/* Art room collage (round 2). */
-.art-collage-dim,
-.art-collage-lit {
-  background: url(/images/art_collage.webp) center / cover repeat;
-}
-.art-collage-dim {
-  opacity: 0.1;
+/* Art room: the collage under the pixel ice (components/home/ArtCollage.tsx). */
+.art-collage {
+  background: url(/images/art_collage.webp) center / cover no-repeat;
+  opacity: 0.12;
   filter: grayscale(0.6);
 }
-.art-collage-lit {
-  opacity: 0;
-  mask-image: radial-gradient(180px circle at var(--sx, -999px) var(--sy, -999px), #000 30%, transparent 75%);
-  transition: opacity 0.2s;
+[data-ice] > .art-collage {
+  opacity: 0.9;
+  filter: none;
 }
-.art-collage[data-lit] .art-collage-lit {
-  opacity: 0.55;
-}
-
-/* Experience scrollytelling states. */
-.exp-role {
-  transition:
-    opacity 0.35s,
-    translate 0.35s,
-    background-color 0.2s;
-}
-.exp-role[data-state="past"] {
-  opacity: 0.55;
-}
-.exp-role[data-state="future"] {
-  opacity: 0;
-  translate: 0 16px;
+/* Contact: dotted drawing paper for doodle mode. */
+.contact-paper {
+  background-image: radial-gradient(color-mix(in srgb, var(--text-muted) 35%, transparent) 1px, transparent 1.4px);
+  background-size: 24px 24px;
 }
 
 /* Laser pointer dot (home): a small pixel dot beside the normal cursor. */

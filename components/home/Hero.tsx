@@ -16,7 +16,7 @@ export function Hero() {
         <div className="flex min-w-0 flex-1 flex-col items-start gap-7">
           <p className="flex items-center gap-2.5 border-2 border-line bg-raised px-3 py-2">
             <span aria-hidden="true" className="size-2.5 shrink-0 bg-mint" />
-            <span className="type-label-s text-muted">CONSULTANT AT EPIFI UNTIL NOV 2026 · OPEN TO PRODUCT DESIGN ROLES</span>
+            <span className="type-label-s text-muted">PRODUCT DESIGNER AT EPIFI · OPEN TO PRODUCT DESIGN ROLES</span>
           </p>
           <h1 id="hero-title" className="hero-title text-primary">
             <span className="font-serif">Product </span>
@@ -30,7 +30,7 @@ export function Hero() {
             <br />
             <span className="font-serif text-ink italic">who ships.</span>
           </h1>
-          <p className="type-body-l max-w-[560px] bg-page/70 text-primary">
+          <p className="type-body-l max-w-[560px] text-primary">
             B2B SaaS, from research to merged pull requests. Drawing since 2020.
           </p>
           <div className="flex flex-wrap items-start gap-4">

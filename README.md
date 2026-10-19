@@ -101,5 +101,6 @@ The previous React and Vite portfolio is kept on the [`old-portfolio`](https://g
 ## Credits
 
 - Light Lines from [Vengeance UI](https://www.vengenceui.com) (MIT, Ashutoshx7/VengeanceUI), adapted in `components/vendor/` (reduced-motion guard).
+- The experience zoom story follows the pin and progress pattern of [scroll-craft](https://github.com/nateherkai/scroll-craft) (MIT), rebuilt in React without dependencies.
 - Underline link hover (skiper40 Link000) from [Skiper UI](https://skiper-ui.com), free with credit.
 - Everything else is written for this site. Fonts: Jersey 15, Silkscreen and Rethink Sans, all under the SIL Open Font License via Google Fonts.
