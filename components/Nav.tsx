@@ -6,6 +6,7 @@ import type { MouseEvent } from "react";
 import { links } from "@/lib/projects";
 import { homeSections, jumpTo, useChrome } from "./SiteChrome";
 import { CatToggle } from "./cat/CatToggle";
+import { Logo } from "./Logo";
 import { MusicToggle } from "./MusicToggle";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button, Keycap } from "./ui";
@@ -36,7 +37,7 @@ export function Nav() {
           className="flex shrink-0 items-center gap-3"
           aria-label="Sejal Borkar, home"
         >
-          <span className="type-heading-s text-primary">SB</span>
+          <Logo className="h-[30px] w-auto" />
           <span className="type-label-s hidden text-muted sm:inline">SEJAL BORKAR</span>
         </Link>
         <span className="min-w-px flex-1" />

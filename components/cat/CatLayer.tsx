@@ -123,6 +123,7 @@ function Cat() {
     let lastExit: "left" | "right" = "right";
     const reducedQuery = matchMedia("(prefers-reduced-motion: reduce)");
     const mobileQuery = matchMedia("(max-width: 767px)");
+    const tabletQuery = matchMedia("(max-width: 1023px)");
     const fineQuery = matchMedia("(pointer: fine)");
     const wrap = wrapRef.current!;
     const canvas = canvasRef.current!;
@@ -130,7 +131,11 @@ function Cat() {
     const bubble = bubbleRef.current!;
     const laser = laserRef.current!;
 
-    const baseScale = () => ctx!.sprite.pixelScale(ctx!.mobile ? 2.4 : 3.4);
+    /** Cat size per breakpoint (CSS px per sprite pixel): phone, tablet, desktop. Every cat, the contact one too,
+        fits whole on a 360 to 430 px wide phone. */
+    const SCALES = { phone: { base: 2, hero: 2, contact: 3 }, tablet: { base: 2.6, hero: 3, contact: 5 }, desktop: { base: 3.4, hero: 4, contact: 9 } };
+    const scales = () => SCALES[ctx!.mobile ? "phone" : tabletQuery.matches ? "tablet" : "desktop"];
+    const baseScale = () => ctx!.sprite.pixelScale(scales().base);
     /** States the cat studio ships in later rounds; the cat falls back to older ones until they land. */
     const has = (st: string) => Boolean(ctx && (ctx.data.frames as Record<string, unknown>)[st]);
     const pick = (...list: string[]) => (list.find(has) ?? "Sit") as CatState;
@@ -277,6 +282,7 @@ function Cat() {
       const wrapX = spot.fixed ? x : x - scrollX;
       const wrapY = Math.round((y - SIZE * s) / s) * s - (spot.fixed ? 0 : scrollY);
       const clampX = (l: number) => Math.min(vw - M - w - wrapX, Math.max(M - wrapX, l));
+      const clampY = (t: number) => Math.min(innerHeight - M - h - wrapY, Math.max(72 + M - wrapY, t));
       const sideL = b.left * s - w - 10;
       const sideR = (b.right + 1) * s + 10;
       const centre = ((b.left + b.right + 1) / 2) * s - w / 2;
@@ -288,14 +294,24 @@ function Cat() {
         [centre, b.top * s - h - 8],
         [centre, SIZE * s + 8],
       ];
-      const avoid = [...document.querySelectorAll("[data-bubble-avoid]")].map((el) => el.getBoundingClientRect());
+      // The marked row's children (the buttons themselves), so the space beside a short button stays usable.
+      const avoid = [...document.querySelectorAll("[data-bubble-avoid] > *")].map((el) => el.getBoundingClientRect());
       const clear = ([l, t]: [number, number]) => {
         const r = { left: wrapX + l - 6, right: wrapX + l + w + 6, top: wrapY + t - 6, bottom: wrapY + t + h + 6 };
         return avoid.every((a) => r.right <= a.left || r.left >= a.right || r.bottom <= a.top || r.top >= a.bottom);
       };
-      // Prefer a spot that fits on screen without being pushed; then any clear spot; then the first one.
-      const fits = ([l]: [number, number]) => wrapX + l >= M && wrapX + l + w <= vw - M;
-      const pick = candidates.find((c) => fits(c) && clear(c)) ?? candidates.find((c) => clear([clampX(c[0]), c[1]])) ?? candidates[0];
+      // Prefer a spot that fits on screen without being pushed sideways; then one pushed sideways; then any clear
+      // spot; then the first one.
+      const fits = ([l, t]: [number, number]) =>
+        wrapX + l >= M && wrapX + l + w <= vw - M && wrapY + t >= 72 + M && wrapY + t + h <= innerHeight - M;
+      const fitsDown = ([l, t]: [number, number]) => wrapY + t >= 72 + M && wrapY + t + h <= innerHeight - M && clear([clampX(l), t]);
+      // Below the nav and above the bottom edge too, so it is never cut off.
+      const pick =
+        candidates.find((c) => fits(c) && clear(c)) ??
+        candidates.find(fitsDown) ??
+        candidates.map((c): [number, number] => [c[0], clampY(c[1])]).find((c) => clear([clampX(c[0]), c[1]])) ??
+        candidates.find((c) => clear([clampX(c[0]), c[1]])) ??
+        candidates[0];
       const left = clampX(pick[0]);
       const top = pick[1];
       bubble.style.left = `${left}px`;
@@ -460,6 +476,14 @@ function Cat() {
         moveTo(away, next.floor, "Walk", () => moveTo(home, next.floor, "Walk", () => say(line, idle)));
         return;
       }
+      // Phones: the full intro is too long to fit beside the cat, so it comes as two short bubbles.
+      if (next.id === "hero-panel" && ctx!.mobile && line?.includes("{name}")) {
+        say("hi, I'm {name}!", () => {
+          if (spot?.id === "hero-panel") showBubble("I'll be your guide");
+          idle();
+        });
+        return;
+      }
       say(line, idle);
     }
 
@@ -480,10 +504,10 @@ function Cat() {
         const h = page(hero);
         if (ctx.mobile) {
           // Phones: smaller, and on top of the jump-in panel (the hero bottom is crowded there).
-          const small = ctx.sprite.pixelScale(2);
+          const small = ctx.sprite.pixelScale(scales().hero);
           return { id, s: small, left: p.right - 16 - (sit.right + 1) * small, floor: p.top, enter: "fall", then: "talk", line, spins: 1 };
         }
-        const big = ctx.sprite.pixelScale(4);
+        const big = ctx.sprite.pixelScale(scales().hero);
         return { id, s: big, left: p.left - 32 - (sit.right + 1) * big, floor: h.bottom - 2, enter: "fall", then: "talk", line, spins: 1 };
       }
       if (id === "work" || id === "art") {
@@ -549,7 +573,7 @@ function Cat() {
         // Centred in the empty space beside "Hiring a product designer?", about 30% bigger than round 2 at a whole-pixel scale.
         const el = document.querySelector('[data-cat-perch="contact"]');
         if (!el) return null;
-        const big = ctx.sprite.pixelScale(ctx.mobile ? 6 : 9);
+        const big = ctx.sprite.pixelScale(scales().contact);
         const p = page(el);
         // Centre of the open space: from the end of the text column to the screen edge (gutter included) on wide
         // screens, the perch itself on phones; vertically centred in it too.

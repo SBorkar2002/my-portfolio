@@ -12,8 +12,8 @@ export function Hero() {
   return (
     <section aria-labelledby="hero-title" data-section-index="hero" className="hero-backdrop relative overflow-hidden">
       <HeroBackdrop />
-      <div className="relative mx-auto flex max-w-[1440px] flex-col gap-12 px-[clamp(20px,8.333vw,120px)] pt-12 pb-20 lg:flex-row lg:items-center lg:gap-16 lg:pt-24 lg:pb-32">
-        <div className="flex min-w-0 flex-1 flex-col items-start gap-7">
+      <div className="relative mx-auto flex max-w-[1440px] flex-col gap-10 px-[clamp(20px,8.333vw,120px)] pt-8 pb-20 sm:gap-12 sm:pt-12 lg:flex-row lg:items-center lg:gap-16 lg:pt-24 lg:pb-32">
+        <div className="flex min-w-0 flex-1 flex-col items-start gap-5 sm:gap-7">
           <p className="flex items-center gap-2.5 border-2 border-line bg-raised px-3 py-2">
             <span aria-hidden="true" className="size-2.5 shrink-0 bg-mint" />
             <span className="type-label-s text-muted">FROM DIGITAL ARTIST TO PRODUCT DESIGNER</span>

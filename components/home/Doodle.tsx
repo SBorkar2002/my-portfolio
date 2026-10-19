@@ -127,12 +127,14 @@ export function Doodle() {
   return (
     <>
       <canvas ref={ref} aria-hidden="true" className="pointer-events-none absolute inset-0 size-full [image-rendering:pixelated]" />
+      <div className="flex shrink-0 items-center gap-3">
       <ToolButton label={on ? "Doodle mode on: drag anywhere to draw. Turn off" : "Turn on doodle mode"} pressed={on} onClick={() => setOn((v) => !v)}>
         <PixelGlyph rows={PENCIL} />
       </ToolButton>
       <ToolButton label="Clear the doodle" onClick={clear} disabled={!inked}>
         <PixelGlyph rows={ERASER} />
       </ToolButton>
+      </div>
     </>
   );
 }

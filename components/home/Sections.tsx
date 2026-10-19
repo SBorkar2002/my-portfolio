@@ -4,7 +4,7 @@ import { type CSSProperties, type ReactNode } from "react";
 import { links, socials } from "@/lib/projects";
 import { Img } from "../Img";
 export { Experience } from "./Experience";
-import { ArtCollage, RevealArt } from "./ArtCollage";
+import { ArtCollage } from "./ArtCollage";
 import { ARROW_UP, Doodle, PixelGlyph, ToolButton } from "./Doodle";
 import { UnderlineLink } from "../vendor/underline-link";
 import { Button, Icon, SectionTitle } from "../ui";
@@ -82,7 +82,6 @@ export function ArtRoom() {
             <p className="type-body-m text-muted">Drawing since 2020. It is still part of how I design.</p>
           </div>
           <span className="min-w-px flex-1" />
-          <RevealArt />
         </div>
         <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {categories.map((c, i) => (
@@ -160,6 +159,7 @@ export function Contact() {
           <p className="type-label-s text-muted">SEJAL BORKAR · BENGALURU</p>
           <span className="min-w-px flex-1" />
           <Doodle />
+          <div className="hidden md:contents">
           <ToolButton
             label="Back to top"
             onClick={() =>
@@ -168,6 +168,7 @@ export function Contact() {
           >
             <PixelGlyph rows={ARROW_UP} />
           </ToolButton>
+          </div>
         </div>
       </div>
     </section>

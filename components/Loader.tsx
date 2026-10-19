@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { Logo } from "./Logo";
 
 /** Pixel loading screen.
     Shown on every full load for at least 2 s (no minimum with reduced motion), longer while assets still load.
@@ -40,7 +41,7 @@ export function Loader() {
 
   return (
     <div id="loader" aria-hidden="true" className="loader fixed inset-0 z-[80] flex-col items-center justify-center gap-6 bg-page">
-      <p className="type-display-l text-primary">SB</p>
+      <Logo className="h-[66px] w-auto" />
       {/* The cat spins here, on top of the bar (CatLayer). */}
       <div className="h-[150px]" />
       <div className="loader-track" aria-hidden="true">
