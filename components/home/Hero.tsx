@@ -33,7 +33,7 @@ export function Hero() {
           <p className="type-body-l max-w-[560px] text-primary">
             B2B SaaS, from research to merged pull requests. Drawing since 2020.
           </p>
-          <div className="flex flex-wrap items-start gap-4">
+          <div data-bubble-avoid="" className="flex flex-wrap items-start gap-4">
             <Button href="#work" label="VIEW WORK" />
             <Button href="#art" label="SEE THE ART" kind="secondary" />
           </div>

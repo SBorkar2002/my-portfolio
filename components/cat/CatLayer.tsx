@@ -268,18 +268,36 @@ function Cat() {
       const w = bubble.offsetWidth;
       const s = spot.s;
       const b = ctx.sprite.stateBox("Sit");
-      // Beside the head: left of the cat, else right of it, else above it, and always clamped 12 px inside the screen.
+      // Tries spots around the cat in order: beside the head (left, right), beside the feet, above, below. Each is
+      // clamped 12 px inside the screen, and the first that keeps clear of [data-bubble-avoid] (the hero buttons)
+      // wins, so the bubble never covers something to click.
       const M = 12;
-      const vx = spot.fixed ? x : x - scrollX;
+      const h = bubble.offsetHeight;
       const vw = document.documentElement.clientWidth;
-      let left = b.left * s - w - 10;
-      let top = (b.top + 2) * s;
-      if (vx + left < M) left = (b.right + 1) * s + 10;
-      if (vx + left + w > vw - M) {
-        left = ((b.left + b.right) / 2) * s - w / 2;
-        top = b.top * s - bubble.offsetHeight - 8;
-      }
-      left = Math.min(vw - M - w - vx, Math.max(M - vx, left));
+      const wrapX = spot.fixed ? x : x - scrollX;
+      const wrapY = Math.round((y - SIZE * s) / s) * s - (spot.fixed ? 0 : scrollY);
+      const clampX = (l: number) => Math.min(vw - M - w - wrapX, Math.max(M - wrapX, l));
+      const sideL = b.left * s - w - 10;
+      const sideR = (b.right + 1) * s + 10;
+      const centre = ((b.left + b.right + 1) / 2) * s - w / 2;
+      const candidates: [number, number][] = [
+        [sideL, (b.top + 2) * s],
+        [sideR, (b.top + 2) * s],
+        [sideL, SIZE * s - h],
+        [sideR, SIZE * s - h],
+        [centre, b.top * s - h - 8],
+        [centre, SIZE * s + 8],
+      ];
+      const avoid = [...document.querySelectorAll("[data-bubble-avoid]")].map((el) => el.getBoundingClientRect());
+      const clear = ([l, t]: [number, number]) => {
+        const r = { left: wrapX + l - 6, right: wrapX + l + w + 6, top: wrapY + t - 6, bottom: wrapY + t + h + 6 };
+        return avoid.every((a) => r.right <= a.left || r.left >= a.right || r.bottom <= a.top || r.top >= a.bottom);
+      };
+      // Prefer a spot that fits on screen without being pushed; then any clear spot; then the first one.
+      const fits = ([l]: [number, number]) => wrapX + l >= M && wrapX + l + w <= vw - M;
+      const pick = candidates.find((c) => fits(c) && clear(c)) ?? candidates.find((c) => clear([clampX(c[0]), c[1]])) ?? candidates[0];
+      const left = clampX(pick[0]);
+      const top = pick[1];
       bubble.style.left = `${left}px`;
       bubble.style.top = `${top}px`;
       window.clearTimeout(bubbleTimer);
