@@ -1,10 +1,10 @@
 /** Background music: a short chiptune loop written here and played with Web Audio, so there is no audio file and
-    nothing to license. Quiet (master 0.15). It starts on the visitor's first interaction (browsers block autoplay),
+    nothing to license. Soft (master 0.35). It starts on the visitor's first interaction (browsers block autoplay),
     remembers the on/off choice, and is off by default for prefers-reduced-motion. */
 
 const STORAGE_KEY = "music";
 const EVENT = "musicchange";
-const VOLUME = 0.15;
+const VOLUME = 0.35;
 const BPM = 112;
 const STEP = 60 / BPM / 2; // eighth notes
 
