@@ -56,7 +56,7 @@ type ButtonProps = {
 export function Button({ href, label, kind = "primary", icon = "arrow-right", download, external, className = "" }: ButtonProps) {
   const look =
     kind === "primary"
-      ? "bg-lilac text-on-pastel shadow-pixel-4 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_var(--text-primary)]"
+      ? "bg-lime text-on-pastel shadow-pixel-4 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_var(--text-primary)]"
       : "border-2 border-primary text-primary hover:bg-primary hover:text-page";
   const classes = `type-label-m inline-flex shrink-0 items-center gap-2.5 px-[18px] py-[14px] transition-[transform,box-shadow,background-color,color] duration-100 ${look} ${className}`;
   const content = (

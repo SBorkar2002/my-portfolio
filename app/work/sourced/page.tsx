@@ -275,7 +275,7 @@ export default function Sourced() {
         </CardRow>
       </CaseSection>
 
-      <NextCard project={next} media={<Img name="afb_home" width={920} alt="AppsForBharat blog home page" position="top" />} />
+      <NextCard project={next} media={<Img name="hr_hero" width={920} alt="#futureofhr landing page hero" position="top" />} />
     </CaseLayout>
   );
 }

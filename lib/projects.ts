@@ -48,7 +48,7 @@ export const projects: Project[] = [
     tag: "take-home",
     meta: "LANDING PAGE · VIDEO · POSTER · 2026",
     summary: "Landing page, launch video and LinkedIn poster, designed in 72 hours.",
-    href: null,
+    href: "/work/futureofhr",
   },
   {
     number: 4,

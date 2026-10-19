@@ -3,6 +3,8 @@
 import type { CSSProperties, ReactNode } from "react";
 import { links, socials } from "@/lib/projects";
 import { Img } from "../Img";
+import { PixelatedImageTrail } from "../vendor/pixelated-image-trail";
+import { UnderlineLink } from "../vendor/underline-link";
 import { Button, Icon, SectionTitle, Tag, type TagKind } from "../ui";
 
 const gutter = "mx-auto max-w-[1440px] px-[clamp(20px,8.333vw,120px)]";
@@ -45,9 +47,11 @@ export function Experience() {
   return (
     <section id="experience" aria-labelledby="experience-title" className="border-t-2 border-line">
       <div className={`${gutter} flex flex-col gap-10 pt-16 pb-20 lg:pt-24 lg:pb-32`}>
-        <SectionTitle kicker="02 · EXPERIENCE" title="Where I have worked" id="experience-title" />
+        <div data-reveal>
+          <SectionTitle kicker="02 · EXPERIENCE" title="Where I have worked" id="experience-title" />
+        </div>
         <div className="flex flex-col gap-12 lg:flex-row lg:gap-16">
-          <div className="flex w-full max-w-[360px] shrink-0 flex-col gap-4">
+          <div className="flex w-full max-w-[360px] shrink-0 flex-col gap-4" data-reveal>
             <div className="aspect-square w-full border-2 border-line shadow-pixel-8 [--pixel-shadow:var(--pastel-mint)]">
               <Img name="portrait" width={360} alt="Portrait of Sejal Borkar" />
             </div>
@@ -60,8 +64,8 @@ export function Experience() {
             </div>
           </div>
           <ol className="min-w-0 flex-1 border-b-2 border-line">
-            {roles.map((r) => (
-              <li key={r.role} className="flex flex-col gap-3 border-t-2 border-line py-[22px] md:flex-row md:items-start md:gap-8">
+            {roles.map((r, i) => (
+              <li key={r.role} data-reveal style={{ "--reveal-delay": `${i * 70}ms` } as CSSProperties} className="flex flex-col gap-3 border-t-2 border-line py-[22px] md:flex-row md:items-start md:gap-8">
                 <p className="type-label-s shrink-0 text-muted md:w-[210px]">{r.dates}</p>
                 <div className="flex min-w-0 flex-1 flex-col gap-1.5">
                   <p className="type-body-m font-semibold text-primary">{r.role}</p>
@@ -138,12 +142,16 @@ const categories = [
   },
 ] as const;
 
+const trailImages = categories.flatMap((c) => c.pieces.map(([name]) => `/images/${name}-280.webp`));
+
 /** Art room preview (Figma 28:466). The full art room page is not designed yet. */
 export function ArtRoom() {
   return (
-    <section id="art" aria-labelledby="art-title" className="border-t-2 border-line">
+    <section id="art" aria-labelledby="art-title" className="relative isolate border-t-2 border-line">
+      {/* Mouse effect: the art follows the pointer behind the cards, never over them. */}
+      <PixelatedImageTrail className="-z-10" images={trailImages} imageSize={140} slices={7} spawnThreshold={70} />
       <div className={`${gutter} flex flex-col gap-10 pt-16 pb-20 lg:pt-24 lg:pb-32`}>
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:gap-6" data-cat-perch="art-room">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:gap-6" data-cat-perch="art-room" data-reveal>
           <div className="flex max-w-[560px] flex-col gap-3">
             <SectionTitle kicker="03 · ART ROOM" title="Art, comics, graphics, motion" id="art-title" />
             <p className="type-body-m text-muted">Drawing since 2020. It is still part of how I design.</p>
@@ -151,11 +159,12 @@ export function ArtRoom() {
           <span className="min-w-px flex-1" />
         </div>
         <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-          {categories.map((c) => (
+          {categories.map((c, i) => (
             <li
               key={c.label}
+              data-reveal
               className="self-start border-2 border-line bg-raised shadow-pixel-8"
-              style={{ "--pixel-shadow": c.color } as CSSProperties}
+              style={{ "--pixel-shadow": c.color, "--reveal-delay": `${i * 80}ms` } as CSSProperties}
             >
               <CardLink href={c.href}>
                 <div className="grid grid-cols-2 gap-0.5 bg-sunken">
@@ -195,7 +204,7 @@ export function Contact() {
     <section id="contact" aria-labelledby="contact-title" className="border-t-2 border-line bg-sunken">
       <div className={`${gutter} flex flex-col items-start gap-9 pt-20 pb-14 lg:pt-28`}>
         <p className="type-label-s text-ink">04 · CONTACT</p>
-        <h2 id="contact-title" className="type-display-l max-w-[1000px] text-primary">
+        <h2 id="contact-title" data-reveal className="type-display-l max-w-[1000px] text-primary">
           Hiring a product designer?
         </h2>
         <div className="flex flex-wrap items-center gap-4">
@@ -206,19 +215,15 @@ export function Contact() {
         <ul className="flex flex-wrap gap-x-7 gap-y-4 pt-2">
           {socials.map((s) => (
             <li key={s.label}>
-              <a
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="type-label-s group flex items-center gap-2 text-primary hover:text-ink"
-              >
+              <UnderlineLink href={s.href} className="type-label-s gap-2 text-primary hover:text-ink">
                 {s.label}
-                <Icon name="arrow-right" className="transition-transform duration-150 group-hover:translate-x-0.5" />
+                <Icon name="arrow-right" />
                 <span className="sr-only">(opens in a new tab)</span>
-              </a>
+              </UnderlineLink>
             </li>
           ))}
         </ul>
+        <p className="type-body-s text-muted">Some effects adapted from Vengeance UI (MIT) and Skiper UI.</p>
         <div className="flex w-full flex-wrap items-start gap-4 pt-[72px]" data-cat-perch="footer">
           <p className="type-label-s text-muted">SEJAL BORKAR · BENGALURU</p>
           <span className="min-w-px flex-1" />

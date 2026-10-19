@@ -2,6 +2,8 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { projectByNumber, type Project } from "@/lib/projects";
 import { Img } from "../Img";
+import { LoopVideo } from "../LoopVideo";
+import { DisplaceHover } from "./DisplaceHover";
 import { Icon, Keycap, SectionTitle, Tag } from "../ui";
 
 const tileBase = "flex border-2 border-line bg-raised shadow-pixel-8";
@@ -13,30 +15,38 @@ export function Work() {
   const more = projectByNumber(6)!;
   return (
     <section id="work" aria-labelledby="work-title" className="border-t-2 border-line">
+      <DisplaceHover />
       <div className="mx-auto flex max-w-[1440px] flex-col gap-10 px-[clamp(20px,8.333vw,120px)] pt-16 pb-20 lg:pt-24 lg:pb-32">
-        <div className="flex items-end gap-6" data-cat-perch="work-gutter">
+        <div className="flex items-end gap-6" data-cat-perch="work-gutter" data-reveal>
           <SectionTitle kicker="01 · SELECTED WORK" title="Selected work" id="work-title" />
           <span className="min-w-px flex-1" />
           <p className="type-label-s hidden text-right text-muted md:block">6 PROJECTS · PRESS 1 TO 6</p>
         </div>
 
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-6">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-6" data-reveal>
           <StackedTile n={1} image="w02_features" alt="Tetriz feature page: Adoption isn't logins, it's shipped work" />
           <StackedTile n={2} image="w03_sourced" alt="Three Sourced app screens: onboarding, the feed and the Flow tracker" perch="tile-03" />
         </div>
 
-        <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-6">
+        <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-6" data-reveal>
           <StackedTile n={3} image="w04_futureofhr" alt="The #futureofhr landing page hero: The Future of Remote Hiring" />
           <StackedTile n={4} image="w05_afb" alt="AppsForBharat blog home page with the latest post and category filters" />
         </div>
 
+        <div data-reveal>
         <TileShell project={projectByNumber(5)!} className="flex-col-reverse lg:flex-row">
           <TileBody project={projectByNumber(5)!} padding="p-6 sm:p-9" />
-          <div className="aspect-[720/276] shrink-0 lg:aspect-auto lg:w-[60.2%] lg:self-stretch">
-            <Img name="w06_media" width={720} alt="Recommendations screen listing installable skills, rules and hooks" />
+          <div className="aspect-video shrink-0 bg-[#f1f2f6] lg:w-[60.2%] lg:self-center">
+            <LoopVideo
+              src="/video/recommendations"
+              poster="/video/recommendations-poster.webp"
+              label="A Recommendations table fills in row by row with suggested skills, rules, hooks and sub-agents for a Next.js app, each with a fit grade and an Install button."
+            />
           </div>
         </TileShell>
+        </div>
 
+        <div data-reveal>
         <Link
           href={more.href!}
           id={`project-${more.number}`}
@@ -53,6 +63,7 @@ export function Work() {
             <Keycap>{more.number}</Keycap>
           </span>
         </Link>
+        </div>
       </div>
     </section>
   );
@@ -86,12 +97,16 @@ function StackedTile({ n, image, alt, perch }: { n: number; image: string; alt: 
   return (
     <TileShell project={project} className="flex-col overflow-hidden">
       {!project.href && project.links && project.links.length > 1 ? (
-        <a href={project.links[0].href} target="_blank" rel="noopener noreferrer" className="block aspect-[584/368] w-full" data-cat-perch={perch}>
-          <Img name={image} width={584} alt={`${alt} (opens ${project.links[0].label.toLowerCase()} in a new tab)`} />
+        <a href={project.links[0].href} target="_blank" rel="noopener noreferrer" className="scroll-scale block aspect-[584/368] w-full overflow-hidden" data-cat-perch={perch}>
+          <div className="size-full" data-displace>
+            <Img name={image} width={584} alt={`${alt} (opens ${project.links[0].label.toLowerCase()} in a new tab)`} />
+          </div>
         </a>
       ) : (
-        <div className="aspect-[584/368] w-full" data-cat-perch={perch}>
-          <Img name={image} width={584} alt={alt} />
+        <div className="scroll-scale aspect-[584/368] w-full overflow-hidden" data-cat-perch={perch}>
+          <div className="size-full" data-displace>
+            <Img name={image} width={584} alt={alt} />
+          </div>
         </div>
       )}
       <TileBody project={project} padding="p-6 sm:p-7" />

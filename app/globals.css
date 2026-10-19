@@ -18,6 +18,8 @@
   --pastel-sky: #9ed2ff;
   --pastel-pink: #ffafd2;
   --pastel-butter: #ffe58a;
+  /* Primary buttons (Sejal, 18 Oct). */
+  --accent-lime: #d9f860;
   /* Cat colours (Figma cat/*), used by the canvas cat. */
   --cat-body: #17141f;
   --cat-body-far: #423b54;
@@ -79,10 +81,12 @@
   --color-sky: var(--pastel-sky);
   --color-pink: var(--pastel-pink);
   --color-butter: var(--pastel-butter);
+  --color-lime: var(--accent-lime);
 
   --font-display: var(--font-jersey), ui-monospace, monospace;
   --font-label: var(--font-silkscreen), ui-monospace, monospace;
   --font-sans: var(--font-rethink), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif-display), ui-serif, Georgia, serif;
 }
 
 /* Type styles from the Figma text styles. Display sizes are fluid: they hit the
@@ -254,4 +258,138 @@
 :root[data-cat="off"] .cat-toggle {
   background: transparent;
   color: var(--text-muted);
+}
+
+/* ---------- Revamp (P6): hero backdrop, mixed headline, floating layers ---------- */
+.hero-title {
+  font-size: clamp(56px, 8vw, 118px);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+}
+.hero-title .font-serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+.pixel-pick {
+  position: relative;
+  display: inline-block;
+  margin: 0.06em 0;
+  padding: 0 0.12em;
+  font-family: var(--font-display);
+  font-size: 0.92em;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  outline: 2px solid var(--pastel-lilac);
+  background: color-mix(in srgb, var(--pastel-lilac) 18%, transparent);
+}
+.pick-handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--bg-base);
+  border: 2px solid var(--pastel-lilac);
+}
+.hero-grid {
+  background-image: linear-gradient(color-mix(in srgb, var(--line) 70%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--line) 70%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 80% 70% at 60% 40%, #000 30%, transparent 75%);
+}
+.hero-glow {
+  background: radial-gradient(40% 50% at 78% 30%, color-mix(in srgb, var(--pastel-lilac) 35%, transparent), transparent 70%),
+    radial-gradient(30% 40% at 12% 85%, color-mix(in srgb, var(--accent-lime) 22%, transparent), transparent 70%);
+}
+.hero-spot {
+  background: radial-gradient(220px circle at var(--mx, -999px) var(--my, -999px), color-mix(in srgb, var(--pastel-lilac) 22%, transparent), transparent 70%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .float-slow {
+    animation: float-step 4s steps(4) infinite alternate;
+  }
+  .float-fast {
+    animation: float-step 2.4s steps(3) infinite alternate;
+  }
+}
+@keyframes float-step {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -8px;
+  }
+}
+
+/* ---------- P7: loading screen, section-in reveals, page transitions ---------- */
+.loader {
+  display: none;
+}
+:root[data-loading] .loader {
+  display: flex;
+}
+:root[data-loading] body {
+  overflow: hidden;
+}
+.loader-block {
+  opacity: 0.2;
+  animation: loader-fill 0.9s steps(1) infinite;
+}
+@keyframes loader-fill {
+  0%,
+  40% {
+    opacity: 0.2;
+  }
+  41%,
+  100% {
+    opacity: 1;
+  }
+}
+:root[data-loader-exit] .loader {
+  animation: loader-out 0.42s steps(6) forwards;
+}
+@keyframes loader-out {
+  to {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal]:not([data-in]) {
+    opacity: 0;
+    translate: 0 32px;
+  }
+  .js [data-reveal] {
+    transition:
+      opacity 0.5s steps(5),
+      translate 0.5s steps(5);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .page-in {
+    animation: page-in 0.36s steps(6);
+  }
+}
+@keyframes page-in {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Scroll-driven cards: tile images settle from 94% to full size as they scroll in (browsers with scroll timelines). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-scale > * {
+      animation: scroll-scale linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+  }
+}
+@keyframes scroll-scale {
+  from {
+    scale: 1.08;
+  }
+  to {
+    scale: 1;
+  }
 }

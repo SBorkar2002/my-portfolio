@@ -31,7 +31,7 @@ Shortcuts are ignored while typing in a form field. Motion respects `prefers-red
 - [Next.js](https://nextjs.org) 16 (App Router, every route prerendered as static HTML)
 - [Tailwind CSS](https://tailwindcss.com) v4, with the colour tokens from the Figma variables in `app/globals.css`
 - Google Fonts through `next/font` (self-hosted at build time): Jersey 15 for headings, Silkscreen for labels and keys, Rethink Sans for body text
-- No UI or animation libraries. Native scroll.
+- No animation libraries: effects are CSS, small canvas and SVG pieces, and three vendored free components. Native scroll.
 
 ## Run locally
 
@@ -100,4 +100,6 @@ The previous React and Vite portfolio is kept on the [`old-portfolio`](https://g
 
 ## Credits
 
-All components are written for this site. Fonts: Jersey 15, Silkscreen and Rethink Sans, all under the SIL Open Font License via Google Fonts.
+- Light Lines and Pixelated Image Trail from [Vengeance UI](https://www.vengenceui.com) (MIT, Ashutoshx7/VengeanceUI), adapted in `components/vendor/` (pixel shadows, reduced-motion guards, the trail sits behind the art cards).
+- Underline link hover (skiper40 Link000) from [Skiper UI](https://skiper-ui.com), free with credit.
+- Everything else is written for this site. Fonts: Jersey 15, Silkscreen and Rethink Sans, all under the SIL Open Font License via Google Fonts.

@@ -92,6 +92,7 @@ export function CaseSection({
     <section
       id={`section-${n}`}
       aria-labelledby={`section-${n}-title`}
+      data-reveal
       className="flex flex-col items-start gap-7 border-t-2 border-line pt-14 pb-16 outline-none xl:pt-[72px] xl:pb-[88px]"
     >
       <p className="type-label-s text-ink">{kicker}</p>

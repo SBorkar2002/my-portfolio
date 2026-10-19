@@ -9,8 +9,8 @@ if (!src) {
   process.exit(1);
 }
 
-// Fall is the page-load spin and is not used on the site yet.
-const STATES = ["Sit", "Idle", "Walk", "Look", "Inspect", "Yawn", "Sleep", "Peek", "React", "Land"];
+// Fall is used when the cat drops into a section.
+const STATES = ["Sit", "Idle", "Walk", "Look", "Inspect", "Yawn", "Sleep", "Peek", "React", "Fall", "Land"];
 const data = JSON.parse(readFileSync(src, "utf8"));
 
 const frames = {};

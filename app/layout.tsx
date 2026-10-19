@@ -1,14 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Jersey_15, Rethink_Sans, Silkscreen } from "next/font/google";
+import { Instrument_Serif, Jersey_15, Rethink_Sans, Silkscreen } from "next/font/google";
 import { CatLayer } from "@/components/cat/CatLayer";
 import { Nav } from "@/components/Nav";
 import { SiteChrome } from "@/components/SiteChrome";
 import { catInitScript } from "@/lib/cat/prefs";
+import { loaderInitScript } from "@/lib/loader";
+import { Loader } from "@/components/Loader";
+import { Reveal } from "@/components/Reveal";
 import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
 const jersey = Jersey_15({ weight: "400", subsets: ["latin"], variable: "--font-jersey", display: "swap" });
 const silkscreen = Silkscreen({ weight: ["400", "700"], subsets: ["latin"], variable: "--font-silkscreen", display: "swap" });
+const serif = Instrument_Serif({ weight: "400", style: ["normal", "italic"], subsets: ["latin"], variable: "--font-serif-display", display: "swap" });
 const rethink = Rethink_Sans({ weight: ["400", "500", "600"], subsets: ["latin"], variable: "--font-rethink", display: "swap" });
 
 export const metadata: Metadata = {
@@ -33,9 +37,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning className={`${jersey.variable} ${silkscreen.variable} ${rethink.variable}`}>
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning className={`${jersey.variable} ${silkscreen.variable} ${rethink.variable} ${serif.variable}`}>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript + catInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript + catInitScript + loaderInitScript }} />
       </head>
       <body>
         <a
@@ -44,6 +48,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           SKIP TO CONTENT
         </a>
+        <Loader />
+        <Reveal />
         <SiteChrome>
           <Nav />
           <main id="main">{children}</main>
