@@ -43,9 +43,10 @@ export function TappablePhone({ start, size = "small", label }: { start: number;
   function go(to: number) {
     if (to === current) return;
     window.clearTimeout(timer.current);
+    // Instant cut, no transition. The old screen stays underneath only until the new one has loaded, so there is
+    // never a blank frame.
     setPrevious(current);
     setCurrent(to);
-    timer.current = window.setTimeout(() => setPrevious(null), 260);
   }
 
   function showHint() {
@@ -81,7 +82,8 @@ export function TappablePhone({ start, size = "small", label }: { start: number;
           height={SCREEN_H}
           loading={size === "hero" ? "eager" : "lazy"}
           decoding="async"
-          className={`absolute inset-0 size-full object-cover ${previous !== null ? "animate-[dissolve_250ms_ease-out]" : ""}`}
+          onLoad={() => setPrevious(null)}
+          className="absolute inset-0 size-full object-cover"
         />
         {screen.hotspots.map(([text, x, y, w, h, to], i) => (
           <button

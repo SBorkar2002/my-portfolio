@@ -269,15 +269,6 @@
   color: var(--text-muted);
 }
 
-/* Sourced prototype: screens dissolve in like the Figma prototype (0.25s). */
-@keyframes dissolve {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
 
 /* Cat toggle: butter while the cat is out, muted once it is hidden. */
 .cat-toggle {

@@ -6,6 +6,7 @@ import type { MouseEvent } from "react";
 import { links } from "@/lib/projects";
 import { homeSections, jumpTo, useChrome } from "./SiteChrome";
 import { CatToggle } from "./cat/CatToggle";
+import { MusicToggle } from "./MusicToggle";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button, Keycap } from "./ui";
 
@@ -66,6 +67,7 @@ export function Nav() {
           </span>
         </button>
         <ThemeToggle />
+        <MusicToggle />
         {isHome && <CatToggle />}
         <div className="hidden md:block">
           <Button href={links.resume} label="RESUME" icon="download" download />

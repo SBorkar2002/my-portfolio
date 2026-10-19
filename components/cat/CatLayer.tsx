@@ -46,6 +46,17 @@ const TILE_LINES: Record<string, string> = {
 };
 /** The white cat (dark theme) is Mimi, the black cat (light theme) is Cookie. */
 const catName = () => (currentTheme() === "dark" ? "Mimi" : "Cookie");
+// Said when the cat is clicked, shuffled so none repeats until all have been said. {name} is Cookie or Mimi.
+const PET_LINES = [
+  "purr purr",
+  "that tickles!",
+  "more pets, please",
+  "hi again, I'm {name}",
+  "boop!",
+  "five more minutes...",
+  "seen the art room yet?",
+  "you found me!",
+];
 const SECTION_LINES: Record<string, string[]> = {
   "hero-panel": ["hey, I'm {name}! I'll be your guide to this portfolio", "press 1 to 6", "try the ? key"],
   work: ["tap a tile", "press 2 for Sourced"],
@@ -248,8 +259,10 @@ function Cat() {
       play("Talk", then);
     }
 
+    let bubbleSource = "";
     function showBubble(text: string, ms = 4200) {
       if (!spot || !ctx) return;
+      bubbleSource = text;
       bubble.textContent = text.replace("{name}", catName());
       bubble.hidden = false;
       const w = bubble.offsetWidth;
@@ -761,12 +774,22 @@ function Cat() {
     let unTheme = () => {};
     const tiles: Element[] = [];
 
+    let petBag: string[] = [];
+    let lastPet = "";
+    function nextPetLine() {
+      if (!petBag.length) {
+        petBag = [...PET_LINES].sort(() => Math.random() - 0.5);
+        if (petBag[petBag.length - 1] === lastPet) petBag.unshift(petBag.pop()!);
+      }
+      lastPet = petBag.pop()!;
+      return lastPet;
+    }
+
     petRef.current = () => {
       if (!ctx || !spot || ctx.reduced || mode === "moving") return;
       lastActive = performance.now();
       stop();
-      const lines = spot.then === "doze" ? [CONTACT_LINE] : SECTION_LINES[spot.id] ?? ["meow"];
-      showBubble(lines[lineIndex++ % lines.length]);
+      showBubble(nextPetLine());
       mode = "idle";
       const after = spot.then === "doze" ? doze : idle;
       if (spot.enter === "peek" || spot.enter === "side") play("Sit", after, { frames: [0, 3, 0] });
@@ -781,6 +804,8 @@ function Cat() {
       cache.setPalette(sprite.readPalette());
       unTheme = onThemeChange(() => {
         cache!.setPalette(sprite.readPalette());
+        // The name in an open bubble follows the theme straight away (Cookie in light, Mimi in dark).
+        if (!bubble.hidden && bubbleSource.includes("{name}")) bubble.textContent = bubbleSource.replace("{name}", catName());
         if (spot) {
           placeHit();
           draw();

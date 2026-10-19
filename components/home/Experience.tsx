@@ -17,6 +17,8 @@ type Chapter = {
   icon?: string[];
   /** What the guide cat says when this chapter zooms in. */
   line: string;
+  /** Intro only: degrees, shown as their own block under the intro text. [degree, school and place, years] */
+  education?: [string, string, string][];
 };
 
 // Pixel icons, one per role. '#' is a filled pixel.
@@ -93,9 +95,10 @@ const chapters: Chapter[] = [
     dates: "HELLO",
     rail: "HI",
     role: "Hi, I am Sejal.",
-    detail: "Before product design I spent four years drawing for clients as Jeneko, and it still shapes how I work. MCA, Ramaiah Institute of Technology, Bengaluru, 2024 to 2025.",
+    detail: "Before product design I spent four years drawing for clients as Jeneko, and it still shapes how I work.",
     color: "var(--pastel-mint)",
     line: "scroll, I'll show you",
+    education: [["MCA", "Ramaiah Institute of Technology, Bengaluru", "2024 TO 2025"]],
   },
   {
     key: "epifi",
@@ -165,6 +168,23 @@ function PixelIcon({ rows, className = "" }: { rows: string[]; className?: strin
         [...r].map((c, x) => (c === "#" ? <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill="currentColor" /> : null)),
       )}
     </svg>
+  );
+}
+
+function Education({ items }: { items: [string, string, string][] }) {
+  return (
+    <section aria-label="Education" className="flex w-full flex-col gap-3 border-t-2 border-line pt-4">
+      <h4 className="type-label-s text-ink">EDUCATION</h4>
+      <ul className="flex flex-col gap-2">
+        {items.map(([degree, school, years]) => (
+          <li key={degree + school} className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <span className="type-body-m font-semibold text-primary">{degree}</span>
+            <span className="type-body-m text-muted">{school}</span>
+            <span className="type-label-s text-muted">{years}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
@@ -272,6 +292,7 @@ export function Experience() {
                   <h3 className="type-heading-s text-primary">{c.role}</h3>
                   <p className="type-body-m text-muted">{c.detail}</p>
                   {c.tag && <Tag kind={c.tag} />}
+                  {c.education && <Education items={c.education} />}
                 </div>
               </li>
             ))}
@@ -329,6 +350,7 @@ export function Experience() {
                   <h3 className="type-display-m text-primary">{c.role}</h3>
                   <p className="type-body-l text-muted">{c.detail}</p>
                   {c.tag && <Tag kind={c.tag} />}
+                  {c.education && <Education items={c.education} />}
                 </div>
               </li>
             ))}
