@@ -11,6 +11,8 @@ const PALETTE_VARS: Record<string, string> = {
   M: "--cat-mouth-inner",
   z: "--cat-zzz",
   h: "--cat-heart",
+  l: "--cat-body-top",
+  s: "--cat-shadow",
 };
 
 export type Palette = Record<string, [number, number, number]>;

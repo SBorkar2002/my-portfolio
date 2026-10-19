@@ -9,7 +9,7 @@
   --bg-sunken: #e7e2f2;
   --line: #d4cde4;
   --text-primary: #17141f;
-  --text-muted: #5d5770;
+  --text-muted: #474259;
   --text-on-pastel: #17141f;
   --accent-ink: #5b47d6;
   --pastel-lilac: #c3b5ff;
@@ -30,6 +30,8 @@
   --cat-mouth-inner: #c4456e;
   --cat-zzz: #8f7bff;
   --cat-heart: #ff6f9c;
+  --cat-body-top: #3a344a;
+  --cat-shadow: #d9d3e8;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -40,13 +42,15 @@
     --bg-sunken: #0f0d15;
     --line: #34304a;
     --text-primary: #f2effa;
-    --text-muted: #a7a1bc;
+    --text-muted: #bcb6d0;
     --accent-ink: #c3b5ff;
     --cat-body: #f2effa;
     --cat-body-far: #beb7d2;
     --cat-pupil: #15131c;
     --cat-zzz: #c3b5ff;
     --cat-heart: #ff8fb1;
+    --cat-body-top: #ffffff;
+    --cat-shadow: #0b0a10;
   }
 }
 
@@ -57,13 +61,15 @@
   --bg-sunken: #0f0d15;
   --line: #34304a;
   --text-primary: #f2effa;
-  --text-muted: #a7a1bc;
+  --text-muted: #bcb6d0;
   --accent-ink: #c3b5ff;
   --cat-body: #f2effa;
   --cat-body-far: #beb7d2;
   --cat-pupil: #15131c;
   --cat-zzz: #c3b5ff;
   --cat-heart: #ff8fb1;
+  --cat-body-top: #ffffff;
+  --cat-shadow: #0b0a10;
 }
 
 @theme inline {
@@ -293,7 +299,7 @@
   background-image: linear-gradient(color-mix(in srgb, var(--line) 70%, transparent) 1px, transparent 1px),
     linear-gradient(90deg, color-mix(in srgb, var(--line) 70%, transparent) 1px, transparent 1px);
   background-size: 32px 32px;
-  mask-image: radial-gradient(ellipse 80% 70% at 60% 40%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 55% 75% at 78% 40%, #000 25%, transparent 75%);
 }
 .hero-glow {
   background: radial-gradient(40% 50% at 78% 30%, color-mix(in srgb, var(--pastel-lilac) 35%, transparent), transparent 70%),
@@ -331,16 +337,37 @@
 }
 .loader-block {
   opacity: 0.2;
-  animation: loader-fill 0.9s steps(1) infinite;
+  animation: loader-wave 1.2s steps(4) infinite;
 }
-@keyframes loader-fill {
+@keyframes loader-wave {
   0%,
-  40% {
-    opacity: 0.2;
-  }
-  41%,
   100% {
+    opacity: 0.2;
+    translate: 0 0;
+  }
+  50% {
     opacity: 1;
+    translate: 0 -6px;
+  }
+}
+.loader-track {
+  position: relative;
+  width: 192px;
+  height: 12px;
+  border: 2px solid var(--line);
+}
+.loader-runner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 8px;
+  background: var(--accent-lime);
+  animation: loader-run 1.4s steps(12) infinite alternate;
+}
+@keyframes loader-run {
+  to {
+    translate: 164px 0;
   }
 }
 :root[data-loader-exit] .loader {
@@ -391,5 +418,98 @@
   }
   to {
     scale: 1;
+  }
+}
+
+/* Selected work entrance (round 2): each tile opens like a window as it scrolls in, driven by scroll position. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .work-enter {
+      animation: work-enter linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 28%;
+    }
+  }
+}
+@keyframes work-enter {
+  from {
+    opacity: 0.15;
+    scale: 0.94;
+    clip-path: inset(14% 10% 14% 10%);
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+    clip-path: inset(0 -16px -16px 0);
+  }
+}
+
+/* Section atmosphere (round 2): the hero's grid and lilac + lime glow on every home section. */
+.section-fx {
+  position: relative;
+  isolation: isolate;
+}
+.section-fx::before,
+.section-fx::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.section-fx::before {
+  background-image: linear-gradient(color-mix(in srgb, var(--line) 60%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--line) 60%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 70% 60% at var(--fx-x, 80%) var(--fx-y, 20%), #000 10%, transparent 70%);
+}
+.section-fx::after {
+  background: radial-gradient(35% 45% at var(--fx-x, 80%) var(--fx-y, 20%), color-mix(in srgb, var(--pastel-lilac) 28%, transparent), transparent 70%),
+    radial-gradient(28% 38% at var(--fx-x2, 10%) var(--fx-y2, 90%), color-mix(in srgb, var(--accent-lime) 18%, transparent), transparent 70%);
+}
+
+/* Art room collage (round 2). */
+.art-collage-dim,
+.art-collage-lit {
+  background: url(/images/art_collage.webp) center / cover repeat;
+}
+.art-collage-dim {
+  opacity: 0.1;
+  filter: grayscale(0.6);
+}
+.art-collage-lit {
+  opacity: 0;
+  mask-image: radial-gradient(180px circle at var(--sx, -999px) var(--sy, -999px), #000 30%, transparent 75%);
+  transition: opacity 0.2s;
+}
+.art-collage[data-lit] .art-collage-lit {
+  opacity: 0.55;
+}
+
+/* Experience scrollytelling states. */
+.exp-role {
+  transition:
+    opacity 0.35s,
+    translate 0.35s,
+    background-color 0.2s;
+}
+.exp-role[data-state="past"] {
+  opacity: 0.55;
+}
+.exp-role[data-state="future"] {
+  opacity: 0;
+  translate: 0 16px;
+}
+
+/* Laser pointer dot (home): a small pixel dot beside the normal cursor. */
+.laser-dot {
+  width: 6px;
+  height: 6px;
+  background: #ff4d6d;
+  box-shadow: 0 0 0 2px color-mix(in srgb, #ff4d6d 35%, transparent);
+}
+@media (prefers-reduced-motion: reduce), (pointer: coarse) {
+  .laser-dot {
+    display: none;
   }
 }

@@ -100,6 +100,6 @@ The previous React and Vite portfolio is kept on the [`old-portfolio`](https://g
 
 ## Credits
 
-- Light Lines and Pixelated Image Trail from [Vengeance UI](https://www.vengenceui.com) (MIT, Ashutoshx7/VengeanceUI), adapted in `components/vendor/` (pixel shadows, reduced-motion guards, the trail sits behind the art cards).
+- Light Lines from [Vengeance UI](https://www.vengenceui.com) (MIT, Ashutoshx7/VengeanceUI), adapted in `components/vendor/` (reduced-motion guard).
 - Underline link hover (skiper40 Link000) from [Skiper UI](https://skiper-ui.com), free with credit.
 - Everything else is written for this site. Fonts: Jersey 15, Silkscreen and Rethink Sans, all under the SIL Open Font License via Google Fonts.

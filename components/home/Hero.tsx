@@ -30,7 +30,7 @@ export function Hero() {
             <br />
             <span className="font-serif text-ink italic">who ships.</span>
           </h1>
-          <p className="type-body-l max-w-[560px] text-muted">
+          <p className="type-body-l max-w-[560px] bg-page/70 text-primary">
             B2B SaaS, from research to merged pull requests. Drawing since 2020.
           </p>
           <div className="flex flex-wrap items-start gap-4">
@@ -76,7 +76,7 @@ function HeroBackdrop() {
     };
   }, []);
   return (
-    <div ref={ref} aria-hidden="true" className="pointer-events-none absolute inset-0">
+    <div ref={ref} aria-hidden="true" className="pointer-events-none absolute inset-0 [mask-image:linear-gradient(90deg,transparent_0%,#000_45%)]">
       <div className="hero-grid absolute inset-0" />
       <LightLines
         gradientFrom="transparent"

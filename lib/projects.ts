@@ -69,7 +69,7 @@ export const projects: Project[] = [
     meta: "EPIFI · 2026",
     summary:
       "Script to final render, with reusable skill files in the repo and review gates. Storyboards went from 4 days to 1.",
-    href: null,
+    href: "/work/video-system",
   },
   {
     number: 6,

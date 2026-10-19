@@ -40,8 +40,11 @@ export function Loader() {
       <p className="type-display-l text-primary">SB</p>
       <div className="flex gap-1.5">
         {Array.from({ length: BLOCKS }, (_, i) => (
-          <span key={i} className="loader-block size-3 bg-lilac" style={{ animationDelay: `${i * 45}ms` }} />
+          <span key={i} className="loader-block size-3 bg-lilac" style={{ animationDelay: `${i * 100}ms` }} />
         ))}
+      </div>
+      <div className="loader-track" aria-hidden="true">
+        <span className="loader-runner" />
       </div>
       <p className="type-label-s text-muted">LOADING THE WORK</p>
     </div>
