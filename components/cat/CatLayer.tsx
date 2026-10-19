@@ -26,6 +26,8 @@ type Spot = {
   fixed?: boolean;
   /** Spins on the way down. */
   spins?: number;
+  /** Not wanted anywhere right now: left where it was, to scroll away with the page. */
+  parked?: boolean;
 };
 
 const SIZE = 48;
@@ -280,45 +282,16 @@ function Cat() {
       bubble.hidden = true;
     }
 
-    /** Leaving the pinned experience story: the guide sinks back down out of the bottom of the screen. */
-    let afterSink: (() => void) | null = null;
-    function sinkOut(then: () => void) {
-      // Already sinking: just change where it goes next, so the exit is never cut short.
-      if (afterSink) {
-        afterSink = then;
-        return;
-      }
-      if (!ctx || !spot) return then();
-      afterSink = then;
-      stop();
+    /** Nowhere to be: the cat stays where it is on the page and scrolls away with it, so it never pops out of sight. */
+    function park() {
+      if (!spot || spot.parked) return;
+      if (spot.fixed) return hide();
+      noteSide();
       hideBubble();
-      mode = "moving";
-      const list = ctx.data.frames.Peek.map((_, i) => i).reverse();
-      const startY = y;
-      const endY = innerHeight + SIZE * spot.s;
-      const t0 = performance.now();
-      const tick = () => {
-        if (disposed || !ctx) return;
-        const t = Math.min(1, (performance.now() - t0) / 560);
-        y = startY + (endY - startY) * t * t;
-        frame = { state: "Peek", index: list[Math.min(list.length - 1, Math.floor(t * list.length))], flip: false };
-        draw();
-        if (t < 1) timer = window.setTimeout(tick, 33);
-        else {
-          lastExit = x + SIZE * spot!.s * 0.5 < innerWidth / 2 ? "left" : "right";
-          wrap.hidden = true;
-          spot = null;
-          const next = afterSink!;
-          afterSink = null;
-          next();
-        }
-      };
-      tick();
+      spot.parked = true;
     }
-    const leavingStory = () => Boolean(afterSink || (spot?.fixed && ctx && !ctx.reduced && !wrap.hidden && mode !== "moving"));
 
     function hide() {
-      if (leavingStory()) return sinkOut(hide);
       noteSide();
       stop();
       hideBubble();
@@ -341,8 +314,6 @@ function Cat() {
 
     /** Settles into a spot with its entrance, then its behaviour. */
     function go(next: Spot) {
-      if (!next.fixed && leavingStory()) return sinkOut(() => go(next));
-      afterSink = null; // back into the story mid-exit: the guide simply returns
       stop();
       hideBubble();
       if (next.enter === "run" && ctx && !ctx.reduced) return runIn(next);
@@ -447,7 +418,9 @@ function Cat() {
       if (next.then === "wander") {
         // Walk a few steps, come back, sit, say the line. Idle then yawns and sleeps after 5 s.
         const home = next.left;
-        const away = Math.max(16, home - SIZE * next.s * 1.6);
+        // Always walks towards the middle of the screen, never off the edge.
+        const step = SIZE * next.s * 1.6;
+        const away = home + SIZE * next.s * 0.5 - scrollX < innerWidth / 2 ? home + step : Math.max(16, home - step);
         moveTo(away, next.floor, "Walk", () => moveTo(home, next.floor, "Walk", () => say(line, idle)));
         return;
       }
@@ -479,15 +452,23 @@ function Cat() {
         if (!el || !inner) return null;
         const box = page(inner);
         const pad = parseFloat(getComputedStyle(inner).paddingRight || "0");
-        return { id, s, left: box.right - pad - (sit.right + 1) * s, floor: page(el).bottom - 2, enter: "fall", then: "wander", line, spins: 2 };
+        // The art room cat falls on the left, on the same side as the experience ledge it came from.
+        const left = id === "art" ? box.left + pad - sit.left * s : box.right - pad - (sit.right + 1) * s;
+        return { id, s, left, floor: page(el).bottom - 2, enter: "fall", then: "wander", line, spins: 2 };
       }
       if (id === "work-peek") {
-        // Peek over the top edge of the work tile nearest the middle of the screen, so the cat is never missing here.
-        let best: Element | null = null;
-        let bestD = Infinity;
-        for (const t of document.querySelectorAll("#work [id^='project-']")) {
+        // Peek over the top edge of a work tile, only once it has finished its scroll entrance (work-enter ends at
+        // "cover 28%"), and stay on the same tile while it still qualifies.
+        const settled = (t: Element) => {
           const r = t.getBoundingClientRect();
-          if (r.top < 90 || r.top > innerHeight - 60) continue;
+          return r.top >= 170 && r.top <= innerHeight - 0.28 * (innerHeight + r.height);
+        };
+        const current = spot?.id.startsWith("work-peek:") ? document.getElementById(spot.id.slice(10)) : null;
+        let best: Element | null = current && settled(current) ? current : null;
+        let bestD = Infinity;
+        for (const t of best ? [] : document.querySelectorAll("#work [id^='project-']")) {
+          if (!settled(t)) continue;
+          const r = t.getBoundingClientRect();
           const d = Math.abs(r.top - innerHeight * 0.45);
           if (d < bestD) {
             bestD = d;
@@ -546,6 +527,8 @@ function Cat() {
       }
       const work = document.getElementById("work");
       if (between(work, "bottom", 160)) return "work";
+      // The walking cat at the bottom of selected work is still (partly) on screen: no peeking on top of it.
+      if (between(work, "bottom", vh - 9, vh + 200)) return null;
       if (work) {
         const r = work.getBoundingClientRect();
         if (r.top < vh * 0.6 && r.bottom > vh * 0.4) return "work-peek";
@@ -555,17 +538,79 @@ function Cat() {
       return null;
     }
 
+    // ---------- first visit: spin on the loading bar, then fall while the hero rises up to meet the cat ----------
+
+    let intro = false;
+    const INTRO_MS = 1100; // matches the intro-rise animation in globals.css
+
+    function spinOnLoader() {
+      const track = document.querySelector(".loader-track");
+      if (!ctx || !track) return;
+      const r = track.getBoundingClientRect();
+      const s = baseScale();
+      const fall = ctx.sprite.stateBox("Fall");
+      intro = true;
+      spot = { id: "loader", s, fixed: true, left: r.left + r.width / 2 - ((fall.left + fall.right + 1) / 2) * s, floor: r.top - 8, enter: "appear", then: "hold" };
+      wrap.hidden = false;
+      wrap.style.zIndex = "90"; // above the loading screen
+      placeHit();
+      x = spot.left;
+      y = spot.floor;
+      mode = "moving";
+      const loop = () => play("Fall", loop);
+      loop();
+    }
+
+    /** Called just before the hero starts rising (layout is final, not yet moved). */
+    function dropIntoHero() {
+      if (!ctx || !intro || !spot) return choose();
+      const hero = spotFor("hero-panel");
+      if (!hero) {
+        intro = false;
+        wrap.style.zIndex = "";
+        return choose();
+      }
+      stop();
+      const startX = x;
+      const startY = y;
+      const endX = hero.left - scrollX;
+      const endY = hero.floor - scrollY;
+      spot = { ...hero, id: "intro", fixed: true };
+      placeHit();
+      wrap.style.zIndex = "";
+      const list = ctx.data.frames.Fall.map((_, i) => i);
+      const t0 = performance.now();
+      const tick = () => {
+        if (disposed || !ctx) return;
+        const t = Math.min(1, (performance.now() - t0) / INTRO_MS);
+        // Picks up speed like a falling drop; the hero arrives under it at the same moment.
+        x = startX + (endX - startX) * (1 - (1 - t) * (1 - t));
+        y = startY + (endY - startY) * t * t;
+        frame = { state: "Fall", index: list[Math.floor((performance.now() - t0) / 90) % list.length], flip: false };
+        draw();
+        if (t < 1) timer = window.setTimeout(tick, 33);
+        else {
+          intro = false;
+          spot = hero;
+          x = hero.left;
+          y = hero.floor;
+          play("Land", () => behave(hero));
+        }
+      };
+      tick();
+    }
+
     let pending: string | null | undefined;
     let settle = 0;
     function choose() {
-      if (!ctx || hoverTile || mode === "laser") return;
+      if (!ctx || intro || hoverTile || mode === "laser") return;
       let want = target();
       if (ctx.reduced && want !== "hero-panel" && want !== "footer") want = null;
       const next = want ? spotFor(want) : null;
       const key = next ? next.id : null;
       if (key === pending) return;
       window.clearTimeout(settle);
-      if (key === (spot?.id ?? null)) {
+      if (key === (spot && !spot.parked ? spot.id : null)) {
         pending = undefined;
         return;
       }
@@ -574,10 +619,11 @@ function Cat() {
         pending = undefined;
         if (hoverTile || mode === "laser") return;
         const fresh = want ? spotFor(want) : null;
-        if (fresh && fresh.id !== spot?.id) {
+        if (fresh && spot && fresh.id === spot.id) spot.parked = false; // already there
+        else if (fresh) {
           lineIndex++;
           go(fresh);
-        } else if (!fresh) hide();
+        } else park();
       }, 160);
     }
 
@@ -601,7 +647,9 @@ function Cat() {
     const onTileLeave = (e: Event) => {
       if (hoverTile !== e.currentTarget) return;
       hoverTile = null;
-      spot = null;
+      // Stays on that tile until it has somewhere else to be.
+      if (spot) spot.parked = true;
+      hideBubble();
       choose();
     };
 
@@ -656,13 +704,32 @@ function Cat() {
 
     // ---------- wiring ----------
 
+    /** The guide sits on the story's ledge: fixed while the story is pinned, then carried off with the page. */
+    function rideLedge() {
+      if (!ctx || spot?.id !== "experience") return;
+      const ledge = document.querySelector('[data-cat-perch="exp-guide"]');
+      const exp = document.getElementById("experience");
+      if (!ledge || !exp) return;
+      const r = ledge.getBoundingClientRect();
+      const e = exp.getBoundingClientRect();
+      const sit = ctx.sprite.stateBox("Sit");
+      const left = r.left + r.width / 2 - ((sit.left + sit.right + 1) / 2) * spot.s;
+      spot.fixed = e.top <= 80 && e.bottom >= innerHeight - 4;
+      x = spot.left = spot.fixed ? left : left + scrollX;
+      y = spot.floor = spot.fixed ? r.top : r.top + scrollY;
+      draw();
+    }
+
     let scrollTimer = 0;
     const onScroll = () => {
       wake();
+      rideLedge();
       laser.hidden = true;
       if (mode === "laser" || spot?.id === "laser") {
+        stop();
         mode = "idle";
-        spot = null;
+        if (spot) spot.parked = true;
+        play("Sit", idle, { frames: [0] });
       }
       if (!scrollTimer)
         scrollTimer = window.setTimeout(() => {
@@ -673,7 +740,7 @@ function Cat() {
     // A new experience chapter zoomed in: the guide hops and reads its line, and stays on its ledge.
     const onExp = (e: Event) => {
       expLine = (e as CustomEvent<{ line: string }>).detail?.line ?? "";
-      if (spot?.id !== "experience" || !ctx || ctx.reduced || mode === "moving") return;
+      if (spot?.id !== "experience" || spot.parked || !ctx || ctx.reduced || mode === "moving") return;
       stop();
       // The line shows at once so a fast scroll never skips it; the hop and the talk follow.
       showBubble(expLine);
@@ -685,11 +752,10 @@ function Cat() {
       else if (spot && ctx && !ctx.reduced && (mode === "idle" || mode === "sleeping")) (spot.then === "doze" ? doze : idle)();
     };
     const resize = new ResizeObserver(() => {
-      if (!spot || mode === "moving" || mode === "laser" || hoverTile) return;
-      const id = spot.id;
-      spot = null;
+      if (!spot || spot.parked || spot.id === "experience" || mode === "moving" || mode === "laser" || hoverTile) return;
+      // Marked stale so the next choice moves it to the new layout, or leaves it where it is.
+      spot = { ...spot, id: `${spot.id}:stale`, parked: true };
       choose();
-      void id;
     });
     let unTheme = () => {};
     const tiles: Element[] = [];
@@ -732,11 +798,16 @@ function Cat() {
         t.addEventListener("pointerleave", onTileLeave);
         tiles.push(t);
       });
-      if (document.documentElement.dataset.loading) window.addEventListener("loaderdone", () => choose(), { once: true });
-      else choose();
+      if (document.documentElement.dataset.loading) {
+        if (!ctx.reduced) spinOnLoader();
+        window.addEventListener("loaderdone", dropIntoHero, { once: true });
+      } else choose();
     }
 
-    const idleCb = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 600));
+    // On the first visit the cat is part of the loading screen, so it boots straight away.
+    const idleCb = document.documentElement.dataset.loading
+      ? (cb: () => void) => window.setTimeout(cb, 0)
+      : (window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 600)));
     const handle = idleCb(() => {
       boot().catch(() => hide());
     });

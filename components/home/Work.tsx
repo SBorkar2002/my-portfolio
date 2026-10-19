@@ -4,6 +4,7 @@ import { projectByNumber, type Project } from "@/lib/projects";
 import { Img } from "../Img";
 import { LoopVideo } from "../LoopVideo";
 import { Icon, Keycap, SectionTitle, Tag } from "../ui";
+import { GutterSky } from "./GutterSky";
 
 const tileBase = "work-enter flex border-2 border-line bg-raised shadow-pixel-8";
 const tileLive =
@@ -14,6 +15,7 @@ export function Work() {
   const more = projectByNumber(6)!;
   return (
     <section id="work" aria-labelledby="work-title" className="work-fx border-t-2 border-line">
+      <GutterSky />
       <div className="mx-auto flex max-w-[1440px] flex-col gap-10 px-[clamp(20px,8.333vw,120px)] pt-16 pb-20 lg:pt-24 lg:pb-32">
         <div className="flex items-end gap-6" data-cat-perch="work-gutter" data-reveal>
           <SectionTitle kicker="01 · SELECTED WORK" title="Selected work" id="work-title" />

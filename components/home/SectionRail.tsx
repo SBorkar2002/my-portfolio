@@ -40,16 +40,16 @@ export function SectionRail() {
 
   const progress = (active / (sections.length - 1)) * 100;
   return (
-    <nav aria-label="Sections" className="fixed top-[120px] left-6 z-30 hidden w-[72px] flex-col gap-3 min-[1280px]:flex">
-      <p className="type-label-s flex items-center gap-2 text-ink">
+    <nav aria-label="Sections" className="fixed top-[120px] left-6 z-30 hidden w-[80px] flex-col gap-3.5 min-[1280px]:flex min-[1440px]:w-[90px]">
+      <p className="type-label-s flex items-center gap-2 text-[12px] text-ink">
         <span aria-hidden="true" className="size-2 bg-ink" />
         {String(active + 1).padStart(2, "0")}
       </p>
-      <p className="type-label-s text-muted">/{String(sections.length).padStart(2, "0")}</p>
-      <div aria-hidden="true" className="relative ml-[3px] h-28 w-0.5 bg-line">
+      <p className="type-label-s text-[12px] text-muted">/{String(sections.length).padStart(2, "0")}</p>
+      <div aria-hidden="true" className="relative ml-[3px] h-44 w-0.5 bg-line">
         <span className="absolute top-0 left-0 w-0.5 bg-ink transition-[height] duration-300" style={{ height: `${progress}%` }} />
       </div>
-      <ol className="flex flex-col gap-2">
+      <ol className="flex flex-col gap-2.5">
         {sections.map((s, i) => (
           <li key={s.id}>
             <a
@@ -61,7 +61,7 @@ export function SectionRail() {
                 } else if (jumpTo(s.id)) e.preventDefault();
               }}
               aria-current={active === i ? "location" : undefined}
-              className={`font-label block text-[10px] leading-3 tracking-[0.04em] transition-colors duration-100 hover:text-primary ${
+              className={`font-label block text-[11px] leading-4 tracking-[0.04em] min-[1440px]:text-[12px] transition-colors duration-100 hover:text-primary ${
                 active === i ? "text-primary" : "text-muted"
               }`}
             >

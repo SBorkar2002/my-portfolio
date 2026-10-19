@@ -2,9 +2,8 @@
 
 import { useEffect } from "react";
 
-const BLOCKS = 12;
-
-/** Pixel loading screen, first visit to home only. Clears after the page loads (at least 0.7s, at most 1.6s). */
+/** Pixel loading screen, first visit to home only. Clears after the page loads (at least 0.7s, at most 1.6s).
+    The cat spins on top of the bar (CatLayer), then falls while the page rises from the bottom to meet it. */
 export function Loader() {
   useEffect(() => {
     const root = document.documentElement;
@@ -16,8 +15,12 @@ export function Loader() {
       done = true;
       const wait = Math.max(0, 700 - (performance.now() - started));
       window.setTimeout(() => {
+        // The loader's text and bar fade; the cat keeps spinning above where the bar was.
         root.dataset.loaderExit = "1";
         window.setTimeout(() => {
+          // Tell the cat first, while the layout is still final, then let the hero rise from the bottom.
+          window.dispatchEvent(new CustomEvent("loaderdone"));
+          root.dataset.intro = "1";
           delete root.dataset.loading;
           delete root.dataset.loaderExit;
           try {
@@ -25,8 +28,9 @@ export function Loader() {
           } catch {
             // Storage blocked: the loader just shows again next visit.
           }
-          window.dispatchEvent(new CustomEvent("loaderdone"));
-        }, 420);
+          // The nav comes in once the cat has reached the bottom of the hero (intro-rise is 1.1 s).
+          window.setTimeout(() => delete root.dataset.intro, 1150);
+        }, 220);
       }, wait);
     };
     if (document.readyState === "complete") finish();
@@ -38,11 +42,8 @@ export function Loader() {
   return (
     <div id="loader" aria-hidden="true" className="loader fixed inset-0 z-[80] flex-col items-center justify-center gap-6 bg-page">
       <p className="type-display-l text-primary">SB</p>
-      <div className="flex gap-1.5">
-        {Array.from({ length: BLOCKS }, (_, i) => (
-          <span key={i} className="loader-block size-3 bg-lilac" style={{ animationDelay: `${i * 100}ms` }} />
-        ))}
-      </div>
+      {/* The cat spins here, on top of the bar (CatLayer). */}
+      <div className="h-[150px]" />
       <div className="loader-track" aria-hidden="true">
         <span className="loader-runner" />
       </div>

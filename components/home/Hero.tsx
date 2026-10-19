@@ -93,14 +93,14 @@ function HeroBackdrop() {
   );
 }
 
-function PixelStar({ className = "" }: { className?: string }) {
+export function PixelStar({ className = "", size = 72 }: { className?: string; size?: number }) {
   // 9 x 9 pixel sparkle, drawn on a grid so it stays crisp.
   const px = [
     [4, 0], [4, 1], [4, 2], [3, 3], [4, 3], [5, 3], [0, 4], [1, 4], [2, 4], [3, 4], [4, 4], [5, 4], [6, 4], [7, 4], [8, 4],
     [3, 5], [4, 5], [5, 5], [4, 6], [4, 7], [4, 8],
   ];
   return (
-    <svg aria-hidden="true" width="72" height="72" viewBox="0 0 9 9" shapeRendering="crispEdges" className={className}>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 9 9" shapeRendering="crispEdges" className={className}>
       {px.map(([x, y]) => (
         <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill="currentColor" />
       ))}
