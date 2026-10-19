@@ -4,8 +4,8 @@ import { type CSSProperties, type ReactNode } from "react";
 import { links, socials } from "@/lib/projects";
 import { Img } from "../Img";
 export { Experience } from "./Experience";
-import { ArtCollage } from "./ArtCollage";
-import { Doodle } from "./Doodle";
+import { ArtCollage, RevealArt } from "./ArtCollage";
+import { ARROW_UP, Doodle, PixelGlyph, ToolButton } from "./Doodle";
 import { UnderlineLink } from "../vendor/underline-link";
 import { Button, Icon, SectionTitle } from "../ui";
 
@@ -82,6 +82,7 @@ export function ArtRoom() {
             <p className="type-body-m text-muted">Drawing since 2020. It is still part of how I design.</p>
           </div>
           <span className="min-w-px flex-1" />
+          <RevealArt />
         </div>
         <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {categories.map((c, i) => (
@@ -154,21 +155,20 @@ export function Contact() {
             <p className="type-body-s text-muted">Some effects adapted from Vengeance UI (MIT), Skiper UI and scroll-craft (MIT).</p>
           </div>
           {/* Empty on purpose: the cat sits here. */}
-          <div data-cat-perch="contact" aria-hidden="true" className="h-[240px] w-full lg:h-auto lg:min-h-[360px] lg:flex-1" />
+          <div data-cat-perch="contact" aria-hidden="true" className="h-[240px] w-full lg:h-auto lg:min-h-[400px] lg:flex-1" />
         </div>
-        <div className="flex w-full flex-wrap items-center gap-4 pt-10" data-cat-perch="footer">
+        <div className="flex w-full flex-wrap items-center gap-3 pt-10" data-cat-perch="footer">
           <p className="type-label-s text-muted">SEJAL BORKAR · BENGALURU</p>
           <span className="min-w-px flex-1" />
           <Doodle />
-          <button
-            type="button"
+          <ToolButton
+            label="Back to top"
             onClick={() =>
               window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" })
             }
-            className="type-label-s text-muted hover:text-primary"
           >
-            BACK TO TOP
-          </button>
+            <PixelGlyph rows={ARROW_UP} />
+          </ToolButton>
         </div>
       </div>
     </section>

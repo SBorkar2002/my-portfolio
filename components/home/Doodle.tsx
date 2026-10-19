@@ -121,20 +121,95 @@ export function Doodle() {
   return (
     <>
       <canvas ref={ref} aria-hidden="true" className="pointer-events-none absolute inset-0 size-full [image-rendering:pixelated]" />
-      <div className="flex items-center gap-4">
-        <button
-          type="button"
-          aria-pressed={on}
-          onClick={() => setOn((v) => !v)}
-          className="type-label-s flex items-center gap-2 text-muted hover:text-primary"
-        >
-          <span aria-hidden="true" className={`size-2.5 ${on ? "bg-ink" : "border-2 border-line"}`} />
-          DOODLE {on ? "ON" : "OFF"}
-        </button>
-        <button type="button" onClick={clear} disabled={!inked} className="type-label-s text-muted hover:text-primary disabled:opacity-50">
-          CLEAR
-        </button>
-      </div>
+      <ToolButton label={on ? "Doodle mode on: drag anywhere to draw. Turn off" : "Turn on doodle mode"} pressed={on} onClick={() => setOn((v) => !v)}>
+        <PixelGlyph rows={PENCIL} />
+      </ToolButton>
+      <ToolButton label="Clear the doodle" onClick={clear} disabled={!inked}>
+        <PixelGlyph rows={ERASER} />
+      </ToolButton>
     </>
+  );
+}
+
+// 12 x 12 pixel glyphs, '#' filled.
+const PENCIL = [
+  "........##..",
+  ".......####.",
+  "......#.####",
+  ".....#...##.",
+  "....#...#...",
+  "...#...#....",
+  "..#...#.....",
+  ".#...#......",
+  ".#..#.......",
+  ".###........",
+  "##..........",
+  "............",
+];
+const ERASER = [
+  "......###...",
+  ".....#####..",
+  "....#######.",
+  "...#######..",
+  "..#.#####...",
+  ".#...###....",
+  "#.....#.....",
+  ".#...#......",
+  "..###.......",
+  "............",
+  "..########..",
+  "............",
+];
+export const ARROW_UP = [
+  ".....##.....",
+  "....####....",
+  "...######...",
+  "..##.##.##..",
+  ".##..##..##.",
+  ".....##.....",
+  ".....##.....",
+  ".....##.....",
+  ".....##.....",
+  ".....##.....",
+  ".....##.....",
+  "............",
+];
+
+export function PixelGlyph({ rows }: { rows: string[] }) {
+  return (
+    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 12 12" shapeRendering="crispEdges">
+      {rows.flatMap((r, y) => [...r].map((c, x) => (c === "#" ? <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill="currentColor" /> : null)))}
+    </svg>
+  );
+}
+
+/** Square icon button with a label that shows on hover and focus. */
+export function ToolButton({
+  label,
+  pressed,
+  disabled,
+  onClick,
+  children,
+}: {
+  label: string;
+  pressed?: boolean;
+  disabled?: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      aria-pressed={pressed}
+      disabled={disabled}
+      onClick={onClick}
+      className={`flex size-11 items-center justify-center border-2 border-line shadow-[0_2px_0_0_var(--line)] transition-colors disabled:opacity-40 ${
+        pressed ? "bg-ink text-page" : "bg-raised text-primary hover:text-ink"
+      }`}
+    >
+      {children}
+    </button>
   );
 }

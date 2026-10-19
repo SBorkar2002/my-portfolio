@@ -32,6 +32,7 @@
   --cat-heart: #ff6f9c;
   --cat-body-top: #3a344a;
   --cat-shadow: #d9d3e8;
+  --cat-bell: #5fd38a;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -51,6 +52,7 @@
     --cat-heart: #ff8fb1;
     --cat-body-top: #ffffff;
     --cat-shadow: #0b0a10;
+    --cat-bell: #7be3a0;
   }
 }
 
@@ -70,6 +72,7 @@
   --cat-heart: #ff8fb1;
   --cat-body-top: #ffffff;
   --cat-shadow: #0b0a10;
+  --cat-bell: #7be3a0;
 }
 
 @theme inline {

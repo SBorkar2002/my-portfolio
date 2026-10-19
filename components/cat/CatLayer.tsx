@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { Component, useEffect, useRef, useState, type ReactNode } from "react";
 import type { CatState } from "@/lib/cat/frames";
 import { catEnabled, onCatChange } from "@/lib/cat/prefs";
-import { onThemeChange } from "@/lib/theme";
+import { currentTheme, onThemeChange } from "@/lib/theme";
 
 type Sprite = typeof import("@/lib/cat/sprite");
 type Data = typeof import("@/lib/cat/frames");
@@ -42,8 +42,10 @@ const TILE_LINES: Record<string, string> = {
   "project-4": "one look per category",
   "project-5": "script to render, with review gates",
 };
+/** The white cat (dark theme) is Mimi, the black cat (light theme) is Cookie. */
+const catName = () => (currentTheme() === "dark" ? "Mimi" : "Cookie");
 const SECTION_LINES: Record<string, string[]> = {
-  "hero-panel": ["hey!", "press 1 to 6", "try the ? key"],
+  "hero-panel": ["hey, I'm {name}! I'll be your guide to this portfolio", "press 1 to 6", "try the ? key"],
   work: ["tap a tile", "press 2 for Sourced"],
   art: ["drawing since 2020"],
 };
@@ -104,6 +106,8 @@ function Cat() {
     let bubbleTimer = 0;
     let hoverTile: Element | null = null;
     let expLine = "";
+    /** Which side of the screen the cat last left by, so it comes back into contact from the same side. */
+    let lastExit: "left" | "right" = "right";
     const reducedQuery = matchMedia("(prefers-reduced-motion: reduce)");
     const mobileQuery = matchMedia("(max-width: 767px)");
     const fineQuery = matchMedia("(pointer: fine)");
@@ -244,7 +248,7 @@ function Cat() {
 
     function showBubble(text: string, ms = 4200) {
       if (!spot || !ctx) return;
-      bubble.textContent = text;
+      bubble.textContent = text.replace("{name}", catName());
       bubble.hidden = false;
       const w = bubble.offsetWidth;
       const s = spot.s;
@@ -264,12 +268,58 @@ function Cat() {
       if (!ctx.reduced && ms > 0) bubbleTimer = window.setTimeout(hideBubble, ms);
     }
 
+    /** Remembers which half of the screen the cat was on, for when it next runs in. */
+    function noteSide() {
+      if (!spot || wrap.hidden) return;
+      const vx = spot.fixed ? x : x - scrollX;
+      lastExit = vx + SIZE * spot.s * 0.5 < innerWidth / 2 ? "left" : "right";
+    }
+
     function hideBubble() {
       window.clearTimeout(bubbleTimer);
       bubble.hidden = true;
     }
 
+    /** Leaving the pinned experience story: the guide sinks back down out of the bottom of the screen. */
+    let afterSink: (() => void) | null = null;
+    function sinkOut(then: () => void) {
+      // Already sinking: just change where it goes next, so the exit is never cut short.
+      if (afterSink) {
+        afterSink = then;
+        return;
+      }
+      if (!ctx || !spot) return then();
+      afterSink = then;
+      stop();
+      hideBubble();
+      mode = "moving";
+      const list = ctx.data.frames.Peek.map((_, i) => i).reverse();
+      const startY = y;
+      const endY = innerHeight + SIZE * spot.s;
+      const t0 = performance.now();
+      const tick = () => {
+        if (disposed || !ctx) return;
+        const t = Math.min(1, (performance.now() - t0) / 560);
+        y = startY + (endY - startY) * t * t;
+        frame = { state: "Peek", index: list[Math.min(list.length - 1, Math.floor(t * list.length))], flip: false };
+        draw();
+        if (t < 1) timer = window.setTimeout(tick, 33);
+        else {
+          lastExit = x + SIZE * spot!.s * 0.5 < innerWidth / 2 ? "left" : "right";
+          wrap.hidden = true;
+          spot = null;
+          const next = afterSink!;
+          afterSink = null;
+          next();
+        }
+      };
+      tick();
+    }
+    const leavingStory = () => Boolean(afterSink || (spot?.fixed && ctx && !ctx.reduced && !wrap.hidden && mode !== "moving"));
+
     function hide() {
+      if (leavingStory()) return sinkOut(hide);
+      noteSide();
       stop();
       hideBubble();
       spot = null;
@@ -291,6 +341,8 @@ function Cat() {
 
     /** Settles into a spot with its entrance, then its behaviour. */
     function go(next: Spot) {
+      if (!next.fixed && leavingStory()) return sinkOut(() => go(next));
+      afterSink = null; // back into the story mid-exit: the guide simply returns
       stop();
       hideBubble();
       if (next.enter === "run" && ctx && !ctx.reduced) return runIn(next);
@@ -340,7 +392,7 @@ function Cat() {
       else after();
     }
 
-    /** Contact entrance: run off the nearest side of the screen, then come back in from the left and run to the spot. */
+    /** Contact entrance: run off the nearest side of the screen, then come back in from that same side and run to the spot. */
     function runIn(next: Spot) {
       if (!ctx) return;
       mode = "moving";
@@ -349,7 +401,7 @@ function Cat() {
         wrap.hidden = false;
         placeHit();
         const sit = ctx!.sprite.stateBox("Sit");
-        x = (next.fixed ? 0 : scrollX) - (sit.right + 1) * next.s;
+        x = lastExit === "left" ? scrollX - (sit.right + 1) * next.s : scrollX + innerWidth - sit.left * next.s + 8;
         y = next.floor;
         moveTo(next.left, next.floor, "Run", () => play("Sit", () => behave(next), { frames: [0] }));
       };
@@ -359,7 +411,8 @@ function Cat() {
       if (!onScreen) return comeIn();
       const w = SIZE * spot!.s;
       spot = { ...spot!, enter: "appear" };
-      const edge = vx + w / 2 < innerWidth / 2 ? scrollX - w : scrollX + innerWidth + 8;
+      lastExit = vx + w / 2 < innerWidth / 2 ? "left" : "right";
+      const edge = lastExit === "left" ? scrollX - w : scrollX + innerWidth + 8;
       moveTo(edge, y, "Run", comeIn);
     }
 
@@ -459,10 +512,17 @@ function Cat() {
         // Centred in the empty space beside "Hiring a product designer?", about 30% bigger than round 2 at a whole-pixel scale.
         const el = document.querySelector('[data-cat-perch="contact"]');
         if (!el) return null;
-        const big = ctx.sprite.pixelScale(ctx.mobile ? 5 : 7);
+        const big = ctx.sprite.pixelScale(ctx.mobile ? 6 : 9);
         const p = page(el);
+        // Centre of the open space: from the end of the text column to the screen edge (gutter included) on wide
+        // screens, the perch itself on phones; vertically centred in it too.
+        const col = el.previousElementSibling;
+        const from = !ctx.mobile && col ? page(col).right : p.left;
+        const to = ctx.mobile ? p.right : document.documentElement.clientWidth + scrollX;
         const mid = ((sit.left + sit.right + 1) / 2) * big;
-        return { id, s: big, left: p.left + p.width / 2 - mid, floor: p.bottom, enter: "run", then: "doze", line: CONTACT_LINE };
+        const tall = (SIZE - sit.top) * big;
+        const floor = Math.min(p.bottom, p.top + (p.height + tall) / 2);
+        return { id, s: big, left: (from + to) / 2 - mid, floor, enter: "run", then: "doze", line: CONTACT_LINE };
       }
       return null;
     }

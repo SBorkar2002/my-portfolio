@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CELL = 28;
 const RADIUS = 76;
@@ -16,7 +16,16 @@ export function ArtCollage() {
   useEffect(() => {
     const canvas = ref.current;
     const section = canvas?.closest("section");
-    if (!canvas || !section || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!canvas || !section) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // No ice: the art shows faintly, and the reveal button shows it fully.
+      const onReveal = (e: Event) => {
+        if ((e as CustomEvent<boolean>).detail) canvas.parentElement!.dataset.ice = "";
+        else delete canvas.parentElement!.dataset.ice;
+      };
+      window.addEventListener("artreveal", onReveal);
+      return () => window.removeEventListener("artreveal", onReveal);
+    }
     canvas.hidden = false;
     canvas.parentElement!.dataset.ice = "";
     const g = canvas.getContext("2d")!;
@@ -26,6 +35,7 @@ export function ArtCollage() {
     let broke = new Float64Array(0); // 0 = frozen, otherwise the time the cell cracked
     let delay = new Float32Array(0); // a little randomness per cell so it refreezes unevenly
     let frame = 0;
+    let revealed = false;
     let colors = { ice: "#fff", edge: "#000", crack: "#000" };
 
     const readColors = () => {
@@ -47,6 +57,7 @@ export function ArtCollage() {
       rows = Math.ceil(h / CELL);
       broke = new Float64Array(cols * rows);
       delay = new Float32Array(cols * rows).map(() => Math.random() * 600);
+      if (revealed) broke.fill(performance.now() - FALL_MS);
       draw(performance.now());
     };
 
@@ -69,12 +80,17 @@ export function ArtCollage() {
         const x = (i % cols) * CELL;
         const y = Math.floor(i / cols) * CELL;
         const open = OPEN_MS + delay[i];
+        if (revealed && age >= FALL_MS) {
+          // Stays open while the art is revealed, with nothing to animate.
+          g.clearRect(x, y, CELL, CELL);
+          continue;
+        }
         if (age > open + FREEZE_MS) {
           broke[i] = 0;
           continue;
         }
-        active = true;
         g.clearRect(x, y, CELL, CELL);
+        active = true;
         if (age < FALL_MS) {
           // The pixel drops and shrinks (no rotation), with a lilac crack edge.
           const p = age / FALL_MS;
@@ -125,6 +141,19 @@ export function ArtCollage() {
       if (!frame) frame = requestAnimationFrame(loop);
     };
 
+    // The reveal button melts all the ice at once, and refreezes it when pressed again.
+    const onReveal = (e: Event) => {
+      revealed = Boolean((e as CustomEvent<boolean>).detail);
+      const now = performance.now();
+      for (let i = 0; i < broke.length; i++) {
+        const stagger = Math.random() * 450;
+        if (revealed) broke[i] = broke[i] && now - broke[i] > 0 ? Math.min(broke[i], now - FALL_MS) : now + stagger;
+        else broke[i] = now - (OPEN_MS + delay[i]) + stagger;
+      }
+      if (!frame) frame = requestAnimationFrame(loop);
+    };
+    window.addEventListener("artreveal", onReveal);
+
     readColors();
     size();
     const resize = new ResizeObserver(size);
@@ -141,6 +170,7 @@ export function ArtCollage() {
       theme.disconnect();
       section.removeEventListener("pointermove", crack);
       section.removeEventListener("pointerdown", crack);
+      window.removeEventListener("artreveal", onReveal);
       cancelAnimationFrame(frame);
     };
   }, []);
@@ -149,5 +179,25 @@ export function ArtCollage() {
       <div className="art-collage absolute inset-0" />
       <canvas ref={ref} hidden className="absolute inset-0 size-full" />
     </div>
+  );
+}
+
+/** Shows all the art at once (the ice melts), and freezes it over again. */
+export function RevealArt() {
+  const [on, setOn] = useState(false);
+  return (
+    <button
+      type="button"
+      aria-pressed={on}
+      onClick={() => {
+        const next = !on;
+        setOn(next);
+        window.dispatchEvent(new CustomEvent("artreveal", { detail: next }));
+      }}
+      className="type-label-s flex shrink-0 items-center gap-2.5 border-2 border-line bg-raised px-3.5 py-2.5 text-primary shadow-[0_2px_0_0_var(--line)] hover:text-ink"
+    >
+      <span aria-hidden="true" className={`size-2.5 ${on ? "bg-ink" : "border-2 border-line"}`} />
+      {on ? "FREEZE THE ART" : "REVEAL THE ART"}
+    </button>
   );
 }
