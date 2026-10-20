@@ -27,6 +27,14 @@ export const metadata: Metadata = {
     url: "https://sejalborkar.vercel.app",
     siteName: "Sejal Borkar",
     type: "website",
+    // Link preview card: SB badge, the headline and Cookie on a ledge (1200 x 630).
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Sejal Borkar, product designer who ships, with a pixel cat" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sejal Borkar · Product designer",
+    description: "Product designer who ships. B2B SaaS, from research to merged pull requests.",
+    images: ["/og.png"],
   },
 };
 
