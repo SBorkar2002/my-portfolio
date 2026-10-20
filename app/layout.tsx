@@ -8,6 +8,7 @@ import { loaderInitScript } from "@/lib/loader";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoTop } from "@/components/GoTop";
+import { WardrobeDock } from "@/components/cat/WardrobeDock";
 import { Loader } from "@/components/Loader";
 import { Reveal } from "@/components/Reveal";
 import { themeInitScript } from "@/lib/theme";
@@ -67,6 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
           <GoTop />
+          <WardrobeDock />
           {/* The pixel cat (art owned by the cat studio). Pages mark perches with data-cat-perch. */}
           <div id="cat-root">
             <CatLayer />

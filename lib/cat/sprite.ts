@@ -14,6 +14,7 @@ const PALETTE_VARS: Record<string, string> = {
   l: "--cat-body-top",
   s: "--cat-shadow",
   g: "--cat-collar",
+  k: "--cat-glasses",
 };
 
 export type Palette = Record<string, [number, number, number]>;
@@ -64,6 +65,32 @@ export class FrameCache {
   setPalette(palette: Palette) {
     this.palette = palette;
     this.cache.clear();
+  }
+
+  /** Any small row-string sprite (wardrobe overlays), cached by key for the current palette. */
+  rows(key: string, rows: readonly string[]) {
+    let canvas = this.cache.get(`rows:${key}`);
+    if (canvas) return canvas;
+    const w = Math.max(1, ...rows.map((r) => r.length));
+    canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = Math.max(1, rows.length);
+    const ctx = canvas.getContext("2d")!;
+    const image = ctx.createImageData(canvas.width, canvas.height);
+    rows.forEach((row, r) => {
+      for (let c = 0; c < row.length; c++) {
+        const rgb = this.palette[row[c]];
+        if (!rgb) continue;
+        const i = (r * w + c) * 4;
+        image.data[i] = rgb[0];
+        image.data[i + 1] = rgb[1];
+        image.data[i + 2] = rgb[2];
+        image.data[i + 3] = 255;
+      }
+    });
+    ctx.putImageData(image, 0, 0);
+    this.cache.set(`rows:${key}`, canvas);
+    return canvas;
   }
 
   get(state: CatState, index: number) {

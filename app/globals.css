@@ -34,6 +34,7 @@
   --cat-shadow: #d9d3e8;
   --cat-collar: var(--accent-lime);
   --logo-fill: #0e0e14;
+  --cat-glasses: #ffffff;
   --logo-text: #a78bfa;
 }
 
@@ -56,6 +57,7 @@
     --cat-shadow: #0b0a10;
     --cat-collar: var(--accent-lime);
     --logo-fill: #a78bfa;
+    --cat-glasses: #17141f;
     --logo-text: #5b3dd0;
   }
 }
@@ -78,6 +80,7 @@
   --cat-shadow: #0b0a10;
   --cat-collar: var(--accent-lime);
   --logo-fill: #a78bfa;
+  --cat-glasses: #17141f;
   --logo-text: #5b3dd0;
 }
 
@@ -418,6 +421,8 @@
 }
 :root[data-loading] header,
 :root[data-loading] nav[aria-label="Sections"],
+:root[data-loading] [data-wardrobe] > *,
+:root[data-intro] [data-wardrobe] > *,
 :root[data-intro] header,
 :root[data-intro] nav[aria-label="Sections"] {
   opacity: 0;

@@ -9,3 +9,10 @@ export const frames = {"Sit":[["","","","","","","","","","","","","","","......
 export const timings = {"Sit":[1.2,1.4,0.15,0.08],"Idle":[1,0.9,1.2,0.15,0.08],"Walk":[0.14,0.14,0.14,0.14],"Look":[0.6,0.6,0.6,0.6,0.6,0.6],"Inspect":[0.8,0.12,0.6,0.12,0.12,0.12,0.12,0.15],"Yawn":[1.2,0.25,0.9,0.25,0.5],"Sleep":[0.7,0.7,0.7,0.7],"Peek":[1,0.06,0.08,0.08,0.5,1,1],"React":[0.08,0.1,0.3,0.08,0.15],"Fall":[0.09,0.09,0.09,0.09,0.09,0.09,0.09,0.09],"Land":[0.08,0.14,0.5,0.4,0.16,0.12,0.6],"Run":[0.07,0.07,0.07,0.07],"Tumble":[0.08,0.08,0.08,0.08],"PeekSide":[0.8,0.06,0.08,0.1,0.9,0.9],"PeekTop":[1,0.06,0.08,0.08,0.5,1,1],"Talk":[0.5,0.12,0.6],"Sphinx":[2,0.15,1.2],"SphinxTap":[0.12,0.12],"Pounce":[0.5,0.12,0.12,0.25,0.07,0.14,0.08,0.2,0.4]} as const;
 
 export type CatState = keyof typeof frames;
+
+/** Wardrobe overlays from the cat studio: sprites plus, per state, one anchor per frame ([x, y, sprite] top-left in
+    the unflipped 48 x 48 frame, null = hidden there). Empty until the studio ships them. */
+export const accessories: Record<string, { sprites: string[][]; anchors: Record<string, ([number, number, number?] | null)[]> }> = {};
+
+/** Pixel icons for the wardrobe buttons ('#' filled). Empty until the studio ships them. */
+export const accessoryIcons: Record<string, string[]> = {};

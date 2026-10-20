@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { Component, useEffect, useRef, useState, type ReactNode } from "react";
 import type { CatState } from "@/lib/cat/frames";
 import { catEnabled, onCatChange } from "@/lib/cat/prefs";
+import { onWardrobeChange, wornItems, type Item } from "@/lib/cat/wardrobe";
 import { currentTheme, onThemeChange } from "@/lib/theme";
 
 type Sprite = typeof import("@/lib/cat/sprite");
@@ -120,6 +121,7 @@ function Cat() {
     let bubbleTimer = 0;
     let hoverTile: Element | null = null;
     let expLine = "";
+    let worn: Item[] = wornItems();
     /** Which side of the screen the cat last left by. */
     let lastExit: "left" | "right" = "right";
     const reducedQuery = matchMedia("(prefers-reduced-motion: reduce)");
@@ -156,6 +158,18 @@ function Cat() {
       g.imageSmoothingEnabled = false;
       if (flip) g.setTransform(-1, 0, 0, 1, size, 0);
       g.drawImage(cache.get(state, index), 0, 0, size, size);
+      // Wardrobe overlays, placed by the cat studio's per-frame anchors and mirrored with the cat.
+      const k = size / SIZE;
+      for (const item of worn) {
+        const acc = ctx?.data.accessories[item];
+        const anchor = acc?.anchors[state]?.[index];
+        if (!acc || !anchor) continue;
+        const v = anchor[2] ?? 0;
+        const rows = acc.sprites[v];
+        if (!rows) continue;
+        const sprite = cache.rows(`${item}:${v}`, rows);
+        g.drawImage(sprite, anchor[0] * k, anchor[1] * k, sprite.width * k, sprite.height * k);
+      }
     }
 
     function draw() {
@@ -904,6 +918,7 @@ function Cat() {
       choose();
     });
     let unTheme = () => {};
+    let unWardrobe = () => {};
     const tiles: Element[] = [];
 
     let petBag: string[] = [];
@@ -942,6 +957,10 @@ function Cat() {
           placeHit();
           draw();
         }
+      });
+      unWardrobe = onWardrobeChange(() => {
+        worn = wornItems();
+        if (spot) draw();
       });
       window.addEventListener("scroll", onScroll, { passive: true });
       window.addEventListener("resize", onScroll);
@@ -995,6 +1014,7 @@ function Cat() {
       });
       resize.disconnect();
       unTheme();
+      unWardrobe();
     };
   }, []);
 
