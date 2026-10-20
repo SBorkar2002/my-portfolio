@@ -6,6 +6,7 @@ import { SiteChrome } from "@/components/SiteChrome";
 import { catInitScript } from "@/lib/cat/prefs";
 import { loaderInitScript } from "@/lib/loader";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoTop } from "@/components/GoTop";
 import { Loader } from "@/components/Loader";
 import { Reveal } from "@/components/Reveal";
@@ -73,6 +74,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </SiteChrome>
         {/* Vercel Web Analytics: page views only, no cookies. Turn it on in the Vercel project (Analytics tab). */}
         <Analytics />
+        {/* Vercel Speed Insights: real visitors' load speed per page. */}
+        <SpeedInsights />
       </body>
     </html>
   );
