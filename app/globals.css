@@ -34,7 +34,9 @@
   --cat-shadow: #d9d3e8;
   --cat-collar: var(--accent-lime);
   --logo-fill: #0e0e14;
-  --cat-glasses: #ffffff;
+  --cat-glasses: #f2effa;
+  --cat-hat: #5b3dd0;
+  --cat-band: #a78bfa;
   --logo-text: #a78bfa;
 }
 

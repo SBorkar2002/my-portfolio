@@ -15,6 +15,8 @@ const PALETTE_VARS: Record<string, string> = {
   s: "--cat-shadow",
   g: "--cat-collar",
   k: "--cat-glasses",
+  H: "--cat-hat",
+  b: "--cat-band",
 };
 
 export type Palette = Record<string, [number, number, number]>;

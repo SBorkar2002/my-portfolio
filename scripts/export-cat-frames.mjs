@@ -36,10 +36,13 @@ export const timings = ${JSON.stringify(timings)} as const;
 export type CatState = keyof typeof frames;
 
 /** Wardrobe overlays from the cat studio: sprites plus, per state, one anchor per frame ([x, y, sprite] top-left in
-    the unflipped 48 x 48 frame, null = hidden there). Empty until the studio ships them. */
+    the unflipped 48 x 48 frame, null = hidden there). Drawn over the cat in accessoryOrder. */
 export const accessories: Record<string, { sprites: string[][]; anchors: Record<string, ([number, number, number?] | null)[]> }> = ${JSON.stringify(data.accessories ?? {})};
+export const accessoryOrder: string[] = ${JSON.stringify(data.accessoryOrder ?? ["tie", "glasses", "bow", "hat"])};
+/** Frames where the hat would cover the bow (the studio says none today). */
+export const hatHidesBow: Record<string, boolean[]> = ${JSON.stringify(data.hatHidesBow ?? {})};
 
-/** Pixel icons for the wardrobe buttons ('#' filled). Empty until the studio ships them. */
+/** 16 x 16 icons for the wardrobe buttons: palette keys, '#' = the button's text colour. */
 export const accessoryIcons: Record<string, string[]> = ${JSON.stringify(data.icons ?? {})};
 `;
 writeFileSync("lib/cat/frames.ts", out);

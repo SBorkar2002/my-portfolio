@@ -26,9 +26,10 @@ export function toggleItem(item: Item) {
   window.dispatchEvent(new CustomEvent(EVENT));
 }
 
-/** What is actually drawn: the hat and the bow clash, so the hat wins and the bow waits underneath. */
+/** What is switched on. Where the hat and the bow would clash in a frame (the studio's hatHidesBow), the renderer
+    leaves the bow out for that frame. */
 export function wornItems(w: Wardrobe = wardrobe()): Item[] {
-  return ITEMS.filter((i) => w[i] && !(i === "bow" && w.hat));
+  return ITEMS.filter((i) => w[i]);
 }
 
 export function onWardrobeChange(callback: () => void) {

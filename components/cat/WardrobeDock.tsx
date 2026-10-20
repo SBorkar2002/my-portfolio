@@ -22,11 +22,23 @@ const HANGER = [
   "............",
 ];
 
+// Icon colours from the cat's palette ('#' is the button's text colour).
+const ICON_FILL: Record<string, string> = {
+  "#": "currentColor",
+  H: "var(--cat-hat)",
+  b: "var(--cat-band)",
+  h: "var(--cat-heart)",
+  M: "var(--cat-mouth-inner)",
+  k: "var(--cat-glasses)",
+};
+
 function Glyph({ rows, size = 18 }: { rows: readonly string[]; size?: number }) {
   const w = Math.max(...rows.map((r) => r.length));
   return (
     <svg aria-hidden="true" width={size} height={size} viewBox={`0 0 ${w} ${rows.length}`} shapeRendering="crispEdges">
-      {rows.flatMap((r, y) => [...r].map((c, x) => (c === "#" ? <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill="currentColor" /> : null)))}
+      {rows.flatMap((r, y) =>
+        [...r].map((c, x) => (ICON_FILL[c] ? <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill={ICON_FILL[c]} /> : null)),
+      )}
     </svg>
   );
 }
@@ -67,8 +79,7 @@ export function WardrobeDock() {
   if (!catOn || !state) return null;
 
   const buttons = ITEMS.map((item) => {
-    const hidden = item === "bow" && state.bow && state.hat;
-    const label = hidden ? `${LABELS[item]} (hidden under the hat)` : LABELS[item];
+    const label = LABELS[item];
     return (
       <button
         key={item}
@@ -79,9 +90,9 @@ export function WardrobeDock() {
         onClick={() => toggleItem(item)}
         className={`flex size-10 items-center justify-center border-2 border-line shadow-[0_2px_0_0_var(--line)] transition-colors duration-100 ${
           state[item] ? "bg-butter text-on-pastel" : "bg-raised text-muted hover:text-primary"
-        } ${hidden ? "opacity-50" : ""}`}
+        }`}
       >
-        {icons[item] ? <Glyph rows={icons[item]} /> : <span className="type-label-s text-[10px]">{LABELS[item].slice(0, 3).toUpperCase()}</span>}
+        {icons[item] ? <Glyph rows={icons[item]} size={24} /> : <span className="type-label-s text-[10px]">{LABELS[item].slice(0, 3).toUpperCase()}</span>}
       </button>
     );
   });
