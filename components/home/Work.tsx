@@ -73,15 +73,16 @@ function TileShell({ project, className, children }: { project: Project; classNa
   const id = `project-${project.number}`;
   if (project.href) {
     return (
-      <Link href={project.href} id={id} aria-label={`${project.title}. Read the case study`} className={`group ${tileBase} ${tileLive} ${className}`}>
+      <Link href={project.href} id={id} className={`group ${tileBase} ${tileLive} ${className}`}>
         {children}
       </Link>
     );
   }
   if (project.links?.length === 1) {
     return (
-      <a href={project.links[0].href} id={id} target="_blank" rel="noopener noreferrer" aria-label={`${project.title}. Open on ${project.links[0].label.toLowerCase()} in a new tab`} className={`group ${tileBase} ${tileLive} ${className}`}>
+      <a href={project.links[0].href} id={id} target="_blank" rel="noopener noreferrer" className={`group ${tileBase} ${tileLive} ${className}`}>
         {children}
+        <span className="sr-only">(opens in a new tab)</span>
       </a>
     );
   }

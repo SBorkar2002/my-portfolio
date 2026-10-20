@@ -20,7 +20,9 @@ export function Img({
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={`/images/${name}-${width}.webp`}
-      srcSet={`/images/${name}-${width}.webp 1x, /images/${name}-${width * 2}.webp 2x`}
+      srcSet={`/images/${name}-${width}.webp ${width}w, /images/${name}-${width * 2}.webp ${width * 2}w`}
+      // Full width on phones, its design width elsewhere, so phones do not fetch a file twice too big.
+      sizes={`(max-width: 767px) 100vw, ${width}px`}
       alt={alt}
       loading={priority ? "eager" : "lazy"}
       fetchPriority={priority ? "high" : undefined}

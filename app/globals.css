@@ -560,9 +560,14 @@ nav[aria-label="Sections"] {
 }
 /* Art room: the collage under the pixel ice (components/home/ArtCollage.tsx). */
 .art-collage {
-  background: url(/images/art_collage.webp) center / cover no-repeat;
+  background: center / cover no-repeat;
   opacity: 0.12;
   filter: grayscale(0.6);
+}
+/* The collage image loads only when the art room comes near (ArtCollage sets data-art), so it never slows the
+   first screen. */
+[data-art] > .art-collage {
+  background-image: url(/images/art_collage.webp);
 }
 [data-ice] > .art-collage {
   /* Faded back so the panels in front stand out when the ice cracks. */

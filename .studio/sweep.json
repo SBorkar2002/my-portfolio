@@ -1,0 +1,7 @@
+{
+  "themeKey": "theme",
+  "paths": ["/", "/work/marketing-site", "/work/sourced", "/work/futureofhr", "/work/afb-blog", "/work/video-system", "/work/lead-gen-assessment"],
+  "floaters": ["#cat-root canvas", "#cat-root [role=status]"],
+  "protect": ["img", "h1", "h2", "h3", "[data-bubble-avoid] > *", "[data-bubble-keep-clear]"],
+  "allowCrop": ["#cat-root canvas"]
+}

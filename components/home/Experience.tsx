@@ -297,7 +297,7 @@ export function Experience() {
                 <div data-cat-perch="exp-role" data-cat-line={c.line} data-bubble-keep-clear="" className="self-start">
                   <Visual c={c} size="s" />
                 </div>
-                <div className="flex min-w-0 flex-1 flex-col items-start gap-2">
+                <div data-bubble-keep-clear="" className="flex min-w-0 flex-1 flex-col items-start gap-2">
                   <p className="type-label-s text-muted">{c.dates}</p>
                   <h3 className="type-heading-s text-primary">{c.role}</h3>
                   <p className="type-body-m text-muted">{c.detail}</p>

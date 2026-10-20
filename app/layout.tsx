@@ -5,6 +5,7 @@ import { Nav } from "@/components/Nav";
 import { SiteChrome } from "@/components/SiteChrome";
 import { catInitScript } from "@/lib/cat/prefs";
 import { loaderInitScript } from "@/lib/loader";
+import { Analytics } from "@vercel/analytics/next";
 import { GoTop } from "@/components/GoTop";
 import { Loader } from "@/components/Loader";
 import { Reveal } from "@/components/Reveal";
@@ -62,6 +63,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <CatLayer />
           </div>
         </SiteChrome>
+        {/* Vercel Web Analytics: page views only, no cookies. Turn it on in the Vercel project (Analytics tab). */}
+        <Analytics />
       </body>
     </html>
   );

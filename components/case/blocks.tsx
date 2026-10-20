@@ -139,9 +139,12 @@ export function Figure({ label, below, ...shot }: ShotProps & { label: string; b
   );
 }
 
-/** Dark stage that holds visuals inside a section. */
+/** Dark stage that holds visuals inside a section. On phones (under 768 px) the standard padding shrinks so
+    screenshots stay readable; stages with their own proportional spacing are left alone. */
 export function Stage({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`w-full overflow-hidden border-2 border-line bg-sunken ${className}`}>{children}</div>;
+  const phonePad = /(^|\s)p-6(\s|$)/.test(className) ? "max-md:p-3!" : "";
+  const phoneGap = /(^|\s)gap-(6|8)(\s|$)/.test(className) ? "max-md:gap-5!" : "";
+  return <div className={`w-full overflow-hidden border-2 border-line bg-sunken ${className} ${phonePad} ${phoneGap}`}>{children}</div>;
 }
 
 export function StageArrow() {
@@ -253,10 +256,23 @@ export function Decision({
 }
 
 /** Next case study card (Figma 41:763 / 56:947), pointed at the next live case study. */
+// What the cat says on top of the "Next" card, by the next project's number. Short, true, no em dashes.
+const NEXT_LINES: Record<number, string> = {
+  1: "next: the marketing site",
+  2: "next: my art app",
+  3: "next: a webinar page",
+  4: "next: a company blog",
+  5: "next: a launch film",
+  6: "next: a quiz that shipped",
+};
+
 export function NextCard({ project, media }: { project: Project; media: ReactNode }) {
   return (
     <section aria-label="Next case study" className="border-t-2 border-line pt-14 pb-[120px]">
+      {/* The cat sits on this card's top edge (CatLayer). */}
       <Link
+        data-cat-perch="case-next"
+        data-cat-line={NEXT_LINES[project.number] ?? "one more?"}
         href={project.href ?? "/"}
         className="group flex flex-col border-2 border-line bg-raised shadow-pixel-8 transition-[transform,box-shadow] duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[10px_10px_0_0_var(--pastel-lilac)] md:flex-row"
       >

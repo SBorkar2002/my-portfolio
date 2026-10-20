@@ -24,7 +24,7 @@ export function Nav() {
     <header className="sticky top-0 z-50 border-b-2 border-line bg-page">
       <nav
         aria-label="Main"
-        className="mx-auto flex h-[70px] max-w-[1440px] items-center gap-3 px-[clamp(20px,8.333vw,120px)] sm:gap-6"
+        className="mx-auto flex h-[70px] max-w-[1440px] items-center gap-3 px-[clamp(20px,8.333vw,120px)] sm:gap-5"
       >
         <Link
           href="/"
@@ -41,7 +41,7 @@ export function Nav() {
           <span className="type-label-s hidden text-muted sm:inline">SEJAL BORKAR</span>
         </Link>
         <span className="min-w-px flex-1" />
-        <ul className="hidden items-center gap-6 min-[1400px]:flex">
+        <ul className="hidden items-center gap-5 min-[1400px]:flex">
           {homeSections.map((s) => (
             <li key={s.id}>
               <a
@@ -69,7 +69,7 @@ export function Nav() {
         </button>
         <ThemeToggle />
         <MusicToggle />
-        {isHome && <CatToggle />}
+        <CatToggle />
         <div className="hidden md:block">
           <Button href={links.resume} label="RESUME" icon="download" download />
         </div>

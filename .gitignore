@@ -32,3 +32,6 @@ next-env.d.ts
 
 # Local tooling
 .claude/
+
+# studio proof screenshots
+.studio-proof/

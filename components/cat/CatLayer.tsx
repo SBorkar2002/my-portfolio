@@ -77,9 +77,10 @@ export function CatLayer() {
     update();
     return onCatChange(update);
   }, []);
-  if (pathname !== "/" || !enabled) return null;
+  if (!enabled) return null;
+  // Remounted per page: home has the full set of spots, case studies a perch on the "Next" card, 404 its own.
   return (
-    <CatBoundary>
+    <CatBoundary key={pathname}>
       <Cat />
     </CatBoundary>
   );
@@ -548,6 +549,19 @@ function Cat() {
         const peek = ctx.sprite.stateBox("Peek");
         return { id: `work-peek:${best.id}`, s, left: p.right - 40 - (peek.right + 1) * s, floor: p.top, enter: "peek", then: "hold" };
       }
+      if (id === "case-next" || id === "notfound") {
+        // Case studies: sits on the top edge of the "Next" card, at its right end, and says a line about it.
+        // 404: sits on its ledge and dozes.
+        const el = document.querySelector<HTMLElement>(`[data-cat-perch="${id}"]`);
+        if (!el) return null;
+        const p = page(el);
+        if (id === "notfound") {
+          const big = ctx.sprite.pixelScale(scales().hero);
+          const mid = ((sit.left + sit.right + 1) / 2) * big;
+          return { id, s: big, left: p.left + p.width / 2 - mid, floor: p.top, enter: "fall", then: "doze", line: el.dataset.catLine, spins: 1 };
+        }
+        return { id, s, left: p.right - 24 - (sit.right + 1) * s, floor: p.top, enter: "pop", then: "talk", line: el.dataset.catLine };
+      }
       if (id === "exp-role") {
         let best: HTMLElement | null = null;
         let bestD = Infinity;
@@ -597,6 +611,13 @@ function Cat() {
     /** What the cat should be doing for the current scroll position. */
     function target(): string | null {
       const vh = innerHeight;
+      // Other pages: the 404 cat, or the case study cat on the "Next case study" card once it is in view.
+      if (document.querySelector('[data-cat-perch="notfound"]')) return "notfound";
+      const next = document.querySelector('[data-cat-perch="case-next"]');
+      if (next) {
+        const r = next.getBoundingClientRect();
+        return r.top < vh * 0.85 && r.bottom > 120 ? "case-next" : null;
+      }
       const between = (el: Element | null, edge: "top" | "bottom", lo: number, hi = vh - 8) => {
         if (!el) return false;
         const v = el.getBoundingClientRect()[edge];
@@ -632,6 +653,7 @@ function Cat() {
     // ---------- first visit: spin on the loading bar, then fall while the hero rises up to meet the cat ----------
 
     let intro = false;
+    let introTimer = 0;
     const INTRO_MS = 1100; // matches the intro-rise animation in globals.css
 
     function spinOnLoader() {
@@ -657,9 +679,12 @@ function Cat() {
       if (!ctx || !intro || !spot) return choose();
       const hero = spotFor("hero-panel");
       if (!hero) {
+        // Not the home page: let the page finish rising before measuring where the cat goes.
         intro = false;
         wrap.style.zIndex = "";
-        return choose();
+        hide();
+        introTimer = window.setTimeout(choose, INTRO_MS + 100);
+        return;
       }
       stop();
       const startX = x;
@@ -713,9 +738,9 @@ function Cat() {
     let pending: string | null | undefined;
     let settle = 0;
     function choose() {
-      if (!ctx || intro || hoverTile || mode === "laser") return;
+      if (disposed || !ctx || intro || hoverTile || mode === "laser") return;
       let want = target();
-      if (ctx.reduced && want !== "hero-panel" && want !== "footer") want = null;
+      if (ctx.reduced && !["hero-panel", "footer", "case-next", "notfound"].includes(want ?? "")) want = null;
       const next = want ? spotFor(want) : null;
       const key = next ? next.id : null;
       if (key === pending) return;
@@ -934,6 +959,9 @@ function Cat() {
       if (document.documentElement.dataset.loading) {
         if (!ctx.reduced) spinOnLoader();
         window.addEventListener("loaderdone", dropIntoHero, { once: true });
+      } else if (document.documentElement.dataset.intro) {
+        // Booted while the page is still rising after the loader: measure once it has settled.
+        introTimer = window.setTimeout(choose, INTRO_MS + 100);
       } else choose();
     }
 
@@ -950,6 +978,7 @@ function Cat() {
       stop();
       hideBubble();
       window.clearTimeout(settle);
+      window.clearTimeout(introTimer);
       window.clearTimeout(scrollTimer);
       window.clearTimeout(restTimer);
       if (window.cancelIdleCallback && typeof handle === "number") window.cancelIdleCallback(handle);

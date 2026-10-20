@@ -17,8 +17,19 @@ export function ArtCollage() {
     const canvas = ref.current;
     const section = canvas?.closest("section");
     if (!canvas || !section) return;
+    // Fetch the collage image only when the art room is within a screen or two.
+    const wrapEl = canvas.parentElement!;
+    const near = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        wrapEl.dataset.art = "";
+        near.disconnect();
+      },
+      { rootMargin: "1200px 0px" },
+    );
+    near.observe(section);
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return; // reduced motion: no ice, the art shows faintly
+      return () => near.disconnect(); // reduced motion: no ice, the art shows faintly
     }
     canvas.hidden = false;
     canvas.parentElement!.dataset.ice = "";
@@ -141,6 +152,7 @@ export function ArtCollage() {
     section.addEventListener("pointermove", crack, { passive: true });
     section.addEventListener("pointerdown", crack, { passive: true });
     return () => {
+      near.disconnect();
       resize.disconnect();
       theme.disconnect();
       section.removeEventListener("pointermove", crack);

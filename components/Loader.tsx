@@ -32,8 +32,14 @@ export function Loader() {
         }, 220);
       }, wait);
     };
-    if (document.readyState === "complete") finish();
-    else window.addEventListener("load", finish, { once: true });
+    // Waits for the fonts (so the hero never swaps type mid-rise), not for every image on the page: images below the
+    // fold load lazily and must not hold the loading screen up past its 2 s.
+    const ready = () => {
+      const fonts = document.fonts?.ready ?? Promise.resolve();
+      void Promise.race([fonts, new Promise((r) => window.setTimeout(r, 3000))]).then(finish);
+    };
+    if (document.readyState !== "loading") ready();
+    else document.addEventListener("DOMContentLoaded", ready, { once: true });
     // Never stuck: give up waiting for slow assets after 8 s.
     const cap = window.setTimeout(finish, 8000);
     return () => window.clearTimeout(cap);
