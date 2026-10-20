@@ -294,7 +294,7 @@ export function Experience() {
             {chapters.map((c) => (
               <li key={c.key} data-reveal className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-8">
                 {/* The cat sits beside the role nearest the middle of the screen (CatLayer). */}
-                <div data-cat-perch="exp-role" data-cat-line={c.line} className="self-start">
+                <div data-cat-perch="exp-role" data-cat-line={c.line} data-bubble-keep-clear="" className="self-start">
                   <Visual c={c} size="s" />
                 </div>
                 <div className="flex min-w-0 flex-1 flex-col items-start gap-2">

@@ -30,9 +30,14 @@ const CROSS = [
     SOUND ON / OFF label on wide screens. Butter while on, like the cat toggle. */
 export function MusicToggle() {
   const [on, setOn] = useState<boolean | null>(null);
+  // On, but the browser has not had a tap or click yet, so nothing can play: the waves blink as a hint.
+  const [waiting, setWaiting] = useState(false);
 
   useEffect(() => {
-    const update = () => setOn(musicEnabled());
+    const update = () => {
+      setOn(musicEnabled());
+      setWaiting(musicEnabled() && !musicPlaying());
+    };
     update();
     const off = onMusicChange(update);
     const unboot = bootMusic();
@@ -56,11 +61,13 @@ export function MusicToggle() {
     >
       <svg aria-hidden="true" width="18" height="18" viewBox="0 0 12 12" shapeRendering="crispEdges">
         {SPEAKER.flatMap((r, y) => [...r].map((c, x) => (c === "#" ? <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill="currentColor" /> : null)))}
-        {(on ? WAVES : CROSS).map(([x, y]) => (
-          <rect key={`w${x}-${y}`} x={x} y={y} width="1" height="1" fill="currentColor" />
-        ))}
+        <g className={waiting ? "music-wait" : undefined}>
+          {(on ? WAVES : CROSS).map(([x, y]) => (
+            <rect key={`w${x}-${y}`} x={x} y={y} width="1" height="1" fill="currentColor" />
+          ))}
+        </g>
       </svg>
-      <span aria-hidden="true" className="type-label-s hidden lg:inline">{on ? "SOUND ON" : "SOUND OFF"}</span>
+      <span aria-hidden="true" className="type-label-s hidden lg:inline">{waiting ? "TAP FOR SOUND" : on ? "SOUND ON" : "SOUND OFF"}</span>
       <span className="sr-only">Background music</span>
     </button>
   );

@@ -295,7 +295,11 @@ function Cat() {
         [centre, SIZE * s + 8],
       ];
       // The marked row's children (the buttons themselves), so the space beside a short button stays usable.
-      const avoid = [...document.querySelectorAll("[data-bubble-avoid] > *")].map((el) => el.getBoundingClientRect());
+      const avoid: { left: number; right: number; top: number; bottom: number }[] = [
+        ...[...document.querySelectorAll("[data-bubble-avoid] > *, [data-bubble-keep-clear]")].map((el) => el.getBoundingClientRect()),
+        // The cat itself, so the bubble never sits on its face.
+        { left: wrapX + b.left * s, right: wrapX + (b.right + 1) * s, top: wrapY + b.top * s, bottom: wrapY + SIZE * s },
+      ];
       const clear = ([l, t]: [number, number]) => {
         const r = { left: wrapX + l - 6, right: wrapX + l + w + 6, top: wrapY + t - 6, bottom: wrapY + t + h + 6 };
         return avoid.every((a) => r.right <= a.left || r.left >= a.right || r.bottom <= a.top || r.top >= a.bottom);
@@ -558,7 +562,9 @@ function Cat() {
         if (!best) return null;
         const p = page(best);
         const i = [...document.querySelectorAll('[data-cat-perch="exp-role"]')].indexOf(best);
-        return { id: `exp-role:${i}`, s, left: p.right + 12 - sit.left * s, floor: p.bottom, enter: "pop", then: "guide", line: best.dataset.catLine };
+        // At the right edge of the screen, level with the role's picture, so the photo and the text stay clear.
+        const right = document.documentElement.clientWidth + scrollX - 12;
+        return { id: `exp-role:${i}`, s, left: right - (sit.right + 1) * s, floor: p.bottom, enter: "pop", then: "guide", line: best.dataset.catLine };
       }
       if (id === "experience") {
         // The guide: one ledge in the pinned story, in viewport coordinates, for every chapter.

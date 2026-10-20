@@ -575,6 +575,21 @@ nav[aria-label="Sections"] {
   background-size: 24px 24px;
 }
 
+/* Sound toggle: the waves blink until the first tap or click lets the music start (browsers block autoplay). */
+.music-wait {
+  animation: music-wait 1.2s steps(2) infinite;
+}
+@keyframes music-wait {
+  50% {
+    opacity: 0.15;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .music-wait {
+    animation: none;
+  }
+}
+
 /* Laser pointer dot (home): a small pixel dot beside the normal cursor. */
 .laser-dot {
   width: 6px;

@@ -70,13 +70,31 @@ function schedule() {
   timer = window.setTimeout(schedule, 60);
 }
 
+/** Inside a tap or click: play one silent sample, which is what iPhones need to really unlock Web Audio, and ask
+    for "playback" so the silent switch does not mute the music (Safari 16.4 and later). */
+function unlock() {
+  if (!audio) return;
+  try {
+    const nav = navigator as Navigator & { audioSession?: { type: string } };
+    if (nav.audioSession) nav.audioSession.type = "playback";
+    const src = audio.createBufferSource();
+    src.buffer = audio.createBuffer(1, 1, 22050);
+    src.connect(audio.destination);
+    src.start(0);
+  } catch {
+    // Nothing to unlock: the resume below is enough on this browser.
+  }
+}
+
 function start() {
   if (playing) {
+    unlock();
     void audio?.resume(); // a later gesture can unlock a context the first touch could not
     return;
   }
   try {
     audio ??= new AudioContext();
+    unlock();
     if (!master) {
       master = audio.createGain();
       master.gain.value = VOLUME;
