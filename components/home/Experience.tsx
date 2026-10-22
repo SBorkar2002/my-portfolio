@@ -12,6 +12,8 @@ type Chapter = {
   rail: string;
   role: string;
   detail: string;
+  /** Roles only: three short "what I did" points (experience-copy.md, verbatim). */
+  points?: string[];
   tag?: TagKind;
   color: string;
   icon?: string[];
@@ -105,7 +107,12 @@ const chapters: Chapter[] = [
     dates: "SINCE JUN 2026",
     rail: "2026",
     role: "GenAI Product Designer · Epifi Technologies (Fi Money)",
-    detail: "Tetriz, a B2B engineering-intelligence platform. Assessment, marketing site, video system, comic series.",
+    detail: "Product design for Tetriz, a B2B engineering-intelligence platform, from research to merged pull requests.",
+    points: [
+      "Redesigned the lead-gen assessment, then built and shipped it in the production codebase.",
+      "Rebuilt the marketing site's feature pages into product-accurate stories with interactive charts, and restructured the nav.",
+      "Set up an AI video and comic pipeline (script, storyboard, Remotion) behind the launch film and a comic series with a 30,000+ view reel.",
+    ],
     tag: "shipped",
     color: "var(--pastel-lilac)",
     icon: ICONS.spark,
@@ -116,7 +123,12 @@ const chapters: Chapter[] = [
     dates: "JAN TO JUN 2026",
     rail: "2026",
     role: "Design Intern · AppsForBharat",
-    detail: "Company blog, print and merch, employer-brand campaigns with AI video.",
+    detail: "Brand and content design for a devotional tech company.",
+    points: [
+      "Designed the company blog and its themed thumbnail system, now live.",
+      "Made print and merch: buddy tee, appreciation cards, Women's Day checklist, keychain.",
+      "Produced AI videos for employer-brand campaigns.",
+    ],
     tag: "shipped",
     color: "var(--pastel-peach)",
     icon: ICONS.page,
@@ -127,7 +139,12 @@ const chapters: Chapter[] = [
     dates: "AUG TO DEC 2025",
     rail: "2025",
     role: "Post-production Digital Artist · Pocket FM",
-    detail: "Comic panels, posters and openings: generation, retouch, lettering and layout.",
+    detail: "Turned scripts into finished comic pages for Pocket Toons.",
+    points: [
+      "Generated, retouched and lettered comic panels.",
+      "Laid out pages, posters and series openings.",
+      "Retouched client art to match each series' style.",
+    ],
     tag: "client",
     color: "var(--pastel-butter)",
     icon: ICONS.bubble,
@@ -138,7 +155,12 @@ const chapters: Chapter[] = [
     dates: "AUG 2023 TO MAY 2025",
     rail: "2023",
     role: "Graphic Designer (Freelance) · Maggilicious Cafe and others",
-    detail: "Brand identity: logo, menus, posters and social creatives.",
+    detail: "Brand identity for small food and lifestyle businesses.",
+    points: [
+      "Designed Maggilicious Cafe's logo, menus and posters.",
+      "Ran social creatives and built the cafe's website in Canva.",
+      "Drew a commissioned character artwork for the cafe.",
+    ],
     tag: "client",
     color: "var(--pastel-sky)",
     icon: ICONS.cup,
@@ -149,7 +171,12 @@ const chapters: Chapter[] = [
     dates: "FEB 2021 TO MAR 2025",
     rail: "2021",
     role: "Freelance Digital Artist · Jeneko",
-    detail: "Character art and commissions on Fiverr, Discord and Pixiv Fanbox.",
+    detail: "Semi-realistic character art, drawing since 2020.",
+    points: [
+      "Took commissions on Fiverr, Discord and Pixiv Fanbox.",
+      "Drew character portraits, original-character reworks and fan art.",
+      "Built my own art portfolio site.",
+    ],
     tag: "client",
     color: "var(--pastel-pink)",
     icon: ICONS.pencil,
@@ -168,6 +195,20 @@ function PixelIcon({ rows, className = "" }: { rows: string[]; className?: strin
         [...r].map((c, x) => (c === "#" ? <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill="currentColor" /> : null)),
       )}
     </svg>
+  );
+}
+
+/** "What I did" points with a small pixel square as the bullet. */
+function Points({ items, size }: { items: string[]; size: "m" | "s" }) {
+  return (
+    <ul className={`flex flex-col ${size === "m" ? "gap-2" : "gap-1.5"}`}>
+      {items.map((t) => (
+        <li key={t} className={`flex items-start gap-3 text-primary ${size === "m" ? "type-body-m" : "type-body-s"}`}>
+          <span aria-hidden="true" className={`mt-[0.55em] size-2 shrink-0 bg-ink`} />
+          <span>{t}</span>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -301,6 +342,7 @@ export function Experience() {
                   <p className="type-label-s text-muted">{c.dates}</p>
                   <h3 className="type-heading-s text-primary">{c.role}</h3>
                   <p className="type-body-m text-muted">{c.detail}</p>
+                  {c.points && <Points items={c.points} size="m" />}
                   {c.tag && <Tag kind={c.tag} />}
                   {c.education && <Education items={c.education} />}
                 </div>
@@ -353,12 +395,13 @@ export function Experience() {
                 style={{ opacity: i === 0 ? 1 : 0 }}
               >
                 <Visual c={c} size="l" />
-                <div className="flex max-w-[560px] min-w-0 flex-col items-start gap-4">
+                <div data-bubble-keep-clear="" className="flex max-w-[620px] min-w-0 flex-col items-start gap-4">
                   <p className="type-label-s text-ink">
                     {String(i + 1).padStart(2, "0")} · {c.dates}
                   </p>
                   <h3 className="type-display-m text-primary">{c.role}</h3>
                   <p className="type-body-l text-muted">{c.detail}</p>
+                  {c.points && <Points items={c.points} size="m" />}
                   {c.tag && <Tag kind={c.tag} />}
                   {c.education && <Education items={c.education} />}
                 </div>
