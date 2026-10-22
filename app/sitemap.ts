@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { PAGES, SITE_URL } from "@/lib/seo";
 
-// Every public page. The private stats page is deliberately left out.
+// Every public page. The private /analytics page is deliberately left out.
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   return [

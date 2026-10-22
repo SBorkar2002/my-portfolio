@@ -165,6 +165,10 @@ export function Contact() {
         </div>
         <div className="flex w-full flex-wrap items-center gap-3 pt-10" data-cat-perch="footer">
           <p className="type-label-s text-muted">SEJAL BORKAR · BENGALURU</p>
+          {/* Sejal's private stats; the page asks for her sign-in. */}
+          <Link href="/analytics" prefetch={false} rel="nofollow" className="type-label-s text-muted hover:text-primary">
+            ANALYTICS
+          </Link>
           <span className="min-w-px flex-1" />
           <Doodle />
           <div className="hidden md:contents">

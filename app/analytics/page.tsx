@@ -1,54 +1,48 @@
 import type { Metadata } from "next";
-import { cookies, headers } from "next/headers";
-import { notFound, redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { Checkup } from "@/components/analytics/Checkup";
 import { PAGES, SITE_URL } from "@/lib/seo";
-import { COOKIE_MAX_AGE, STATS_COOKIE, cookieIsValid, cookieValue, getSpeed, getTraffic, passwordMatches, statsEnabled, type Row, type Speed } from "@/lib/stats";
+import { ANALYTICS_COOKIE, COOKIE_MAX_AGE, cookieIsValid, cookieValue, credentialsMatch, getSpeed, getTraffic, signInReady, type Row, type Speed } from "@/lib/stats";
 
-// Private stats. Only reachable through the secret address in STATS_PATH (proxy.ts), never linked, never indexed,
-// and locked with STATS_PASSWORD.
+// Private analytics: visits, speed and the last site checkup. Linked from the footer, but only Sejal can sign in
+// (ANALYTICS_EMAIL and ANALYTICS_PASSWORD in Vercel). Never indexed.
 export const metadata: Metadata = {
-  title: "Stats",
+  title: "Analytics",
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
 };
 export const maxDuration = 60;
 
 const gutter = "mx-auto max-w-[1440px] px-[clamp(20px,8.333vw,120px)]";
-
-async function gate() {
-  const secret = process.env.STATS_PATH;
-  if (!statsEnabled() || (await headers()).get("x-stats-gate") !== secret) notFound();
-  return `/${secret}`;
-}
+const HOME = "/analytics";
 
 async function signIn(form: FormData) {
   "use server";
-  const home = await gate();
-  if (!passwordMatches(String(form.get("password") ?? ""))) {
+  if (!credentialsMatch(String(form.get("email") ?? ""), String(form.get("password") ?? ""))) {
     await new Promise((r) => setTimeout(r, 800));
-    redirect(`${home}?wrong=1`);
+    redirect(`${HOME}?wrong=1`);
   }
-  (await cookies()).set(STATS_COOKIE, cookieValue(), { httpOnly: true, secure: true, sameSite: "strict", path: "/", maxAge: COOKIE_MAX_AGE });
-  redirect(home);
+  (await cookies()).set(ANALYTICS_COOKIE, cookieValue(), { httpOnly: true, secure: true, sameSite: "strict", path: HOME, maxAge: COOKIE_MAX_AGE });
+  redirect(HOME);
 }
 
 async function signOut() {
   "use server";
-  const home = await gate();
-  (await cookies()).delete(STATS_COOKIE);
-  redirect(home);
+  (await cookies()).delete({ name: ANALYTICS_COOKIE, path: HOME });
+  redirect(HOME);
 }
 
-export default async function Stats({ searchParams }: { searchParams: Promise<{ wrong?: string }> }) {
-  await gate();
-  const signedIn = cookieIsValid((await cookies()).get(STATS_COOKIE)?.value);
+export default async function Analytics({ searchParams }: { searchParams: Promise<{ wrong?: string }> }) {
+  if (!signInReady()) return <NotSetUp />;
+  const signedIn = cookieIsValid((await cookies()).get(ANALYTICS_COOKIE)?.value);
   if (!signedIn) return <SignIn wrong={(await searchParams).wrong === "1"} />;
   const [traffic, speed] = await Promise.all([getTraffic(), getSpeed(SITE_URL)]);
 
   return (
     <div className={`${gutter} flex flex-col gap-12 pt-10 pb-28 xl:pt-16`}>
       <header className="flex flex-col items-start gap-4">
-        <p className="type-label-s text-ink">PRIVATE · NOT LINKED · NOT INDEXED</p>
-        <h1 className="type-display-l text-primary">Site stats</h1>
+        <p className="type-label-s text-ink">PRIVATE · ONLY YOU CAN SIGN IN</p>
+        <h1 className="type-display-l text-primary">Analytics</h1>
         {traffic.state === "ok" && (
           <p className="type-body-l text-muted">
             The last 30 days, {nice(traffic.since)} to {nice(traffic.until)}. Visits refresh every 15 minutes, speed once a day.
@@ -80,6 +74,17 @@ export default async function Stats({ searchParams }: { searchParams: Promise<{ 
         </div>
       </section>
 
+      <section className="flex flex-col gap-6 border-t-2 border-line pt-10">
+        <div className="flex flex-col gap-2">
+          <p className="type-label-s text-ink">SITE CHECKUP · CODE DOCTOR</p>
+          <h2 className="type-display-m text-primary">The last full checkup</h2>
+          <p className="type-body-m max-w-[720px] text-muted">
+            Every page at desktop and phone width, in light and dark: errors, broken images and links, overlaps, contrast, speed and accessibility.
+          </p>
+        </div>
+        <Checkup />
+      </section>
+
       <footer className="flex flex-col items-start gap-4 border-t-2 border-line pt-8">
         <p className="type-body-s max-w-[760px] text-muted">
           Visits come from Vercel Web Analytics, which counts page views without cookies. Vercel&apos;s own Speed Insights score from real visitors stays in the{" "}
@@ -103,12 +108,26 @@ function SignIn({ wrong }: { wrong: boolean }) {
     <div className={`${gutter} flex min-h-[70vh] items-center justify-center py-16`}>
       <form action={signIn} className="flex w-full max-w-[420px] flex-col gap-5 border-2 border-line bg-raised p-8 shadow-pixel-8">
         <p className="type-label-s text-ink">PRIVATE</p>
-        <h1 className="type-display-m text-primary">Site stats</h1>
-        <label htmlFor="stats-password" className="type-label-s text-muted">
+        <h1 className="type-display-m text-primary">Analytics</h1>
+        <p className="type-body-s text-muted">Visits, speed and site checkups for this portfolio. Only Sejal can sign in.</p>
+        <label htmlFor="analytics-email" className="type-label-s text-muted">
+          EMAIL
+        </label>
+        <input
+          id="analytics-email"
+          name="email"
+          type="text"
+          autoComplete="username"
+          spellCheck={false}
+          autoCapitalize="none"
+          required
+          className="type-body-m border-2 border-line bg-page px-3 py-2.5 text-primary"
+        />
+        <label htmlFor="analytics-password" className="type-label-s text-muted">
           PASSWORD
         </label>
         <input
-          id="stats-password"
+          id="analytics-password"
           name="password"
           type="password"
           autoComplete="current-password"
@@ -117,13 +136,25 @@ function SignIn({ wrong }: { wrong: boolean }) {
         />
         {wrong && (
           <p role="alert" className="type-body-s text-primary">
-            That password did not match. Try again.
+            That email and password did not match. Try again.
           </p>
         )}
         <button type="submit" className="type-label-s self-start border-2 border-ink bg-lime px-5 py-3 text-on-pastel shadow-[0_3px_0_0_var(--accent-ink)]">
-          OPEN STATS
+          SIGN IN
         </button>
       </form>
+    </div>
+  );
+}
+
+function NotSetUp() {
+  return (
+    <div className={`${gutter} flex min-h-[70vh] items-center justify-center py-16`}>
+      <section className="flex w-full max-w-[520px] flex-col gap-4 border-2 border-line bg-raised p-8 shadow-pixel-8">
+        <p className="type-label-s text-ink">PRIVATE</p>
+        <h1 className="type-display-m text-primary">Analytics</h1>
+        <p className="type-body-m text-muted">Sign-in is not switched on yet. It turns on once the owner adds a sign-in in the site&apos;s settings.</p>
+      </section>
     </div>
   );
 }
@@ -186,7 +217,7 @@ function TrafficView({ t }: { t: Extract<Awaited<ReturnType<typeof getTraffic>>,
               <i className="inline-block size-3 border-2 border-line bg-lilac" /> PAGE VIEWS
             </span>
             <span className="inline-flex items-center gap-2">
-              <i className="inline-block size-3 border-2 border-line bg-ink" /> VISITORS
+              <i className="inline-block size-3 border-2 border-line bg-mint" /> VISITORS
             </span>
           </p>
         </div>
@@ -237,7 +268,7 @@ function DailyChart({ days }: { days: Row[] }) {
           return (
             <g key={d.timestamp ?? i}>
               <rect x={x - bw - 1} y={y(d.pageviews)} width={bw} height={y(0) - y(d.pageviews)} fill="var(--pastel-lilac)" stroke="var(--line)" />
-              <rect x={x + 1} y={y(d.visitors)} width={bw} height={y(0) - y(d.visitors)} fill="var(--accent-ink)" />
+              <rect x={x + 1} y={y(d.visitors)} width={bw} height={y(0) - y(d.visitors)} fill="var(--pastel-mint)" stroke="var(--line)" />
               {i % 5 === 0 && d.timestamp && (
                 <text x={x} y={H - 8} textAnchor="middle" fontSize="10" fill="var(--text-muted)" fontFamily="var(--font-label)">
                   {short(d.timestamp)}

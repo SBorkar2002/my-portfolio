@@ -1,31 +1,37 @@
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 import { unstable_cache } from "next/cache";
 
-// Data for the private stats page. Traffic comes from the Vercel Web Analytics API
+// Data for the private /analytics page. Traffic comes from the Vercel Web Analytics API
 // (GET https://api.vercel.com/v1/query/web-analytics/visits/aggregate, documented at
 // vercel.com/docs/analytics/web-analytics-api). Speed comes from Google's free PageSpeed Insights API, because
-// Speed Insights has no read API. Every secret lives in an environment variable; none is in this public repo.
+// Speed Insights has no read API. Every secret, the sign-in included, lives in a Vercel environment variable;
+// none is in this public repo.
 
-export const STATS_COOKIE = "stats_auth";
+export const ANALYTICS_COOKIE = "analytics_auth";
 
-/** The page is switched off unless both the secret path and the password are set. */
-export function statsEnabled() {
-  return Boolean(process.env.STATS_PATH && process.env.STATS_PASSWORD);
+/** Sign-in is switched off until both ANALYTICS_EMAIL and ANALYTICS_PASSWORD are set in Vercel. */
+export function signInReady() {
+  return Boolean(process.env.ANALYTICS_EMAIL && process.env.ANALYTICS_PASSWORD);
 }
 
 const SESSION_DAYS = 14;
+const secret = () => `${process.env.ANALYTICS_EMAIL ?? ""}\n${process.env.ANALYTICS_PASSWORD ?? ""}`;
 
 function sign(expires: number) {
-  return createHmac("sha256", process.env.STATS_PASSWORD ?? "").update(`stats-v2.${expires}`).digest("hex");
+  return createHmac("sha256", secret()).update(`analytics-v1.${expires}`).digest("hex");
 }
 
-export function passwordMatches(input: string) {
-  const a = createHash("sha256").update(input).digest();
-  const b = createHash("sha256").update(process.env.STATS_PASSWORD ?? "").digest();
-  return timingSafeEqual(a, b);
+const same = (a: string, b: string) => timingSafeEqual(createHash("sha256").update(a).digest(), createHash("sha256").update(b).digest());
+
+/** Email (or name) is matched ignoring case and outer spaces; the password exactly. Both are always compared. */
+export function credentialsMatch(email: string, password: string) {
+  if (!signInReady()) return false;
+  const e = same(email.trim().toLowerCase(), (process.env.ANALYTICS_EMAIL ?? "").trim().toLowerCase());
+  const p = same(password, process.env.ANALYTICS_PASSWORD ?? "");
+  return e && p;
 }
 
-/** "expiry.signature": a copied cookie stops working after 14 days, and every cookie dies when the password changes. */
+/** "expiry.signature": a copied cookie stops working after 14 days, and every cookie dies when the sign-in changes. */
 export function cookieValue() {
   const expires = Date.now() + SESSION_DAYS * 86400000;
   return `${expires}.${sign(expires)}`;
@@ -33,6 +39,7 @@ export function cookieValue() {
 export const COOKIE_MAX_AGE = SESSION_DAYS * 86400;
 
 export function cookieIsValid(value: string | undefined) {
+  if (!signInReady()) return false;
   const [exp, sig] = (value ?? "").split(".");
   const expires = Number(exp);
   if (!sig || !Number.isFinite(expires) || expires < Date.now()) return false;
