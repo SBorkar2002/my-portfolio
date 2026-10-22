@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { PAGES, SITE_URL } from "@/lib/seo";
-import { STATS_COOKIE, cookieIsValid, cookieValue, getSpeed, getTraffic, passwordMatches, statsEnabled, type Row, type Speed } from "@/lib/stats";
+import { COOKIE_MAX_AGE, STATS_COOKIE, cookieIsValid, cookieValue, getSpeed, getTraffic, passwordMatches, statsEnabled, type Row, type Speed } from "@/lib/stats";
 
 // Private stats. Only reachable through the secret address in STATS_PATH (proxy.ts), never linked, never indexed,
 // and locked with STATS_PASSWORD.
@@ -27,7 +27,7 @@ async function signIn(form: FormData) {
     await new Promise((r) => setTimeout(r, 800));
     redirect(`${home}?wrong=1`);
   }
-  (await cookies()).set(STATS_COOKIE, cookieValue(), { httpOnly: true, secure: true, sameSite: "strict", path: "/", maxAge: 60 * 60 * 24 * 14 });
+  (await cookies()).set(STATS_COOKIE, cookieValue(), { httpOnly: true, secure: true, sameSite: "strict", path: "/", maxAge: COOKIE_MAX_AGE });
   redirect(home);
 }
 

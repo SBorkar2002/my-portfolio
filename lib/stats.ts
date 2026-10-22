@@ -13,8 +13,10 @@ export function statsEnabled() {
   return Boolean(process.env.STATS_PATH && process.env.STATS_PASSWORD);
 }
 
-function authToken() {
-  return createHmac("sha256", process.env.STATS_PASSWORD ?? "").update("stats-v1").digest("hex");
+const SESSION_DAYS = 14;
+
+function sign(expires: number) {
+  return createHmac("sha256", process.env.STATS_PASSWORD ?? "").update(`stats-v2.${expires}`).digest("hex");
 }
 
 export function passwordMatches(input: string) {
@@ -23,14 +25,19 @@ export function passwordMatches(input: string) {
   return timingSafeEqual(a, b);
 }
 
+/** "expiry.signature": a copied cookie stops working after 14 days, and every cookie dies when the password changes. */
 export function cookieValue() {
-  return authToken();
+  const expires = Date.now() + SESSION_DAYS * 86400000;
+  return `${expires}.${sign(expires)}`;
 }
+export const COOKIE_MAX_AGE = SESSION_DAYS * 86400;
 
 export function cookieIsValid(value: string | undefined) {
-  if (!value) return false;
-  const a = Buffer.from(value);
-  const b = Buffer.from(authToken());
+  const [exp, sig] = (value ?? "").split(".");
+  const expires = Number(exp);
+  if (!sig || !Number.isFinite(expires) || expires < Date.now()) return false;
+  const a = Buffer.from(sig);
+  const b = Buffer.from(sign(expires));
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
@@ -67,7 +74,7 @@ export async function getTraffic(): Promise<Traffic> {
   };
   try {
     const [days, pages, countries, referrers, devices] = await Promise.all([
-      query("day"),
+      query("day", 31),
       query("requestPath", 10),
       query("country", 10),
       query("referrerHostname", 10),
