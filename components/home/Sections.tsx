@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { type CSSProperties, type ReactNode } from "react";
 import { links, socials } from "@/lib/projects";
 import { Img } from "../Img";
@@ -32,7 +33,7 @@ const categories = [
     chip: "bg-butter",
     line: "Webtoon, Pocket FM, The Last Over",
     note: "SOLO AND CLIENT WORK",
-    href: "https://www.webtoons.com/en/canvas/one-last-chance/list?title_no=772592",
+    href: "/art/comics",
     pieces: [
       ["a_com_1", "Comic panel of a bearded man thinking"],
       ["a_com_2", "Comic page with action panels and sound effects"],
@@ -60,7 +61,7 @@ const categories = [
     chip: "bg-pink",
     line: "Comic series, launch films",
     note: "BEST EPISODE 30,000+ VIEWS",
-    href: null,
+    href: "/art/motion",
     pieces: [
       ["a_mot_1", "Frame from a comic series episode"],
       ["a_mot_2", "Frame from a comic series episode with a single character"],
@@ -115,6 +116,13 @@ export function ArtRoom() {
 
 function CardLink({ href, children }: { href: string | null; children: ReactNode }) {
   if (!href) return <div className="flex flex-col overflow-hidden">{children}</div>;
+  // Comics and Motion open their own pages on this site; Illustration and Graphic open her other portfolios.
+  if (href.startsWith("/"))
+    return (
+      <Link href={href} className="group flex flex-col overflow-hidden">
+        {children}
+      </Link>
+    );
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className="group flex flex-col overflow-hidden">
       {children}
