@@ -74,9 +74,20 @@ export async function getTraffic(): Promise<Traffic> {
   const query = async (by: string, limit?: number) => {
     const params = new URLSearchParams({ projectId, by, since: iso(since), until: iso(until) });
     if (limit) params.set("limit", String(limit));
+    // Hobby projects live under a personal team (the "sborkar2002s-projects" in the dashboard URLs), and the API
+    // needs that team named on every request. VERCEL_TEAM_ID or VERCEL_TEAM_SLUG override it.
     if (process.env.VERCEL_TEAM_ID) params.set("teamId", process.env.VERCEL_TEAM_ID);
+    else params.set("slug", process.env.VERCEL_TEAM_SLUG || "sborkar2002s-projects");
     const res = await fetch(`${API}?${params}`, { headers: { Authorization: `Bearer ${token}` }, next: { revalidate: 900 } });
-    if (!res.ok) throw Object.assign(new Error((await res.text()).slice(0, 300)), { status: res.status });
+    if (!res.ok) {
+      const body = await res.text();
+      let reason = body.slice(0, 200);
+      try {
+        const e = JSON.parse(body).error;
+        if (e?.message) reason = `${e.code ? `${e.code}: ` : ""}${e.message}`.slice(0, 200);
+      } catch {}
+      throw Object.assign(new Error(reason), { status: res.status });
+    }
     return ((await res.json()) as { data: Row[] }).data;
   };
   try {

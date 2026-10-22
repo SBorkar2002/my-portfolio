@@ -56,7 +56,7 @@ export default async function Analytics({ searchParams }: { searchParams: Promis
       </header>
 
       {traffic.state === "setup" && <Setup />}
-      {traffic.state === "error" && <TrafficError status={traffic.status} />}
+      {traffic.state === "error" && <TrafficError status={traffic.status} reason={traffic.message} />}
       {traffic.state === "ok" && <TrafficView t={traffic} />}
 
       <section className="flex flex-col gap-6 border-t-2 border-line pt-10">
@@ -171,7 +171,7 @@ function Setup() {
   );
 }
 
-function TrafficError({ status }: { status: number }) {
+function TrafficError({ status, reason }: { status: number; reason: string }) {
   const blocked = status === 401 || status === 402 || status === 403;
   return (
     <section className="flex flex-col gap-3 border-2 border-line bg-raised p-6 shadow-pixel-8">
@@ -185,6 +185,7 @@ function TrafficError({ status }: { status: number }) {
           Open Vercel Analytics
         </a>
       </p>
+      {reason && <p className="type-body-s text-muted">What Vercel said: {reason}</p>}
     </section>
   );
 }
