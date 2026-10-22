@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
+import { pageMetadata, workJsonLd } from "@/lib/seo";
 import {
   BeforeAfter,
   CardRow,
@@ -18,10 +20,7 @@ import {
 import { Img } from "@/components/Img";
 import { nextLiveProject } from "@/lib/projects";
 
-export const metadata: Metadata = {
-  title: "Lead-gen assessment",
-  description: "Case study 01: a lead-gen assessment for Tetriz, redesigned around the answers people gave and shipped to production.",
-};
+export const metadata: Metadata = pageMetadata("/work/lead-gen-assessment");
 
 // Copy from Figma "Case study · 01 Lead-gen assessment (Dark)" 39:704.
 const rail = ["Overview", "The problem", "Before", "Decisions", "What shipped", "What I would change"];
@@ -30,6 +29,7 @@ export default function LeadGenAssessment() {
   const next = nextLiveProject(6);
   return (
     <CaseLayout rail={rail}>
+      <JsonLd data={workJsonLd("/work/lead-gen-assessment")} />
       <CaseHero
         kicker="CASE STUDY 06 / 06"
         tag="shipped"

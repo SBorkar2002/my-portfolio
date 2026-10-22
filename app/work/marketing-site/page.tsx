@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
+import { pageMetadata, workJsonLd } from "@/lib/seo";
 import { CardRow, CaseHero, CaseLayout, CaseSection, Facts, Figure, NextCard, NumberCard, Shot, Stage } from "@/components/case/blocks";
 import { Img } from "@/components/Img";
 import { nextLiveProject, projectByNumber } from "@/lib/projects";
 
-export const metadata: Metadata = {
-  title: "Marketing site",
-  description: "Case study 01: flat, generic feature pages for Tetriz became an interactive, consistent, product-accurate story.",
-};
+export const metadata: Metadata = pageMetadata("/work/marketing-site");
 
 // Built in code from Sejal's notes, the home tile copy and PLAN.md (no Figma page). Every image is a capture of the live public site.
 const rail = ["Overview", "The problem", "Decisions", "What shipped"];
@@ -16,6 +15,7 @@ export default function MarketingSite() {
   const next = nextLiveProject(1);
   return (
     <CaseLayout rail={rail}>
+      <JsonLd data={workJsonLd("/work/marketing-site")} />
       <CaseHero
         kicker="CASE STUDY 01 / 06"
         tag="shipped"

@@ -12,6 +12,7 @@ import { WardrobeDock } from "@/components/cat/WardrobeDock";
 import { Loader } from "@/components/Loader";
 import { Reveal } from "@/components/Reveal";
 import { themeInitScript } from "@/lib/theme";
+import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const jersey = Jersey_15({ weight: "400", subsets: ["latin"], variable: "--font-jersey", display: "swap" });
@@ -19,15 +20,33 @@ const silkscreen = Silkscreen({ weight: ["400", "700"], subsets: ["latin"], vari
 const serif = Instrument_Serif({ weight: "400", style: ["normal", "italic"], subsets: ["latin"], variable: "--font-serif-display", display: "swap" });
 const rethink = Rethink_Sans({ weight: ["400", "500", "600"], subsets: ["latin"], variable: "--font-rethink", display: "swap" });
 
+// Search engine ownership tags. Each one is set as an environment variable in Vercel (see the outreach kit),
+// so nothing here changes when she verifies a new engine.
+const verification: Metadata["verification"] = {
+  ...(process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : {}),
+  ...(process.env.YANDEX_VERIFICATION ? { yandex: process.env.YANDEX_VERIFICATION } : {}),
+  other: {
+    ...(process.env.BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION } : {}),
+    ...(process.env.NAVER_SITE_VERIFICATION ? { "naver-site-verification": process.env.NAVER_SITE_VERIFICATION } : {}),
+  },
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sejalborkar.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   title: { default: "Sejal Borkar · Product designer", template: "%s · Sejal Borkar" },
-  description: "Product designer who ships. B2B SaaS, from research to merged pull requests. Drawing since 2020.",
+  description: "Sejal Borkar, product designer who ships. B2B SaaS, from research to merged pull requests. Also an illustrator and comic artist, drawing since 2020.",
+  applicationName: "Sejal Borkar",
+  authors: [{ name: "Sejal Borkar", url: SITE_URL }],
+  creator: "Sejal Borkar",
+  alternates: { canonical: "/", languages: { en: "/", "x-default": "/" } },
+  robots: { index: true, follow: true },
+  verification,
   openGraph: {
     title: "Sejal Borkar · Product designer",
     description: "Product designer who ships. B2B SaaS, from research to merged pull requests.",
-    url: "https://sejalborkar.vercel.app",
+    url: "/",
     siteName: "Sejal Borkar",
+    locale: "en_US",
     type: "website",
     // Link preview card: SB badge, the headline and Cookie on a ledge (1200 x 630).
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Sejal Borkar, product designer who ships, with a pixel cat" }],

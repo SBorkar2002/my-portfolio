@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
+import { pageMetadata, workJsonLd } from "@/lib/seo";
 import { CaseHero, CaseLayout, CaseSection, Figure, NextCard, NumberCard, Shot, Stage } from "@/components/case/blocks";
 import { Img } from "@/components/Img";
 import { LoopVideo } from "@/components/LoopVideo";
 import { nextLiveProject } from "@/lib/projects";
 
-export const metadata: Metadata = {
-  title: "Video production system",
-  description: "Case study 05: how a B2B SaaS launch film was made, from script spine to storyboard, Remotion build, voiceover, captions and review gates.",
-};
+export const metadata: Metadata = pageMetadata("/work/video-system");
 
 // The film is unannounced: the product is never named on this page, and every image was checked for its name and logo.
 const rail = ["Overview", "Script and storyboard", "The build", "Voice and captions", "Iterations"];
@@ -16,6 +15,7 @@ export default function VideoSystem() {
   const next = nextLiveProject(5);
   return (
     <CaseLayout rail={rail}>
+      <JsonLd data={workJsonLd("/work/video-system")} />
       <CaseHero
         kicker="CASE STUDY 05 / 06"
         tag="shipped"

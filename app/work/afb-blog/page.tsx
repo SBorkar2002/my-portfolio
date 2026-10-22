@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
+import { pageMetadata, workJsonLd } from "@/lib/seo";
 import { CaseHero, CaseLayout, CaseSection, Facts, Figure, NextCard, NumberCard, Shot, Stage } from "@/components/case/blocks";
 import { Img } from "@/components/Img";
 import { nextLiveProject, projectByNumber } from "@/lib/projects";
 
-export const metadata: Metadata = {
-  title: "AppsForBharat blog",
-  description: "Case study 04: the AppsForBharat company blog and its themed thumbnail system, live at blog.appsforbharat.com.",
-};
+export const metadata: Metadata = pageMetadata("/work/afb-blog");
 
 // Built in code from the Figma file (72tXrfMYH64v0hkxDF1m2n, node 114-1729), the local exports and inventory/external.md.
 const rail = ["Overview", "Decisions", "What shipped", "Print and merch"];
@@ -16,6 +15,7 @@ export default function AfbBlog() {
   const next = nextLiveProject(4);
   return (
     <CaseLayout rail={rail}>
+      <JsonLd data={workJsonLd("/work/afb-blog")} />
       <CaseHero
         kicker="CASE STUDY 04 / 06"
         tag="shipped"

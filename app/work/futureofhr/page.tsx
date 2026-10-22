@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
+import { pageMetadata, workJsonLd } from "@/lib/seo";
 import { CaseHero, CaseLayout, CaseSection, Figure, NextCard, NumberCard, Shot, Stage } from "@/components/case/blocks";
 import { Img } from "@/components/Img";
 import { LoopVideo } from "@/components/LoopVideo";
 import { nextLiveProject, projectByNumber } from "@/lib/projects";
 
-export const metadata: Metadata = {
-  title: "#futureofhr",
-  description: "Case study 03: a webinar landing page designed as a video call, with a launch video and a LinkedIn poster. An Instahyre take-home.",
-};
+export const metadata: Metadata = pageMetadata("/work/futureofhr");
 
 // Built in code from the Figma file (page "06 · New direction · The Call"), its direction board and the Remotion launch video.
 const rail = ["Overview", "The direction", "Landing page", "Video and poster"];
@@ -17,6 +16,7 @@ export default function FutureOfHr() {
   const next = nextLiveProject(3);
   return (
     <CaseLayout rail={rail}>
+      <JsonLd data={workJsonLd("/work/futureofhr")} />
       <CaseHero
         kicker="CASE STUDY 03 / 06"
         tag="take-home"

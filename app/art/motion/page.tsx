@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
+import { pageMetadata, workJsonLd } from "@/lib/seo";
 import { ArtPage, ArtSection, CaseLink, Clip } from "@/components/art/ArtPage";
 import { NextPageCard } from "@/components/case/blocks";
 
-export const metadata: Metadata = {
-  title: "Motion",
-  description: "Sejal's comic video series, a webinar launch video and excerpts from a launch film, with sound.",
-};
+export const metadata: Metadata = pageMetadata("/art/motion");
 
 const V = "/video/motion";
 
@@ -31,6 +30,7 @@ const PIPELINE: [string, string][] = [
 export default function Motion() {
   return (
     <ArtPage room="motion" kicker="ART ROOM · MOTION" title="Motion" lead="Comic videos, a webinar launch video and parts of a launch film. Turn the sound on.">
+      <JsonLd data={workJsonLd("/art/motion")} />
       <ArtSection
         kicker="COMIC VIDEO SERIES · EPIFI · 2026"
         title="AI ideas as comic videos"

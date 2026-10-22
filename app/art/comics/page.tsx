@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
+import { pageMetadata, workJsonLd } from "@/lib/seo";
 import { ArtPage, ArtSection, Panel } from "@/components/art/ArtPage";
 import { NextPageCard } from "@/components/case/blocks";
 import { Icon } from "@/components/ui";
 
-export const metadata: Metadata = {
-  title: "Comics",
-  description: "Action scenes from Sejal's webtoon, client comics for Pocket Toons and a one-shot cricket comic.",
-};
+export const metadata: Metadata = pageMetadata("/art/comics");
 
 const C = "/images/comics";
 
@@ -27,6 +26,7 @@ export default function Comics() {
       title="Comics"
       lead="Action scenes from my webtoon, client comics for Pocket Toons and a one-shot. Each one says how AI was used. Tap any panel to see it large."
     >
+      <JsonLd data={workJsonLd("/art/comics")} />
       <ArtSection
         kicker="WEBTOON · 2022"
         title="One Last Chance"

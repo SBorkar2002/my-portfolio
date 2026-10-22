@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
+import { pageMetadata, workJsonLd } from "@/lib/seo";
 import type { CSSProperties } from "react";
 import { CardRow, CaseHero, CaseLayout, CaseSection, Decision, Facts, NextCard, NumberCard, Stage } from "@/components/case/blocks";
 import { TappablePhone } from "@/components/case/TappablePhone";
@@ -6,10 +8,7 @@ import { Img } from "@/components/Img";
 import { nextLiveProject, projectByNumber } from "@/lib/projects";
 import { screenSrc } from "@/lib/sourcedApp";
 
-export const metadata: Metadata = {
-  title: "Sourced",
-  description: "Case study 03: Sourced, an app that verifies human artists and pairs them as Art Buddies. Shaped by a survey of 25+ artists.",
-};
+export const metadata: Metadata = pageMetadata("/work/sourced");
 
 // Copy from Figma "Case study · 03 Sourced (Dark)" 55:730.
 const rail = ["Overview", "The problem", "Before", "Decisions", "The design", "What I would change"];
@@ -34,6 +33,7 @@ export default function Sourced() {
   const next = nextLiveProject(2);
   return (
     <CaseLayout rail={rail}>
+      <JsonLd data={workJsonLd("/work/sourced")} />
       <CaseHero
         kicker="CASE STUDY 02 / 06"
         tag="personal"
