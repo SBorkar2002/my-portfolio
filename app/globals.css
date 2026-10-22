@@ -398,7 +398,11 @@
   width: 24px;
   height: 8px;
   background: var(--accent-lime);
-  animation: loader-run 1.4s steps(12) infinite alternate;
+  /* One pass that reaches the end of the track before the 1.5 s minimum is up, then back and forth from there
+     only if loading runs long. */
+  animation:
+    loader-run 1.2s steps(12) forwards,
+    loader-run 1.2s steps(12) 1.2s infinite alternate-reverse;
 }
 @keyframes loader-run {
   to {

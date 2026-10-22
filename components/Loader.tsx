@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Logo } from "./Logo";
 
 /** Pixel loading screen.
-    Shown on every full load for at least 2 s (no minimum with reduced motion), longer while assets still load.
+    Shown on every full load for at least 1.5 s (no minimum with reduced motion), longer while assets still load.
     The cat spins on top of the bar (CatLayer), then falls while the page rises from the bottom to meet it. */
 export function Loader() {
   useEffect(() => {
@@ -15,7 +15,7 @@ export function Loader() {
     const finish = () => {
       if (done) return;
       done = true;
-      const min = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 2000;
+      const min = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1500;
       const wait = Math.max(0, min - (performance.now() - started));
       window.setTimeout(() => {
         // The loader's text and bar fade; the cat keeps spinning above where the bar was.
@@ -33,7 +33,7 @@ export function Loader() {
       }, wait);
     };
     // Waits for the fonts (so the hero never swaps type mid-rise), not for every image on the page: images below the
-    // fold load lazily and must not hold the loading screen up past its 2 s.
+    // fold load lazily and must not hold the loading screen up past its 1.5 s.
     const ready = () => {
       const fonts = document.fonts?.ready ?? Promise.resolve();
       void Promise.race([fonts, new Promise((r) => window.setTimeout(r, 3000))]).then(finish);
