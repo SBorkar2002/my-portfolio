@@ -35,7 +35,9 @@ const PANELS = [
   ["pt-eye-4", `${INV}/drive/pfm/stun app/PANEL 6.png`, 0, null, 540],
 ];
 
-for (const [name, src, top, height, width] of PANELS) {
+// Pass video names to rebuild only those, e.g. `node scripts/build-art-media.mjs film-harness`.
+const ONLY = process.argv.slice(2);
+for (const [name, src, top, height, width] of ONLY.length ? [] : PANELS) {
   const meta = await sharp(src).metadata();
   const h = height ?? meta.height - top;
   for (const w of [width, width * 2]) {
@@ -58,13 +60,15 @@ const VIDEOS = [
   ["futureofhr-full", `${H}/Documents/instahyre-launch-video/out/futureofhr-launch.mp4`, 0, null, 864, 1080],
   // Launch film: only stretches where the product is neither said (checked with a transcript) nor shown.
   ["film-question", `${H}/Documents/tetriz-launch-video-v4.2/out/tetriz-launch-v5.mp4`, 3.5, 18.3, 1280, 720],
-  ["film-harness", `${H}/Documents/tetriz-launch-video-v4.2/out/tetriz-launch-v5.mp4`, 51.5, 68.8, 1280, 720],
-  ["film-coaching", `${H}/Documents/tetriz-launch-video-v4.2/out/tetriz-launch-v5.mp4`, 95, 112.5, 1280, 720],
+  ["film-harness", `${H}/Documents/tetriz-launch-video-v4.2/out/tetriz-launch-v5.mp4`, 51.5, 64, 1280, 720],
+  // film-smarter needs the product name painted out of a moving card: scripts/film-mask.py builds it.
 ];
+for (const bad of ONLY.filter((n) => !VIDEOS.some((v) => v[0] === n))) console.warn("no video named", bad);
 for (const [name, src, start, end, w, h] of VIDEOS) {
+  if (ONLY.length && !ONLY.includes(name)) continue;
   const cut = end === null ? [] : ["-ss", String(start), "-to", String(end)];
   const out = `public/video/motion/${name}.mp4`;
-  ff(...cut, "-i", src, "-vf", `scale=${w}:${h}:force_original_aspect_ratio=decrease,pad=${w}:${h}:(ow-iw)/2:(oh-ih)/2`, "-c:v", "libx264", "-preset", "slow", "-crf", "29", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "96k", "-af", "afade=t=in:d=0.25", "-movflags", "+faststart", out);
+  ff(...cut, "-i", src, "-vf", `scale=${w}:${h}:force_original_aspect_ratio=decrease,pad=${w}:${h}:(ow-iw)/2:(oh-ih)/2${end === null ? "" : `,fade=t=out:st=${(end - start - 0.3).toFixed(2)}:d=0.3:color=0xF1F2F6`}`, "-c:v", "libx264", "-preset", "slow", "-crf", "29", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "96k", "-af", `afade=t=in:d=0.25${end === null ? "" : `,afade=t=out:st=${(end - start - 0.3).toFixed(2)}:d=0.3`}`, "-movflags", "+faststart", out);
   // Poster: a frame a quarter of the way in.
   const posterAt = end === null ? 2 : 1;
   ff("-ss", String(posterAt), "-i", out, "-frames:v", "1", `/tmp/${name}.png`);

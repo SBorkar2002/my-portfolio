@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ArtPage, ArtSection, Panel } from "@/components/art/ArtPage";
+import { NextPageCard } from "@/components/case/blocks";
 import { Icon } from "@/components/ui";
 
 export const metadata: Metadata = {
@@ -21,9 +22,10 @@ const STRIPS: [string, string, string][] = [
 export default function Comics() {
   return (
     <ArtPage
+      room="comics"
       kicker="ART ROOM · COMICS"
       title="Comics"
-      lead="Action scenes from my webtoon, client comics for Pocket Toons and a one-shot. Tap any panel to see it large."
+      lead="Action scenes from my webtoon, client comics for Pocket Toons and a one-shot. Each one says how AI was used. Tap any panel to see it large."
     >
       <ArtSection
         kicker="WEBTOON · 2022"
@@ -42,6 +44,7 @@ export default function Comics() {
             </a>
           </>
         }
+        ai="None. Story, art and lettering by me."
       >
         <div className="grid grid-cols-2 items-start gap-5 md:grid-cols-3">
           <Panel src={`${C}/olc-kaboom-800.webp`} w={800} h={2080} label="KA BOOM" alt="A fighter is hit in a blast of red and white light, lettered KA BOOM" />
@@ -51,9 +54,10 @@ export default function Comics() {
       </ArtSection>
 
       <ArtSection
-        kicker="POCKET TOONS · 2025"
+        kicker="POCKET FM · POCKET TOONS · 2025"
         title="Comic post-production"
-        lead="I turned scripts into finished comic pages: generated, retouched and lettered the panels, then laid out pages and series openings."
+        lead="I turned scripts into finished comic pages, then laid out pages and series openings."
+        ai="Panels were generated with AI. I retouched them by hand to match each series' style, then did the lettering and the layout."
       >
         <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
           {STRIPS.map(([name, label, alt]) => (
@@ -78,12 +82,29 @@ export default function Comics() {
         </div>
       </ArtSection>
 
-      <ArtSection kicker="ONE-SHOT · 2026" title="The Last Over" lead="A two-page cricket comic: story, character and pages.">
+      <ArtSection
+        kicker="ONE-SHOT · 2026"
+        title="The Last Over"
+        lead="A two-page cricket comic: story, character and pages."
+        ai="Images generated with Gemini (Nano Banana), and Claude helped plan the story, draft the script and write the prompts. By hand in Photoshop: page layout, compositing, lighting, ball trails and bat swings, sound effects and lettering."
+      >
         <div className="grid gap-6 md:grid-cols-2">
           <Panel src={`${C}/lastover-p1-1240.webp`} full={`${C}/lastover-p1-2480.webp`} w={1240} h={1754} label="PAGE 1" alt="Page 1: a young batter walks out under stadium lights; the ball hits his helmet grille" />
           <Panel src={`${C}/lastover-p2-1240.webp`} full={`${C}/lastover-p2-2480.webp`} w={1240} h={1754} label="PAGE 2" alt="Page 2: two sixes, a diving fielder and the crowd shouting his name" />
         </div>
       </ArtSection>
+
+      <NextPageCard
+        label="Next art room"
+        kicker="NEXT · ART ROOM"
+        title="Motion: comic videos, a launch video and a film, with sound"
+        href="/art/motion"
+        catLine="next: the videos!"
+        media={
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src="/images/art_next_motion-560.webp" srcSet="/images/art_next_motion-560.webp 560w, /images/art_next_motion-1120.webp 1120w" sizes="(max-width: 767px) 100vw, 560px" width={560} height={350} alt="Three frames from the comic video series" loading="lazy" decoding="async" className="block size-full object-cover" />
+        }
+      />
     </ArtPage>
   );
 }

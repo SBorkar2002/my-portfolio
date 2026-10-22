@@ -6,15 +6,60 @@ import { Icon } from "../ui";
 
 const gutter = "mx-auto max-w-[1440px] px-[clamp(20px,8.333vw,120px)]";
 
-/** Shared frame for the art room's sub-pages: a way back, the title and a short lead. */
-export function ArtPage({ kicker, title, lead, children }: { kicker: string; title: string; lead: string; children: ReactNode }) {
+type Room = "comics" | "motion";
+
+// The four art rooms. Illustration and graphic live on her other portfolios, so those open in a new tab.
+const ROOMS = [
+  { id: "illustration", label: "ILLUSTRATION", href: "https://www.artstation.com/jen_chan", chip: "bg-peach" },
+  { id: "comics", label: "COMICS", href: "/art/comics", chip: "bg-butter" },
+  { id: "graphic", label: "GRAPHIC", href: "https://sejalborkarart.my.canva.site/", chip: "bg-sky" },
+  { id: "motion", label: "MOTION", href: "/art/motion", chip: "bg-pink" },
+] as const;
+
+/** Jump between the art rooms without going back home. */
+function ArtNav({ current }: { current: Room }) {
   return (
-    <div className={`${gutter} flex flex-col gap-16 pt-10 pb-28 xl:pt-16`}>
+    <nav aria-label="Art rooms">
+      <ul className="flex flex-wrap gap-2.5">
+        {ROOMS.map((r) => {
+          const here = r.id === current;
+          const external = r.href.startsWith("http");
+          const cls = `type-label-s inline-flex h-9 items-center gap-2 border-2 border-line px-3 shadow-[0_2px_0_0_var(--line)] transition-colors duration-100 ${
+            here ? `${r.chip} text-on-pastel` : "bg-raised text-muted hover:text-primary"
+          }`;
+          return (
+            <li key={r.id}>
+              {external ? (
+                <a href={r.href} target="_blank" rel="noopener noreferrer" className={cls}>
+                  {r.label}
+                  <span aria-hidden="true" className="inline-flex -rotate-45">
+                    <Icon name="arrow-right" />
+                  </span>
+                  <span className="sr-only">(opens in a new tab)</span>
+                </a>
+              ) : (
+                <Link href={r.href} aria-current={here ? "page" : undefined} className={cls}>
+                  {r.label}
+                </Link>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+}
+
+/** Shared frame for the art room's sub-pages: a way back, the other rooms, the title and a short lead. */
+export function ArtPage({ room, kicker, title, lead, children }: { room: Room; kicker: string; title: string; lead: string; children: ReactNode }) {
+  return (
+    <div className={`${gutter} flex flex-col gap-16 pt-10 xl:pt-16`}>
       <header className="flex max-w-[760px] flex-col items-start gap-6">
         <Link href="/#art" className="type-label-s inline-flex items-center gap-2.5 text-muted hover:text-primary">
           <Icon name="arrow-left" />
           ART ROOM
         </Link>
+        <ArtNav current={room} />
         <p className="type-label-s text-ink">{kicker}</p>
         <h1 className="type-display-l text-primary">{title}</h1>
         <p className="type-body-l text-muted">{lead}</p>
@@ -24,16 +69,46 @@ export function ArtPage({ kicker, title, lead, children }: { kicker: string; tit
   );
 }
 
-export function ArtSection({ kicker, title, lead, children }: { kicker: string; title: string; lead?: ReactNode; children: ReactNode }) {
+export function ArtSection({ kicker, title, lead, ai, children }: { kicker: string; title: string; lead?: ReactNode; ai?: ReactNode; children: ReactNode }) {
   return (
     <section className="flex flex-col gap-7 border-t-2 border-line pt-12">
       <div className="flex max-w-[760px] flex-col gap-3">
         <p className="type-label-s text-ink">{kicker}</p>
         <h2 className="type-display-m text-primary">{title}</h2>
         {lead && <p className="type-body-m text-muted">{lead}</p>}
+        {ai && (
+          <p className="type-body-s mt-1 border-l-4 border-line bg-sunken px-4 py-3 text-primary">
+            <span className="type-label-s mr-2 text-ink">AI USE</span>
+            {ai}
+          </p>
+        )}
       </div>
       {children}
     </section>
+  );
+}
+
+/** A small preview of a case study: thumbnail, title and an arrow. */
+export function CaseLink({ href, kicker, title, thumb, alt }: { href: string; kicker: string; title: string; thumb: string; alt: string }) {
+  return (
+    <Link
+      href={href}
+      className="group flex w-full max-w-[420px] items-stretch border-2 border-line bg-raised shadow-[4px_4px_0_0_var(--line)] transition-[transform,box-shadow] duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_var(--pastel-lilac)]"
+    >
+      <span className="w-[120px] shrink-0 overflow-hidden border-r-2 border-line bg-sunken">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={`/images/${thumb}-240.webp`} srcSet={`/images/${thumb}-240.webp 1x, /images/${thumb}-480.webp 2x`} alt={alt} width={120} height={74} loading="lazy" decoding="async" className="block size-full object-cover" />
+      </span>
+      <span className="flex min-w-0 flex-1 items-center justify-between gap-3 px-4 py-3">
+        <span className="flex min-w-0 flex-col gap-1">
+          <span className="type-label-s text-ink">{kicker}</span>
+          <span className="type-body-s font-semibold text-primary">{title}</span>
+        </span>
+        <span className="text-muted transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-primary">
+          <Icon name="arrow-right" />
+        </span>
+      </span>
+    </Link>
   );
 }
 

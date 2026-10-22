@@ -17,6 +17,9 @@ type Chapter = {
   tag?: TagKind;
   color: string;
   icon?: string[];
+  /** The company's logo, shown in the tile so the company reads before the text. `mask` art is drawn in the
+      tile's ink colour, so line art recolours with no white box. */
+  logo?: { src: string; alt: string; pad?: boolean; mask?: boolean };
   /** What the guide cat says when this chapter zooms in. */
   line: string;
   /** Intro only: degrees, shown as their own block under the intro text. [degree, school and place, years] */
@@ -116,6 +119,7 @@ const chapters: Chapter[] = [
     tag: "shipped",
     color: "var(--pastel-lilac)",
     icon: ICONS.spark,
+    logo: { src: "/logos/fi.webp", alt: "Fi Money logo" },
     line: "AI products, shipped",
   },
   {
@@ -132,6 +136,7 @@ const chapters: Chapter[] = [
     tag: "shipped",
     color: "var(--pastel-peach)",
     icon: ICONS.page,
+    logo: { src: "/logos/appsforbharat.svg", alt: "AppsForBharat logo", pad: true },
     line: "blogs and merch",
   },
   {
@@ -148,6 +153,7 @@ const chapters: Chapter[] = [
     tag: "client",
     color: "var(--pastel-butter)",
     icon: ICONS.bubble,
+    logo: { src: "/logos/pocketfm.svg", alt: "Pocket FM logo" },
     line: "comic panels!",
   },
   {
@@ -180,6 +186,7 @@ const chapters: Chapter[] = [
     tag: "client",
     color: "var(--pastel-pink)",
     icon: ICONS.pencil,
+    logo: { src: "/logos/jeneko.webp", alt: "Jeneko logo: a line-art girl with horns", mask: true },
     line: "where it all started",
   },
 ];
@@ -236,8 +243,26 @@ function Visual({ c, size }: { c: Chapter; size: "l" | "s" }) {
       className={`${box} flex shrink-0 items-center justify-center overflow-hidden border-2 border-line text-on-pastel shadow-pixel-8`}
       style={{ background: c.color, "--pixel-shadow": "var(--line)" } as CSSProperties}
     >
-      {c.icon ? <PixelIcon rows={c.icon} className="w-[58%]" /> : <Img name="portrait" width={360} alt="Portrait of Sejal Borkar" />}
+      {c.logo ? <Logo logo={c.logo} /> : c.icon ? <PixelIcon rows={c.icon} className="w-[58%]" /> : <Img name="portrait" width={360} alt="Portrait of Sejal Borkar" />}
     </div>
+  );
+}
+
+function Logo({ logo }: { logo: NonNullable<Chapter["logo"]> }) {
+  if (logo.mask)
+    return (
+      <span
+        role="img"
+        aria-label={logo.alt}
+        className="aspect-square w-[78%] bg-current"
+        style={{ mask: `url(${logo.src}) center / contain no-repeat`, WebkitMask: `url(${logo.src}) center / contain no-repeat` }}
+      />
+    );
+  return (
+    <span className={`aspect-square w-[58%] overflow-hidden border-2 border-line bg-white ${logo.pad ? "p-[14%]" : ""}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={logo.src} alt={logo.alt} width={192} height={192} loading="lazy" decoding="async" className="block size-full object-contain" />
+    </span>
   );
 }
 

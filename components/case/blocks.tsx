@@ -268,23 +268,60 @@ const NEXT_LINES: Record<number, string> = {
 
 export function NextCard({ project, media }: { project: Project; media: ReactNode }) {
   return (
-    <section aria-label="Next case study" className="border-t-2 border-line pt-14 pb-[120px]">
-      {/* The cat sits on this card's top edge (CatLayer). */}
+    <NextPageCard
+      label="Next case study"
+      kicker={`NEXT CASE STUDY · 0${project.number} / 06`}
+      title={project.title}
+      href={project.href ?? "/"}
+      catLine={NEXT_LINES[project.number] ?? "one more?"}
+      media={media}
+      keys
+    />
+  );
+}
+
+/** The "next page" card at the bottom of a page. The cat sits on its top edge (CatLayer). */
+export function NextPageCard({
+  label,
+  kicker,
+  title,
+  href,
+  catLine,
+  media,
+  keys = false,
+}: {
+  label: string;
+  kicker: string;
+  title: string;
+  href: string;
+  catLine: string;
+  media: ReactNode;
+  /** Show the keyboard hints (case studies handle the keys). */
+  keys?: boolean;
+}) {
+  return (
+    <section aria-label={label} className="border-t-2 border-line pt-14 pb-[120px]">
       <Link
         data-cat-perch="case-next"
-        data-cat-line={NEXT_LINES[project.number] ?? "one more?"}
-        href={project.href ?? "/"}
+        data-cat-line={catLine}
+        href={href}
         className="group flex flex-col border-2 border-line bg-raised shadow-pixel-8 transition-[transform,box-shadow] duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[10px_10px_0_0_var(--pastel-lilac)] md:flex-row"
       >
         <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-3 p-6 sm:p-8">
-          <p className="type-label-s text-ink">NEXT CASE STUDY · 0{project.number} / 06</p>
-          <p className="type-heading-s max-w-[400px] text-primary">{project.title}</p>
-          <div className="hidden items-center gap-2.5 pt-2 md:flex">
-            <Keycap>→</Keycap>
-            <span className="type-label-s text-muted">NEXT</span>
-            <Keycap>ESC</Keycap>
-            <span className="type-label-s text-muted">ALL WORK</span>
-          </div>
+          <p className="type-label-s text-ink">{kicker}</p>
+          <p className="type-heading-s max-w-[400px] text-primary">{title}</p>
+          {keys ? (
+            <div className="hidden items-center gap-2.5 pt-2 md:flex">
+              <Keycap>→</Keycap>
+              <span className="type-label-s text-muted">NEXT</span>
+              <Keycap>ESC</Keycap>
+              <span className="type-label-s text-muted">ALL WORK</span>
+            </div>
+          ) : (
+            <span className="type-label-s inline-flex items-center gap-2 pt-2 text-muted group-hover:text-primary">
+              OPEN <Icon name="arrow-right" />
+            </span>
+          )}
         </div>
         <div className="aspect-[400/250] w-full shrink-0 overflow-hidden md:w-[43.5%]">{media}</div>
       </Link>
