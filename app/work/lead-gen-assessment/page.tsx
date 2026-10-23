@@ -5,6 +5,7 @@ import {
   BeforeAfter,
   CardRow,
   CaseHero,
+  CaseSummary,
   CaseLayout,
   CaseSection,
   Decision,
@@ -55,11 +56,21 @@ export default function LeadGenAssessment() {
         </Stage>
       </CaseHero>
 
+      <CaseSummary
+        problem="The quiz explained Tetriz’s internal model instead of the reader’s org. Results opened on scores nobody recognised, and the intro promised no email on a page built to find leads."
+        did={[
+          "I redesigned the intro around a hidden preview of the reader’s own result.",
+          "I rebuilt the result to show each person their stage, their score and the answers they gave.",
+          "I built it in the production codebase with Claude Code and merged 3 pull requests.",
+        ]}
+        result="Shipped to production in July 2026: 19 questions, five result states, an honest email step and a mobile layout."
+      />
+
       <CaseSection
         n={1}
         kicker="01 · OVERVIEW"
         title="What it is"
-        lead="Tetriz is Epifi’s B2B engineering-intelligence platform. Before launch, the team ran a LinkedIn quiz for engineering leaders: answer a few questions, find out how AI-native your org is. It was the top of the sales funnel."
+        lead="Tetriz is Epifi’s B2B engineering-intelligence platform. Before launch, Epifi ran a LinkedIn quiz for engineering leaders: answer a few questions, find out how AI-native your org is. It was the top of the sales funnel, and I redesigned it and shipped the new version."
       >
         <ol className="grid w-full grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
           {[
@@ -93,7 +104,7 @@ export default function LeadGenAssessment() {
         n={2}
         kicker="02 · THE PROBLEM"
         title="It explained our model, not their org"
-        lead="The first build shipped fast and it worked, but it read like an internal document. The result opened on three pillar scores the reader had never heard of, then a feedback-loop meter and a capped score. And the intro promised no email, on a page whose job was to start sales conversations."
+        lead="The first build worked, but it read like an internal document. The result opened on three pillar scores the reader had never heard of, then a feedback-loop meter and a capped score. And the intro promised no email, on a page whose job was to start sales conversations."
       >
         <CardRow>
           <NumberCard
@@ -101,7 +112,7 @@ export default function LeadGenAssessment() {
             labelTitle
             shadow="var(--pastel-peach)"
             title="INTERNAL WORDS ON SCREEN"
-            body="Observe, Transform, Govern: the team’s mental model, shown without explanation."
+            body="Observe, Transform, Govern: an internal model, shown without explanation."
           />
           <NumberCard
             n="02"
@@ -196,7 +207,7 @@ export default function LeadGenAssessment() {
           <Decision
             n="04"
             title="Ask for the email, honestly"
-            chose="A clear step after the result: “Want the full breakdown?” with one work-email field. It later shipped as a required name and email gate."
+            chose="A clear step after the result: “Want the full breakdown?” with one work-email field. I later shipped it as a required name and email gate."
             cut="The “no email required, no data sent anywhere” promise on the intro."
             why="The page existed to start conversations. A promise the funnel would break on day one costs more than a short form."
           >
@@ -269,7 +280,7 @@ export default function LeadGenAssessment() {
             n="02"
             shadow="var(--pastel-butter)"
             title="Test the questions with real leads"
-            body="A few questions, like “instrument PR rework rate”, were still the team’s own jargon."
+            body="A few questions, like “instrument PR rework rate”, were still our internal jargon."
           />
           <NumberCard
             n="03"

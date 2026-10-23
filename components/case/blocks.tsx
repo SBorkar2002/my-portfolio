@@ -74,6 +74,36 @@ export function CaseHero({
   );
 }
 
+/** The 10-second read under each hero: the problem, what I did, and what shipped. */
+export function CaseSummary({ problem, did, result, className = "mb-16 xl:mb-[88px]" }: { problem: string; did: string[]; result: string; className?: string }) {
+  const cols: [string, string, ReactNode][] = [
+    ["THE PROBLEM", "bg-peach", <p className="type-body-m text-primary">{problem}</p>],
+    [
+      "WHAT I DID",
+      "bg-lilac",
+      <ul className="flex flex-col gap-2.5">
+        {did.map((line) => (
+          <li key={line} className="type-body-m flex gap-3 text-primary">
+            <span aria-hidden="true" className="mt-[0.55em] size-2 shrink-0 bg-ink" />
+            <span>{line}</span>
+          </li>
+        ))}
+      </ul>,
+    ],
+    ["THE RESULT", "bg-mint", <p className="type-body-m text-primary">{result}</p>],
+  ];
+  return (
+    <section aria-label="Summary" className={`${className} grid w-full border-2 border-line bg-raised shadow-pixel-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)_minmax(0,1fr)]`}>
+      {cols.map(([label, chip, body], i) => (
+        <div key={label} className={`flex min-w-0 flex-col items-start gap-4 p-6 ${i > 0 ? "border-t-2 border-line md:border-t-0 md:border-l-2" : ""}`}>
+          <h2 className={`type-label-s border-2 border-line px-2.5 py-1 text-on-pastel ${chip}`}>{label}</h2>
+          {body}
+        </div>
+      ))}
+    </section>
+  );
+}
+
 /** One numbered section of the case study. The id matches the rail key. */
 export function CaseSection({
   n,

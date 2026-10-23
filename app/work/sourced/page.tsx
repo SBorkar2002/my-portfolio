@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { JsonLd } from "@/components/JsonLd";
 import { pageMetadata, workJsonLd } from "@/lib/seo";
 import type { CSSProperties } from "react";
-import { CardRow, CaseHero, CaseLayout, CaseSection, Decision, Facts, NextCard, NumberCard, Stage } from "@/components/case/blocks";
+import { CardRow, CaseHero, CaseSummary, CaseLayout, CaseSection, Decision, Facts, NextCard, NumberCard, Stage } from "@/components/case/blocks";
 import { TappablePhone } from "@/components/case/TappablePhone";
 import { Img } from "@/components/Img";
 import { nextLiveProject, projectByNumber } from "@/lib/projects";
@@ -69,11 +69,21 @@ export default function Sourced() {
         </Stage>
       </CaseHero>
 
+      <CaseSummary
+        problem="Human-made art gets lost in feeds full of AI images, and artists stop finishing work when nobody is waiting for it."
+        did={[
+          "I surveyed 25+ people on both sides of the AI art debate.",
+          "I designed separate human-made and AI feeds, where every human post carries its process as proof.",
+          "I paired artists as Art Buddies who keep a shared Flow, and rebuilt the UI in 2026 on a component library.",
+        ]}
+        result="A 20-screen clickable prototype you can try above, and the full case study on Behance."
+      />
+
       <CaseSection
         n={1}
         kicker="01 · OVERVIEW"
         title="What it is"
-        lead="Every artist has felt it. You post your work and it disappears into a feed flooded with AI-generated images. Nobody can tell what is human-made anymore, and nobody is waiting for your next piece. Sourced was built to fix both at once."
+        lead="Every artist has felt it. You post your work and it disappears into a feed flooded with AI-generated images. Nobody can tell what is human-made anymore, and nobody is waiting for your next piece. I designed Sourced to fix both at once."
       >
         <Facts
           items={[

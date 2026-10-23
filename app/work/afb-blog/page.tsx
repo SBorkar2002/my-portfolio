@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/JsonLd";
 import { pageMetadata, workJsonLd } from "@/lib/seo";
-import { CaseHero, CaseLayout, CaseSection, Facts, Figure, NextCard, NumberCard, Shot, Stage } from "@/components/case/blocks";
+import { CaseHero, CaseSummary, CaseLayout, CaseSection, Facts, Figure, NextCard, NumberCard, Shot, Stage } from "@/components/case/blocks";
 import { Img } from "@/components/Img";
 import { nextLiveProject, projectByNumber } from "@/lib/projects";
 
@@ -21,7 +21,7 @@ export default function AfbBlog() {
         tag="shipped"
         company="APPSFORBHARAT"
         title={project.title}
-        lead="Home, article and category pages for the company blog, with one visual identity per category."
+        lead="I designed the home, article and category pages for the company blog, with one visual identity per category."
         links={project.links}
         meta={[
           ["ROLE", "Design Intern"],
@@ -34,11 +34,21 @@ export default function AfbBlog() {
         <Shot name="afb_home" w={920} h={791} priority alt="Blog home: Inside AFB, a featured post, category tabs and a card grid" />
       </CaseHero>
 
+      <CaseSummary
+        problem="AppsForBharat needed a company blog where readers can tell topics apart at a glance, on desktop and on mobile."
+        did={[
+          "I designed the home, article and category templates.",
+          "I gave each of the 7 categories its own painterly thumbnail.",
+          "I designed a custom hero for each article, and wrote one of the posts.",
+        ]}
+        result="Live at blog.appsforbharat.com."
+      />
+
       <CaseSection
         n={1}
         kicker="01 · OVERVIEW"
         title="What it is"
-        lead="Inside AFB is the AppsForBharat company blog: a featured post, category tabs, a card grid and a subscribe band, designed for desktop and mobile."
+        lead="I designed Inside AFB, the AppsForBharat company blog: a featured post, category tabs, a card grid and a subscribe band, for desktop and mobile."
       >
         <Facts
           items={[
@@ -54,13 +64,13 @@ export default function AfbBlog() {
             n="01"
             shadow="var(--pastel-peach)"
             title="One thumbnail per category"
-            body="Every card in a category shares one painterly thumbnail, so the grid reads by topic at a glance: a teal hand for Tech, a lotus for Design, a conch for Product, a banyan for People & Culture."
+            body="I gave every card in a category one shared painterly thumbnail, so the grid reads by topic at a glance: a teal hand for Tech, a lotus for Design, a conch for Product, a banyan for People & Culture."
           />
           <NumberCard
             n="02"
             shadow="var(--pastel-peach)"
             title="A custom hero inside each article"
-            body="Articles open on their own hero in a maroon and saffron AFB style. The listing says which category, the article tells its own story."
+            body="I designed a custom hero for each article, in a maroon and saffron AFB style. The listing says which category, the article tells its own story."
           />
         </div>
       </CaseSection>
@@ -80,7 +90,7 @@ export default function AfbBlog() {
         n={4}
         kicker="04 · PRINT AND MERCH"
         title="Also at AFB"
-        lead="Alongside the blog: a buddy tee, appreciation cards and a Women’s Day card for the team."
+        lead="Alongside the blog, I designed a buddy tee, appreciation cards and a Women’s Day card for the team."
       >
         <Stage className="flex flex-wrap items-end justify-center gap-6 p-6 md:p-8">
           <Figure below label="BUDDY TEE" name="afb_tee" w={290} h={290} alt="Buddy tee design: two colleagues on a music player screen" />

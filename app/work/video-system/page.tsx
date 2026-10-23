@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/JsonLd";
 import { pageMetadata, workJsonLd } from "@/lib/seo";
-import { CaseHero, CaseLayout, CaseSection, Figure, NextCard, NumberCard, Shot, Stage } from "@/components/case/blocks";
+import { CaseHero, CaseSummary, CaseLayout, CaseSection, Figure, NextCard, NumberCard, Shot, Stage } from "@/components/case/blocks";
 import { Img } from "@/components/Img";
 import { LoopVideo } from "@/components/LoopVideo";
 import { nextLiveProject } from "@/lib/projects";
@@ -21,7 +21,7 @@ export default function VideoSystem() {
         tag="shipped"
         company="EPIFI · 2026"
         title="Making a B2B SaaS launch film"
-        lead="Script to final render, with reusable skill files in the repo and review gates."
+        lead="I took it from script to final render, with reusable skill files in the repo and review gates."
         meta={[
           ["FILM", "2:23, 14 scenes"],
           ["FORMAT", "1920 x 1080, 30 fps"],
@@ -39,18 +39,28 @@ export default function VideoSystem() {
         </div>
       </CaseHero>
 
+      <CaseSummary
+        problem="A launch film had to explain four product levers to CTOs, and the early scripts read as surface level."
+        did={[
+          "I rewrote the script as a spine, one line per beat, each tied to the real screen that proves it.",
+          "I storyboarded 18 Figma frames and built every scene as its own Remotion file with Claude Code.",
+          "I set the voice and caption rules and wrote them back into reusable skill files.",
+        ]}
+        result="A 2:23 film in 14 scenes, taken through a leadership pass and three rounds of product feedback."
+      />
+
       <CaseSection
         n={1}
         kicker="01 · OVERVIEW"
         title="A film built like a product"
-        lead="A launch film for a B2B SaaS product, aimed at CTOs. Every scene is code, every change is logged, and the rules learned along the way went back into skill files so the next video starts further ahead."
+        lead="I made a launch film for a B2B SaaS product, aimed at CTOs. Every scene is code, I logged every change, and the rules I learned went back into skill files so the next video starts further ahead."
       />
 
       <CaseSection
         n={2}
         kicker="02 · SCRIPT AND STORYBOARD"
         title="Spine first, then frames"
-        lead="Early scripts read as surface level, so the method changed: a bones-only spine first, one line per beat, each with the real screen that proves it. Visuals carry the depth; the voice states the outcome."
+        lead="Early scripts read as surface level, so I changed the method: a bones-only spine first, one line per beat, each with the real screen that proves it. Visuals carry the depth; the voice states the outcome."
       >
         <div className="grid w-full gap-5 md:grid-cols-3">
           <NumberCard n="01" shadow="var(--accent-lime)" title="Hard script rules" body="Numbers are shown in the UI, never spoken. Screen-only terms are never voiced. Each claim is grounded in a spec." />
@@ -67,7 +77,7 @@ export default function VideoSystem() {
         n={3}
         kicker="03 · THE BUILD"
         title="One file per scene, measured not eyeballed"
-        lead="Each scene is its own Remotion file, stitched into one film with shared pieces for the camera, word reveals and the lever map. The loop: edit, render a still, read it, adjust. Cuts were checked by transcribing the render and pixel-diffing continuation frames."
+        lead="I built each scene as its own Remotion file with Claude Code, stitched into one film with shared pieces for the camera, word reveals and the lever map. My loop: edit, render a still, read it, adjust. I checked cuts by transcribing the render and pixel-diffing continuation frames."
       >
         <Stage className="flex flex-wrap items-start justify-center gap-6 p-6 md:p-8">
           <Figure below label="PRUNE BEAT" name="vid_st1" w={440} h={248} alt="Film still: the prune beat" />
@@ -81,7 +91,7 @@ export default function VideoSystem() {
         n={4}
         kicker="04 · VOICE AND CAPTIONS"
         title="Never cut a word"
-        lead="The master voice file is never edited. Pacing comes from playback windows cut only inside measured silence, with a short tail after every word. On a new read, beats are re-timed from word timings, not shifted by a constant."
+        lead="I never edit the master voice file. Pacing comes from playback windows I cut only inside measured silence, with a short tail after every word. On a new read, I re-time beats from word timings instead of shifting them by a constant."
       >
         <div className="grid w-full gap-5 md:grid-cols-3">
           <NumberCard n="01" shadow="var(--pastel-lilac)" title="Two caption tiers" body="Small captions carry the full line, always. Large emphasis captions appear only for lines with real value, above them, and never at the same time." />
@@ -94,7 +104,7 @@ export default function VideoSystem() {
         n={5}
         kicker="05 · ITERATIONS"
         title="Review gates, then rules in the repo"
-        lead="The first full cut ran 1:41 and came back with four fixes, all made the same day. Later rounds added a leadership pass and three rounds of product feedback. Every change went into a decision log, and the rules that kept coming up were written back into the skill files through pull requests."
+        lead="My first full cut ran 1:41 and came back with four fixes, which I made the same day. Later rounds added a leadership pass and three rounds of product feedback. I logged every change in a decision log, and wrote the rules that kept coming up back into the skill files through pull requests."
       />
 
       <NextCard project={next} media={<Img name="cs01_hero_intro" width={400} alt="Shipped lead-gen assessment intro screen" />} />

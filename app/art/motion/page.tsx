@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { JsonLd } from "@/components/JsonLd";
 import { pageMetadata, workJsonLd } from "@/lib/seo";
 import { ArtPage, ArtSection, CaseLink, Clip } from "@/components/art/ArtPage";
-import { NextPageCard } from "@/components/case/blocks";
+import { CaseSummary, NextPageCard } from "@/components/case/blocks";
 
 export const metadata: Metadata = pageMetadata("/art/motion");
 
@@ -19,12 +19,12 @@ const EPISODES: [string, string][] = [
 
 // From the series' production notes. Tools and steps only.
 const PIPELINE: [string, string][] = [
-  ["Script", "Each episode starts as a script. A rough voice pass comes straight after it, before any art, to hear whether the joke lands."],
+  ["Script", "I start each episode as a script, then do a rough voice pass straight after it, before any art, to hear whether the joke lands."],
   ["Panels", "I lay the panels out in Figma and generate the characters in ChatGPT from a fixed cast, one pose or expression at a time."],
-  ["Keying", "Generated art comes back on a solid background. A Python script keys it to transparency and lines each new expression up with the face before it."],
-  ["Voice", "Each character has an ElevenLabs voice. Takes are spliced and their pace matched, measured in syllables per second."],
-  ["Animation", "Remotion puts it together: panel timing, push-ins, mouths that move between drawn open and shut frames, and the small AI character."],
-  ["Captions and sound", "Captions are drawn live, one word at a time, from word timings found with Whisper. An ambience bed dips under every line, and sound effects come from a shared library."],
+  ["Keying", "Generated art comes back on a solid background. I key it to transparency with a Python script that also lines each new expression up with the face before it."],
+  ["Voice", "I cast an ElevenLabs voice for each character, then splice the takes and match their pace, measured in syllables per second."],
+  ["Animation", "I put it together in Remotion: panel timing, push-ins, mouths that move between drawn open and shut frames, and the small AI character."],
+  ["Captions and sound", "I draw captions live, one word at a time, from word timings found with Whisper. An ambience bed dips under every line, and sound effects come from a shared library."],
 ];
 
 export default function Motion() {
@@ -34,8 +34,18 @@ export default function Motion() {
       <ArtSection
         kicker="COMIC VIDEO SERIES · EPIFI · 2026"
         title="AI ideas as comic videos"
-        lead="Short comic videos that explain AI engineering ideas: format, script, art direction and edit. The best episode passed 30,000 organic views on Instagram."
+        lead="I make short comic videos that explain AI engineering ideas. I own the format, script, art direction and edit; a teammate picks topics and runs distribution. The best episode passed 30,000 organic views on Instagram."
       >
+        <CaseSummary
+          className=""
+          problem="AI engineering ideas are hard to explain in a scroll, and the channel’s brief was zero product content."
+          did={[
+            "I write each script and test it with a rough voice pass before any art.",
+            "I lay out the panels in Figma and generate the characters from a fixed cast.",
+            "I animate every episode in Remotion, with ElevenLabs voices and word-by-word captions.",
+          ]}
+          result="Six finished episodes. The best one passed 30,000 organic views on Instagram."
+        />
         <div className="grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-6">
           {EPISODES.map(([name, title]) => (
             <Clip key={name} src={`${V}/${name}.mp4`} poster={`${V}/${name}-poster.webp`} w={9} h={16} title={title} />
