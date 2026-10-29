@@ -7,7 +7,7 @@ import { homedir } from "node:os";
 import sharp from "sharp";
 
 const H = homedir();
-const INV = `${H}/Documents/career/portfolio-pixel/inventory`;
+const INV = `${H}/Documents/Personal/career/portfolio-pixel/inventory`;
 const OUT = "public/images/comics";
 mkdirSync(OUT, { recursive: true });
 mkdirSync("public/video/motion", { recursive: true });
@@ -57,10 +57,10 @@ const VIDEOS = [
   ["comic-ep4", `${COMICS}/EP004 insights - final (v8).mp4`, 0, null, 720, 1280],
   ["comic-ep5", `${COMICS}/EP005 system one model - final (v8).mp4`, 0, null, 720, 1280],
   ["comic-pe", `${COMICS}/Prompt engineering - final (v3).mp4`, 0, null, 720, 1280],
-  ["futureofhr-full", `${H}/Documents/instahyre-launch-video/out/futureofhr-launch.mp4`, 0, null, 864, 1080],
+  ["futureofhr-full", `${H}/Documents/Personal/instahyre-launch-video/out/futureofhr-launch.mp4`, 0, null, 864, 1080],
   // Launch film: only stretches where the product is neither said (checked with a transcript) nor shown.
-  ["film-question", `${H}/Documents/tetriz-launch-video-v4.2/out/tetriz-launch-v5.mp4`, 3.5, 18.3, 1280, 720],
-  ["film-harness", `${H}/Documents/tetriz-launch-video-v4.2/out/tetriz-launch-v5.mp4`, 51.5, 64, 1280, 720],
+  ["film-question", `${H}/Documents/Work/tetriz-launch-video-v4.2/out/tetriz-launch-v5.mp4`, 3.5, 18.3, 1280, 720],
+  ["film-harness", `${H}/Documents/Work/tetriz-launch-video-v4.2/out/tetriz-launch-v5.mp4`, 51.5, 64, 1280, 720],
   // film-smarter needs the product name painted out of a moving card: scripts/film-mask.py builds it.
 ];
 for (const bad of ONLY.filter((n) => !VIDEOS.some((v) => v[0] === n))) console.warn("no video named", bad);

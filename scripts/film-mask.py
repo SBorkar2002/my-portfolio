@@ -9,7 +9,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from scipy import ndimage
 
-SRC = os.path.expanduser("~/Documents/tetriz-launch-video-v4.2/out/tetriz-launch-v5.mp4")
+SRC = os.path.expanduser("~/Documents/Work/tetriz-launch-video-v4.2/out/tetriz-launch-v5.mp4")
 OUT = "public/video/motion/film-smarter"
 START, FRAMES, FPS = 82.45, 171, 30  # voice gap before "So your org..." to just before the scene fades out
 CW, CH = 668, 394  # card size at rest (px)

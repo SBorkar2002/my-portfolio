@@ -83,7 +83,7 @@ The Figma file "Pixel portfolio · v1" is the source of truth for layout, copy a
 The pixel cat lives on the home page. Its art (cat v2, 48 x 48 frames and timings) is owned by the cat studio; `scripts/export-cat-frames.mjs` copies it from the studio's `frames.json` into `lib/cat/frames.ts`:
 
 ```bash
-node scripts/export-cat-frames.mjs ~/Documents/career/portfolio-pixel/cat-v2/preview/frames.json
+node scripts/export-cat-frames.mjs ~/Documents/Personal/career/portfolio-pixel/cat-v2/preview/frames.json
 ```
 
 `components/cat/CatLayer.tsx` draws it on one canvas at a whole-pixel scale in device pixels, with the colours from the `--cat-*` tokens, so it swaps with the theme. It moves between five perches marked with `data-cat-perch` (from the Home notes in Figma): it lands on the jump-in panel, walks along tile 01 and sits beside "Selected work", peeks over the Sourced tile, sits by the art room title and sleeps by the footer. Click or tap it to pet it.
